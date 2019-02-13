@@ -1,0 +1,235 @@
+#include <stdlib.h>
+#include <numeric>
+#include <functional>
+#include <iostream>
+
+
+
+Double_t ConvertToBeamE(Double_t CME );
+
+vector<Double_t> ConstructBins(Double_t XMin, Double_t XMax, Double_t NBins);
+
+
+void CompareToSimons() {
+  std::ifstream inputFile("SigmaTableExHeads.txt");
+  std::string line;
+
+  vector<Double_t> MyCosthBins = ConstructBins(-1,1,20);
+  Double_t BinWidth=(MyCosthBins[1] - MyCosthBins[0])/2 ;
+  cout << "Bin Width " <<BinWidth << endl;
+
+  Double_t CMELow;//COMEnergy Low
+  Double_t CMEHigh; //COMEnergy high
+  Double_t CSTLE; //Costh low erro
+  Double_t CSTMid;//Costh
+  Double_t CSTHE;//Costh high error
+  Double_t Sigma; //Sigma
+  Double_t SigmaE; //SigmaError
+  vector<Double_t> VCMEL;//COMEnergy Low
+  vector<Double_t> VCME; //COMEnergy high
+  vector<Double_t> VCosthLErr; //Costh low error
+  vector<Double_t> VCosthMid;//Costh 
+  vector<Double_t> VCosthHErr;//Costh high error
+  vector<Double_t> VSigma; //Sigma
+  vector<Double_t> VSigmaE; //SigmaError
+
+  vector<Double_t> VNewCosth;//Costh high error
+  vector<Double_t> VNewSigma; //Sigma
+  vector<Double_t> VNewEgam; //SigmaError
+
+
+  cout << "WTFA"<< endl;
+  Int_t NCosthBins =0;
+  vector<Int_t> VNCosthBins; 
+  Double_t PrevE = 1302;
+  Int_t counter2 =0;
+  Int_t counter =0;
+  if (inputFile.is_open()){
+    cout << "WTF"<< endl;
+    while(getline(inputFile, line) ){
+	
+      stringstream(line)>>CMELow >>CMEHigh >> CSTLE >> CSTMid >> CSTHE >> Sigma >> SigmaE;
+      if(CMELow == PrevE){
+	NCosthBins = NCosthBins+1;
+      }
+      else{
+	VNCosthBins.push_back(NCosthBins);
+	counter2 = counter2 +1;
+	cout <<"Number of bins="<< NCosthBins << endl;
+	NCosthBins=1;	
+	PrevE = CMELow;
+      }
+			
+      VCMEL.push_back(CMELow);
+      VCME.push_back(CMEHigh);
+      VCosthLErr.push_back(CSTLE);
+      VCosthMid.push_back(CSTMid);
+      VCosthHErr.push_back(CSTHE);
+      VSigma.push_back(Sigma);
+      VSigmaE.push_back(SigmaE);
+      counter= counter +1;
+    }
+    VNCosthBins.push_back(NCosthBins); //Number of costh bins for each Egamma bin
+    cout <<"counter =    " <<counter << "   "<<counter2 <<" THE VECTOR " << VNCosthBins.size() << endl;
+  }
+  Double_t Summation =accumulate(VNCosthBins.begin(),VNCosthBins.end(),0); //Total Number of bins
+  //Double_t Summation =accumulate(VNCosthBins.begin(),VNCosthBins.begin()+1,0); //Total Number of bins
+  cout << Summation << " sums " << endl;
+  Double_t SigmaSum=0;
+  Double_t DivCounter=0;
+  Double_t TestCounter=0;
+
+
+
+
+  for(Int_t i=0;i<VNCosthBins.size();i++){  //Number of Egamma bins loop 51bins 0-50
+    cout << i <<"=i CosthBins="<<VNCosthBins[i] << endl;
+    for(Int_t j=0;j<MyCosthBins.size();j++){  //Number of my bins for Costh 20bins 0-19
+      //cout << j<<"=j" << endl;
+	
+      Double_t Wait = std::accumulate(VNCosthBins.begin(),VNCosthBins.begin() +i,0) ;
+     // cout <<"Wait " << Wait << endl;
+     // cout << VCME[Wait]<< "=CME"<<endl;
+     // cout << ConvertToBeamE(VCME[Wait]) << "=ConvertedE" << endl;
+      VNewEgam.push_back(ConvertToBeamE(VCME[std::accumulate(VNCosthBins.begin(),VNCosthBins.begin() +i,0)]));   // + VNCosthBins[i-1] ]));
+
+      //VCME[i] ));  //VCMEL[i]+ ((VCME[i]-VCMEL[i])/2) ) ); //Should this be VCME - VCMEL???
+      VNewSigma.push_back(SigmaSum/DivCounter);
+      VNewCosth.push_back(MyCosthBins[j]);
+
+/*	if(j== 0){
+	cout <<" Ebeam="<< ConvertToBeamE(VCME[std::accumulate(VNCosthBins.begin(),VNCosthBins.begin() +i,0)])<<"  SigmaSum="<<SigmaSum<<"  DivCounter="<<DivCounter<< "  Sigma=" << SigmaSum/DivCounter << "  CostTheta="<< MyCosthBins[j] << endl;
+}*/
+
+      // }
+      SigmaSum=0;
+      DivCounter=0;
+      for(Int_t k=0;k<VNCosthBins[i];k++){ //Number of Simons costh bins in this egamma bin
+	Double_t CurrentSimonCosthBin = std::accumulate(VNCosthBins.begin(),VNCosthBins.begin() +i,0);
+/*	if(j==0){
+	cout <<" SimonLower" << VCosthMid[CurrentSimonCosthBin+k] <<"  SimonUpper="<< VCosthMid[CurrentSimonCosthBin+k] <<"  LowerMatch" << MyCosthBins[j]-BinWidth << "  UpperMatch="<< MyCosthBins[j]+BinWidth << endl;
+}*/
+	if( VCosthMid[CurrentSimonCosthBin+k]>MyCosthBins[j]-BinWidth &&  VCosthMid[CurrentSimonCosthBin+k]<MyCosthBins[j]+BinWidth    ){
+	  DivCounter =DivCounter+1;
+	  SigmaSum = SigmaSum + VSigma[CurrentSimonCosthBin+k];
+	}
+
+      }
+
+
+    }
+  }
+
+  // for(Int_t i=0;i<VNCosthBins.size();i++){  //Number of Egamma bins loop
+  //    cout << i <<"=i CosthBins="<<VNCosthBins[i] << endl;
+  //    for(Int_t j=0;j<MyCosthBins.size();j++){  //Number of my bins for Costh
+
+  //	cout <<VNewEgam[i*20+j] <<"  " << VNewCosth[i*20+j] << "  "  <<VNewSigma[i*20+j] <<"=Sigma" << endl;
+  //	cout << i << "  " << j <<"  " << i*20+j << endl;
+  //}
+
+
+  //}
+for(Int_t i=0; i<1020;i++){
+
+  // cout << VNewEgam[i] << "  " << VNewCosth[i] <<"  " << VNewSigma[i] <<endl;
+
+
+  if(TMath::IsNaN(VNewSigma[i])){
+
+  cout << VNewEgam[i] << "  " << VNewCosth[i] <<"  " << VNewSigma[i] <<endl;
+VNewSigma[i]=0;
+  cout << VNewEgam[i] << "  " << VNewCosth[i] <<"  " << VNewSigma[i] <<endl;
+
+
+  }
+
+  }
+
+  //cout << ConvertToBeamE(1305)<< endl;
+  //cout << ConvertToBeamE(1450)<< endl;
+
+
+//*************************************************************************************************
+//Now constructing the new energy bins!
+
+
+  vector<Double_t> MyEgBins = ConstructBins(420,660,11);
+  Double_t BinWidthEg=(MyEgBins[1] - MyEgBins[0])/2 ;
+  Double_t DivisionCounter =0;
+  vector<Double_t> SigmaSummations;	
+
+for(Int_t aa=0; aa<MyCosthBins.size();aa++){
+
+	SigmaSummations.push_back(0);
+
+}
+
+vector<Double_t> VFinalSigma;
+vector<Double_t> VFinalEgam;
+vector<Double_t> VFinalCosth;
+
+
+
+    for(Int_t jj=0;jj<MyEgBins.size();jj++){  //Number of my bins for Eg 11bins 0-10
+
+	//Fill here
+	if(SigmaSummations[0]!=0){
+		for(Int_t cc=0;cc<MyCosthBins.size(); cc++){
+			VFinalSigma.push_back(SigmaSummations[cc]/DivisionCounter);
+			VFinalEgam.push_back(MyEgBins[jj-1]);
+			VFinalCosth.push_back(MyCosthBins[cc]);
+			SigmaSummations[cc]=0;
+}
+}
+	for(Int_t kk=0;kk<VNCosthBins.size();kk++){ //Number of Simons egamma bins in this costh bin	
+		if(VNewEgam[kk*MyCosthBins.size()]<(MyEgBins[jj]+BinWidthEg ) && VNewEgam[kk*MyCosthBins.size()]>(MyEgBins[jj]-BinWidthEg ) ){
+			DivisionCounter = DivisionCounter +1;
+			for(Int_t bb=0; bb<MyCosthBins.size();bb++){
+			        SigmaSummations[bb] = SigmaSummations[bb] + VNewSigma[bb+kk*MyCosthBins.size()];
+
+}
+
+			
+
+}
+	
+
+}
+}
+
+
+
+} //closing main function
+	
+
+
+
+
+Double_t ConvertToBeamE(Double_t CME){
+
+  return ( (CME*CME) - (938.27*938.27))/(2*938.27) ;
+  //return TMath::Sqrt((938.27+taggE)*(938.27+taggE)-taggE*taggE);
+
+}
+
+
+vector<Double_t> ConstructBins(Double_t XMin, Double_t XMax, Double_t NBins ){
+
+
+  vector<Double_t> Bins;
+
+  Double_t BinSize = (XMax - XMin)/NBins;
+  for(Int_t l=0;l<NBins;l++){
+    Double_t BinVar=XMin +l*BinSize +BinSize/2;
+
+    Bins.push_back(BinVar);
+
+  }
+
+
+  return Bins;
+
+}
+
+

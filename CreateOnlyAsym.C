@@ -8,12 +8,24 @@ void MakeSigmaGraph(vector<Double_t> sigma, vector<Double_t> error, vector<Doubl
 
 void CreateOnlyAsym() {
 		
-//  TFile *infile = TFile::Open("/w/work1/home/chris/TestingFinalNoPolNewPhi20bins.root");
-  TFile *infile = TFile::Open("/w/work1/home/chris/HistoSelector/BinsFixedCutsSameAsConfigBins2.root");
-  //TFile *infile = TFile::Open("/w/work1/home/chris/TestingFinalNoPolNoW995.root");
+//  TFile *infile = TFile::Open("/w/work1/home/chris/HistoSelector/InvMassCutBinsFixedCutsSameAsConfigBins2.root");
+  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0ResultPoly2ndOrdMoreBinsFinal.root");
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0ResultPoly2ndOrdSpecMomGreaterThan100.root");
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0ResultPoly2ndOrdSpecMomLessThan100.root");
+ // TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0ResultOnlyTimingWeights.root");
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0ResultStrictCutsOnlyTimingWs.root");
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0ResultNonStrictCutsOnlyTimingWsDariaSpecMom.root");
 
-  TFile *outfile =new TFile("/w/work1/home/chris/HistoSelector/AsymsBinsProtonChannel.root","recreate");
-  string dirs[3] = {"BG","Sig", "Cut1"};
+//  TFile *outfile =new TFile("/w/work1/home/chris/HistoSelector/InvMassCutAsymsBinsProtonChannel.root","recreate");
+  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsPPi0ResultPoly2ndOrdMoreBinsFinalNewFit.root","recreate");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsPPi0ResultPoly2ndOrdSpecGreaterThan100.root","recreate");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsPPi0ResultPoly2ndOrdSpecLessThan100.root","recreate");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsPPi0ResultOnlyTimingWeights.root","recreate");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsPPi0ResultNonStrictCutsOnlyTimingWsDariaSpecMom.root","recreate");
+//  string dirs[3] = {"BG","Sig", "Cut1"};
+  string dirs[3] = {"Random","Sig", "Cut1"};
+//  string dirs[3] = {"Random","TimeCoinc", "Cut1"}; //Taken out Feb 2019 for old ones
+//  string dirs[4] = {"NPipPi0","PPi0Pim","Sig", "Cut1"};
   vector<TString> histNames;
   vector<TString> phihistNames;
   vector<Double_t> VecSigma;
@@ -24,6 +36,7 @@ void CreateOnlyAsym() {
 	
   // all histograms for each bin
   for (int i=0; i<3; i++) {
+//  for (int i=0; i<4; i++) {
 					
     TDirectory *weightsDir = infile->GetDirectory(dirs[i].c_str());	//WeightsDir is top lev folder
     TIter	nextTbinDir(weightsDir->GetListOfKeys());
@@ -63,8 +76,9 @@ void CreateOnlyAsym() {
 	      TH1F* PolPos = (TH1F*)infile->Get(PolPosName);
 	      TH1F* hist = (TH1F*) histKey->ReadObj();
 	      //Give Asym a proper name and heading
-	      TH1* Asym = PolPos->GetAsymmetry(hist);
-	      TF1* fit=new TF1("cos2phi","[0]+[1]*cos(TMath::DegToRad()*(2*x+[2]))",-180,180);
+	      TH1* Asym = PolPos->GetAsymmetry(hist);  //CHANGE THIS TO USE SAME AS SIMON THE ENERGY CORRECTION
+	  //    TF1* fit=new TF1("cos2phi","[0]+[1]*cos(TMath::DegToRad()*(2*x+[2]))",-180,180);
+	      TF1* fit=new TF1("cos2phi","[0]+[1]*TMath::Cos(TMath::DegToRad()*(2*x+[2]))",-180,180); //New FIT FEB 2019
 	      fit->SetParLimits(2,87.53,93.09);
 	      Asym->Fit("cos2phi");
 	      //Asym->Draw(); 

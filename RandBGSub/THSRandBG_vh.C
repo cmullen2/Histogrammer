@@ -39,8 +39,9 @@ void THSRandBG_vh::Begin(TTree * /*tree*/)
    TString option = GetOption();
 //If you want to split histograms into different kinematic bins, include and configure the lines below
    fBins=new THSBins("HSBins");
-  // fBins->AddAxis("W",10,950,1850);
-  // fBins->AddAxis("Costh",10,-1,1);
+//   fBins->AddAxis("W",10,950,1850);
+//   fBins->AddAxis("Costh",10,-1,1);
+   fBins->AddAxis("Coplanarity",10,-50,50); //For Empty target
    fBins->AddAxis("PolStateD",2,-1,1);
 
    if(!fInput) fInput=new TList();
@@ -99,12 +100,15 @@ Bool_t THSRandBG_vh::Process(Long64_t entry)
  //below you can give vars corresponding to fBins axis
    fWeight=1; //For unweighted histograms
 //   if(fBins) fCurrBin=fBins->FindBin(*W,*Costh,*PolStateD);//if fBins is defined need to give this meaningful arguments
-   if(fBins) fCurrBin=fBins->FindBin(*PolStateD);//if fBins is defined need to give this meaningful arguments
+//   if(fBins) fCurrBin=fBins->FindBin(*PolStateD);//if fBins is defined need to give this meaningful arguments
+   if(fBins) fCurrBin=fBins->FindBin(*Coplanarity,*PolStateD); //For Empty   
    FillHistograms("Cut1");
   // THSHisto::GetWeightEvent(fgID); //get weights for this event, use fgID as works when permutating also
   // THSHisto::FillCutsForWeights(); //Fill weighted hists
 
    //Do some cuts here then fill histos cut name
+   if(*PolErrs==0){
+   if(*AnyErrs==0){   
    if(*Topo==1){
      if(*Coplanarity<50 && *Coplanarity>-50){
        if(*W<1850 && *W>950){
@@ -114,7 +118,7 @@ Bool_t THSRandBG_vh::Process(Long64_t entry)
 	     FillHistograms("Prompt");
 
 	   }//Timing Prompt
-	   else if( (*GammaAveTagDiffTime<-70 && *GammaAveTagDiffTime>90) || (*GammaAveTagDiffTime<-10 && *GammaAveTagDiffTime>-30)  ){
+	   else if( (*GammaAveTagDiffTime<-70 && *GammaAveTagDiffTime>-90) || (*GammaAveTagDiffTime<-10 && *GammaAveTagDiffTime>-30)  ){
 
 	     FillHistograms("Random");
 
@@ -123,8 +127,8 @@ Bool_t THSRandBG_vh::Process(Long64_t entry)
        }//If W
      }//If Coplanar
    }//If Topo
-
-
+}//If AnyErrs
+}//If PolErrs
 
    THSOutput::HSProcessFill();
    return kTRUE;
