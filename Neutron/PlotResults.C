@@ -11,8 +11,9 @@ void GetPi0MAID(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t T
 
 void PlotResults() {
 		
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/ResultsNPi0TheoryDataComparisonNPi0Theory.root","recreate");
-  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/TestDelSoon.root","recreate");
+  //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/ResultsNPi0TheoryDataComparisonNPi0Theory.root","recreate");
+  //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/TestDelSoon.root","recreate");
+  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/NPi0UnBinnedVCoplan.root","recreate");
   
 
   Double_t NDataEgBins = 24 ; //Number of bins in data for looping
@@ -23,7 +24,7 @@ void PlotResults() {
   Double_t TheoryThetaHighMAID =180 ;
   Double_t TheoryEgamma;
 
-	//NonStrict CutsBasedAnalysis No SpecMomCut
+  //NonStrict CutsBasedAnalysis No SpecMomCut
   vector<Double_t> VecAllChrisSigmaNonCut;
   vector<Double_t> VecAllChrisEgNonCut;
   vector<Double_t> VecAllChrisCosthNonCut;
@@ -32,7 +33,7 @@ void PlotResults() {
   vector<Double_t> VecAllChrisEgErrNonCut;
   vector<Double_t> VecAllChrisCosthErrNonCut;
 
-	//NonStrict CutsBasedAnalysis With SpecMomCut
+  //NonStrict CutsBasedAnalysis With SpecMomCut
   vector<Double_t> VecAllChrisSigmaNon;
   vector<Double_t> VecAllChrisEgNon;
   vector<Double_t> VecAllChrisCosthNon;
@@ -41,7 +42,7 @@ void PlotResults() {
   vector<Double_t> VecAllChrisEgErrNon;
   vector<Double_t> VecAllChrisCosthErrNon;
 	
-	//Strict CutsBasedAnalysis With SpecMomCut
+  //Strict CutsBasedAnalysis With SpecMomCut
   vector<Double_t> VecAllChrisSigmaStrict;
   vector<Double_t> VecAllChrisEgStrict;
   vector<Double_t> VecAllChrisCosthStrict;
@@ -50,14 +51,14 @@ void PlotResults() {
   vector<Double_t> VecAllChrisEgErrStrict;
   vector<Double_t> VecAllChrisCosthErrStrict;
 
-	//Proton SAID Correction Factor
+  //Proton SAID Correction Factor
   vector<Double_t> VecAllChrisSigmaPSCF;
   vector<Double_t> VecAllChrisEgPSCF;
   vector<Double_t> VecAllChrisCosthPSCF;
 
 
-	//Results From triple fit
-/*  vector<Double_t> VecAllChrisSigma;
+  //Results From triple fit
+  vector<Double_t> VecAllChrisSigma;
   vector<Double_t> VecAllChrisEg;
   vector<Double_t> VecAllChrisCosth;
   vector<TString> VecAllChrisType;
@@ -65,15 +66,16 @@ void PlotResults() {
   vector<Double_t> VecAllChrisEgErr;
   vector<Double_t> VecAllChrisCosthErr;
 
-  //Binned Spectator momentum will need 8 of these, means need to adjust other scripts, Need a spearate script to read in the 8 spectator ones and separate them. Then load in 8 here.
-  //0-50Mev
-  vector<Double_t> VecAllChrisSigmaSpec;
-  vector<Double_t> VecAllChrisEgSpec;
-  vector<Double_t> VecAllChrisCosthSpec;
-  vector<TString> VecAllChrisTypeSpec;
-  vector<Double_t> VecAllChrisSigmaErrSpec;
-  vector<Double_t> VecAllChrisEgErrSpec;
-  vector<Double_t> VecAllChrisCosthErrSpec;
+
+  //Results From triple fit + unbin
+  vector<Double_t> VecAllChrisSigmaUnBin;
+  vector<Double_t> VecAllChrisEgUnBin;
+  vector<Double_t> VecAllChrisCosthUnBin;
+  vector<TString> VecAllChrisTypeUnBin;
+  vector<Double_t> VecAllChrisSigmaErrUnBin;
+  vector<Double_t> VecAllChrisEgErrUnBin;
+  vector<Double_t> VecAllChrisCosthErrUnBin;
+
 
 
   //My Results
@@ -85,16 +87,16 @@ void PlotResults() {
   Double_t AllChrisEgErr;
   Double_t AllChrisCosthErr;
 
-  //Binned SpecMom
-  Double_t AllChrisSigmaSpec;
-  Double_t AllChrisEgSpec;
-  Double_t AllChrisCosthSpec;
-  TString AllChrisTypeSpec;
-  Double_t AllChrisSigmaErrSpec;
-  Double_t AllChrisEgErrSpec;
-  Double_t AllChrisCosthErrSpec;
-*/
-//	NonStrictCuts No SpecMomCut
+  //My ResultsUnBin
+  Double_t AllChrisSigmaUnBin;
+  Double_t AllChrisEgUnBin;
+  Double_t AllChrisCosthUnBin;
+  TString AllChrisTypeUnBin;
+  Double_t AllChrisSigmaErrUnBin;
+  Double_t AllChrisEgErrUnBin;
+  Double_t AllChrisCosthErrUnBin;
+
+  //	NonStrictCuts No SpecMomCut
   Double_t AllChrisSigmaNonCut;
   Double_t AllChrisEgNonCut;
   Double_t AllChrisCosthNonCut;
@@ -102,7 +104,7 @@ void PlotResults() {
   Double_t AllChrisSigmaErrNonCut;
   Double_t AllChrisEgErrNonCut;
   Double_t AllChrisCosthErrNonCut;
-	//NonStrictCuts
+  //NonStrictCuts
   Double_t AllChrisSigmaNon;
   Double_t AllChrisEgNon;
   Double_t AllChrisCosthNon;
@@ -110,7 +112,7 @@ void PlotResults() {
   Double_t AllChrisSigmaErrNon;
   Double_t AllChrisEgErrNon;
   Double_t AllChrisCosthErrNon;
-	//StrictCuts
+  //StrictCuts
   Double_t AllChrisSigmaStrict;
   Double_t AllChrisEgStrict;
   Double_t AllChrisCosthStrict;
@@ -133,21 +135,21 @@ void PlotResults() {
   GetSigmaFromFile( VecAllChrisSigmaStrict, VecAllChrisSigmaErrStrict, VecAllChrisEgStrict, VecAllChrisEgErrStrict, VecAllChrisCosthStrict,  VecAllChrisCosthErrStrict,  InFileStrict );
 
 
-	//PSCF Proton SAID Correction Factor
+  //PSCF Proton SAID Correction Factor
   TString InFilePSCF = "../SAIDProtonCorrectionFactor.txt";
   GetCorrectionFromFile( VecAllChrisSigmaPSCF, VecAllChrisEgPSCF, VecAllChrisCosthPSCF, InFilePSCF );
 
 
-/*
-  TString InFile = "Data/CutResultsNew.txt";
+
+  TString InFile = "Data/MyResultsNewCoplanFitsNoSpecMomCut.txt";
   GetSigmaFromFile( VecAllChrisSigma, VecAllChrisSigmaErr, VecAllChrisEg, VecAllChrisEgErr, VecAllChrisCosth,  VecAllChrisCosthErr,  InFile );
 
 
-  TString InFileSpec = "Data/CutResultsNewNonStrictSpecMomBins0to50Mev.txt";
-  GetSigmaFromFile( VecAllChrisSigmaSpec, VecAllChrisSigmaErrSpec, VecAllChrisEgSpec, VecAllChrisEgErrSpec, VecAllChrisCosthSpec,  VecAllChrisCosthErrSpec,  InFileSpec);
+  TString InFileUnBin = "Data/MyResultsUnBinnedNeutronSigma.txt";
+  GetSigmaFromFile( VecAllChrisSigmaUnBin, VecAllChrisSigmaErrUnBin, VecAllChrisEgUnBin, VecAllChrisEgErrUnBin, VecAllChrisCosthUnBin,  VecAllChrisCosthErrUnBin,  InFileUnBin );
 
-*/
-/*
+
+
   //My Results
   Double_t ArrSigma[20];
   Double_t ArrCosth[20];
@@ -156,15 +158,16 @@ void PlotResults() {
   Double_t ArrCosthErr[20];
   Double_t ArrEgErr[20];
 
-  //My Results Spec Binned Cuts Analysis
-  Double_t ArrSigmaSpec[20];
-  Double_t ArrCosthSpec[20];
-  Double_t ArrEgSpec[20];
-  Double_t ArrSigmaErrSpec[20];
-  Double_t ArrCosthErrSpec[20];
-  Double_t ArrEgErrSpec[20];
 
-*/
+  //My Results UnBin
+  Double_t ArrSigmaUnBin[20];
+  Double_t ArrCosthUnBin[20];
+  Double_t ArrEgUnBin[20];
+  Double_t ArrSigmaErrUnBin[20];
+  Double_t ArrCosthErrUnBin[20];
+  Double_t ArrEgErrUnBin[20];
+
+
   Double_t ArrSigmaPSCF[20];
 
   Double_t ArrSigmaNonCut[20];
@@ -212,7 +215,7 @@ void PlotResults() {
       ArrCosthErrStrict[j] = VecAllChrisCosthErrStrict[j+i*20];
       ArrEgErrStrict[j] = VecAllChrisEgErrStrict[j+i*20];
 
-/*      //MyResults
+      //MyResults
       ArrSigma[j] = VecAllChrisSigma[j+i*20];
       ArrCosth[j] = VecAllChrisCosth[j+i*20];
       ArrEg[j] = VecAllChrisEg[j+i*20];
@@ -220,30 +223,48 @@ void PlotResults() {
       ArrCosthErr[j] = VecAllChrisCosthErr[j+i*20];
       ArrEgErr[j] = VecAllChrisEgErr[j+i*20];
 
-      //MyResults SPecMom bins cuts analysis
-      ArrSigmaSpec[j] = VecAllChrisSigmaSpec[j+i*20];
-      ArrCosthSpec[j] = VecAllChrisCosthSpec[j+i*20];
-      ArrEgSpec[j] = VecAllChrisEgSpec[j+i*20];
-      ArrSigmaErrSpec[j] = VecAllChrisSigmaErrSpec[j+i*20];
-      ArrCosthErrSpec[j] = VecAllChrisCosthErrSpec[j+i*20];
-      ArrEgErrSpec[j] = VecAllChrisEgErrSpec[j+i*20];
 
-*/
-     // TheoryEgamma= VecAllChrisEg[j+i*20];
-      TheoryEgamma= VecAllChrisEgNonCut[j+i*20];
+      //MyResults
+      ArrSigmaUnBin[j] = VecAllChrisSigmaUnBin[j+i*20];
+      ArrCosthUnBin[j] = VecAllChrisCosthUnBin[j+i*20];
+      ArrEgUnBin[j] = VecAllChrisEgUnBin[j+i*20];
+      ArrSigmaErrUnBin[j] = VecAllChrisSigmaErrUnBin[j+i*20];
+      ArrCosthErrUnBin[j] = VecAllChrisCosthErrUnBin[j+i*20];
+      ArrEgErrUnBin[j] = VecAllChrisEgErrUnBin[j+i*20];
 
-	if(TheoryEgamma>420 && TheoryEgamma<640){
-	if(VecAllChrisSigmaPSCF[10+i*20]==0){
-      ArrSigmaPSCF[j]=  VecAllChrisSigmaNon[j+i*20]*VecAllChrisSigmaPSCF[10+i*20];//Different NEgammaBins for Proton vs neutron
-}
-else{
-ArrSigmaPSCF[j]=0;
-}
 
-}
-else{
+      TheoryEgamma= VecAllChrisEg[j+i*20];
+      //  TheoryEgamma= VecAllChrisEgNonCut[j+i*20];
+
+
+
+//for(Int_t ff=0; ff<VecAllChrisSigmaPSCF.size(); ff++){
+
+	cout <<"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  " << VecAllChrisSigmaPSCF[5+(i-9)*20] <<endl;
+//}
+//0,1,->10 i.e 11 in PSCF, i goes 0->23 i.e 24 : 430=9=i, 630 =19 so map is 9=0 and 19 = 11
+
+//cout << "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG " << i <<"  " << TheoryEgamma <<endl;
+
+
+//FIX THIS ISSUE
+      if(TheoryEgamma>420 && TheoryEgamma<640){
+//	if(   VecAllChrisSigmaPSCF[5+i*20]!=0 && VecAllChrisSigmaPSCF[6+i*20]!=0 ){ //i is wrong here since only have protoncorrection from 430>
+	  // ArrSigmaPSCF[j]=  VecAllChrisSigmaNon[j+i*20]*VecAllChrisSigmaPSCF[10+i*20];//Different NEgammaBins for Proton vs neutron
+	  ArrSigmaPSCF[j]=  VecAllChrisSigma[j+(i-9)*20]/((VecAllChrisSigmaPSCF[5+(i-9)*20]+VecAllChrisSigmaPSCF[6+(i-9)*20]+VecAllChrisSigmaPSCF[7+(i-9)*20] + VecAllChrisSigmaPSCF[8+(i-9)*20] +VecAllChrisSigmaPSCF[9+(i-9)*20])/5);//Different NEgammaBins for Proton vs neutron
+	cout <<"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX00000" << VecAllChrisSigmaPSCF[5+(i-9)*20] <<endl;
+
+
+
+//	}
+//	else{
+//	  ArrSigmaPSCF[j]=0;
+//	}
+
+      }
+      else{
 	ArrSigmaPSCF[j]=0;
-}
+      }
 
 
     }
@@ -268,15 +289,15 @@ else{
     TString InFileNameMAID = "tmp/PageMAID.txt";
     Double_t IsMAID=0;
 
-/*
-    Double_t ArrSigmaMineCorrectedMAID[20];
-    Double_t ArrSigmaMineCorrectedSAID[20];
-*/
+    /*
+      Double_t ArrSigmaMineCorrectedMAID[20];
+      Double_t ArrSigmaMineCorrectedSAID[20];
+    */
 
 
     //GetSAID Predictions
-        GetPi0SAID( TheoryEgamma,  TheoryThetaBins, TheoryThetaHighSAID, TheoryThetaLowSAID);
-        GetSigmaTheoryFromFile(ArrSigmaSAID, ArrCosthSAID ,  InFileNameSAID,  TheoryThetaBins,IsMAID);
+    GetPi0SAID( TheoryEgamma,  TheoryThetaBins, TheoryThetaHighSAID, TheoryThetaLowSAID);
+    GetSigmaTheoryFromFile(ArrSigmaSAID, ArrCosthSAID ,  InFileNameSAID,  TheoryThetaBins,IsMAID);
 
     //GetMAID predictions //MAID File gives me 21 for some reason, fix later,removed last(180) point for now
     GetPi0MAID( TheoryEgamma,  TheoryThetaBins, TheoryThetaHighMAID, TheoryThetaLowMAID);
@@ -284,61 +305,63 @@ else{
     GetSigmaTheoryFromFile(ArrSigmaMAID, ArrCosthMAID ,  InFileNameMAID,  TheoryThetaBins,IsMAID);
 
     for(Int_t j=0;j<20;j++){
-//      if(ArrSigmaSAID[j]!=0){
-//	ArrSigmaSAIDDiv[j] = VecAllChrisSigma[j+i*20]/ArrSigmaSAID[j]; 
-//      }
-//      else{
-//	ArrSigmaSAIDDiv[j]=0;
-//      }
+      //      if(ArrSigmaSAID[j]!=0){
+      //	ArrSigmaSAIDDiv[j] = VecAllChrisSigma[j+i*20]/ArrSigmaSAID[j]; 
+      //      }
+      //      else{
+      //	ArrSigmaSAIDDiv[j]=0;
+      //      }
 
 	
-//Convert ArrCosthMAID to Costh from theta and reverse the ordering in both arrays
-	ArrCosthMAIDNew[j] = TMath::Cos( TMath::DegToRad()*  (ArrCosthMAID[19-j] ) );
-	ArrSigmaMAIDNew[j] = ArrSigmaMAID[19-j];
+      //Convert ArrCosthMAID to Costh from theta and reverse the ordering in both arrays
+      ArrCosthMAIDNew[j] = TMath::Cos( TMath::DegToRad()*  (ArrCosthMAID[19-j] ) );
+      ArrSigmaMAIDNew[j] = ArrSigmaMAID[19-j];
 
-//      if(ArrSigmaMAIDNew[j]!=0){
-//	ArrSigmaMAIDDiv[j] = VecAllChrisSigma[j+i*20]/ArrSigmaMAIDNew[j]; 
-//      }
-//      else{
-//	ArrSigmaMAIDDiv[j]=0;
-//      }
+      //      if(ArrSigmaMAIDNew[j]!=0){
+      //	ArrSigmaMAIDDiv[j] = VecAllChrisSigma[j+i*20]/ArrSigmaMAIDNew[j]; 
+      //      }
+      //      else{
+      //	ArrSigmaMAIDDiv[j]=0;
+      //      }
 
     }
 
 
 
-//    for(Int_t j=0;j<20;j++){
-//ArrSigmaMineCorrectedMAID[j]=VecAllChrisSigma[j+i*20]/ArrSigmaMAIDDiv[10];
-//ArrSigmaMineCorrectedSAID[j]=VecAllChrisSigma[j+i*20]/ArrSigmaSAIDDiv[10] ;
-//}
+    //    for(Int_t j=0;j<20;j++){
+    //ArrSigmaMineCorrectedMAID[j]=VecAllChrisSigma[j+i*20]/ArrSigmaMAIDDiv[10];
+    //ArrSigmaMineCorrectedSAID[j]=VecAllChrisSigma[j+i*20]/ArrSigmaSAIDDiv[10] ;
+    //}
 
 
     auto c3 = new TCanvas("c3","c3");
     TString PosTitle =Form("%f",ArrEgNonCut[0]) ;
     TString PosName = Form("%f",ArrEgNonCut[0]) ;
-	//Declare Graphs
- //   TGraph* SigmaPlot=new TGraphErrors(20,ArrCosth,ArrSigma,ArrCosthErr,ArrSigmaErr);
+    //Declare Graphs
+    TGraph* SigmaPlot=new TGraphErrors(20,ArrCosth,ArrSigma,ArrCosthErr,ArrSigmaErr);
+    TGraph* SigmaPlotUnBin=new TGraphErrors(20,ArrCosthUnBin,ArrSigmaUnBin,ArrCosthErrUnBin,ArrSigmaErrUnBin);
     TGraph* SigmaPlotNonCut=new TGraphErrors(20,ArrCosthNonCut,ArrSigmaNonCut,ArrCosthErrNonCut,ArrSigmaErrNonCut);
     TGraph* SigmaPlotNon=new TGraphErrors(20,ArrCosthNon,ArrSigmaNon,ArrCosthErrNon,ArrSigmaErrNon);
     TGraph* SigmaPlotStrict=new TGraphErrors(20,ArrCosthStrict,ArrSigmaStrict,ArrCosthErrStrict,ArrSigmaErrStrict);
-//    TGraph* DivisionPlotSAID=new TGraph(20,ArrCosthSAID,ArrSigmaSAIDDiv);
-    TGraph* SigmaPlotSAID=new TGraphErrors(20,ArrCosthSAID,ArrSigmaSAID,ArrCosthErrNonCut,ArrSigmaErrNonCut);
-//    TGraph* DivisionPlotMAID=new TGraph(20,ArrCosthMAIDNew,ArrSigmaMAIDDiv);
-    TGraph* SigmaPlotMAID=new TGraphErrors(20,ArrCosthMAIDNew,ArrSigmaMAIDNew,ArrCosthErrNonCut,ArrSigmaErrNonCut);
-//    TGraph* SigmaPlotCorrectedMAID=new TGraphErrors(20,ArrCosthMAIDNew,ArrSigmaMineCorrectedMAID,ArrCosthErr,ArrSigmaErr);
-//    TGraph* SigmaPlotCorrectedSAID=new TGraphErrors(20,ArrCosthSAID,ArrSigmaMineCorrectedSAID,ArrCosthErr,ArrSigmaErr);
+    //    TGraph* DivisionPlotSAID=new TGraph(20,ArrCosthSAID,ArrSigmaSAIDDiv);
+    TGraph* SigmaPlotSAID=new TGraphErrors(20,ArrCosth,ArrSigmaSAID,ArrCosthErrNonCut,ArrSigmaErrNonCut);
+    //    TGraph* DivisionPlotMAID=new TGraph(20,ArrCosthMAIDNew,ArrSigmaMAIDDiv);
+    TGraph* SigmaPlotMAID=new TGraphErrors(20,ArrCosth,ArrSigmaMAIDNew,ArrCosthErrNonCut,ArrSigmaErrNonCut);
+    //    TGraph* SigmaPlotCorrectedMAID=new TGraphErrors(20,ArrCosthMAIDNew,ArrSigmaMineCorrectedMAID,ArrCosthErr,ArrSigmaErr);
+    //    TGraph* SigmaPlotCorrectedSAID=new TGraphErrors(20,ArrCosthSAID,ArrSigmaMineCorrectedSAID,ArrCosthErr,ArrSigmaErr);
     //SpecMom Binned cuts Analysis
-//    TGraph* SigmaPlotSpec=new TGraphErrors(20,ArrCosthSpec,ArrSigmaSpec,ArrCosthErrSpec,ArrSigmaErrSpec);
-    TGraph* SigmaPlotPSCF=new TGraphErrors(20,ArrCosthNon,ArrSigmaPSCF,ArrCosthErrNon,ArrSigmaErrNon);
+    //    TGraph* SigmaPlotSpec=new TGraphErrors(20,ArrCosthSpec,ArrSigmaSpec,ArrCosthErrSpec,ArrSigmaErrSpec);
+    //    TGraph* SigmaPlotPSCF=new TGraphErrors(20,ArrCosthNon,ArrSigmaPSCF,ArrCosthErrNon,ArrSigmaErrNon);
+    TGraph* SigmaPlotPSCF=new TGraphErrors(20,ArrCosth,ArrSigmaPSCF,ArrCosthErr,ArrSigmaErr);
 
-	//Set Marker Style/Color
-//    DivisionPlotSAID->SetMarkerStyle(31);
-//    DivisionPlotSAID->SetMarkerColor(6);
-//    DivisionPlotMAID->SetMarkerStyle(32);
-//    DivisionPlotMAID->SetMarkerColor(8);
-//    SigmaPlot->SetMarkerStyle(22);//Filled triangle(black(default)
+    //Set Marker Style/Color
+    //    DivisionPlotSAID->SetMarkerStyle(31);
+    //    DivisionPlotSAID->SetMarkerColor(6);
+    //    DivisionPlotMAID->SetMarkerStyle(32);
+    //    DivisionPlotMAID->SetMarkerColor(8);
+    SigmaPlot->SetMarkerStyle(22);//Filled triangle(black(default)
     SigmaPlotNonCut->SetMarkerStyle(22);//
-    SigmaPlotNonCut->SetMarkerColor(1);  //black
+    SigmaPlotNonCut->SetMarkerColor(6);  //black
     SigmaPlotNon->SetMarkerStyle(22);//
     SigmaPlotNon->SetMarkerColor(2);  //red
     SigmaPlotStrict->SetMarkerStyle(22);//
@@ -349,14 +372,19 @@ else{
     SigmaPlotMAID->SetMarkerColor(4);//blue 
     SigmaPlotPSCF->SetMarkerStyle(22);//
     SigmaPlotPSCF->SetMarkerColor(9);//purple  
-//    SigmaPlotSpec->SetMarkerStyle(22);//
-//    SigmaPlotSpec->SetMarkerColor(2);  //red
-//    SigmaPlotCorrectedSAID->SetMarkerStyle(29);//Filled triangle(black(default)
-//    SigmaPlotCorrectedSAID->SetMarkerColor(9); //purple
-//    SigmaPlotCorrectedMAID->SetMarkerStyle(30);//Filled triangle(black(default)
-//    SigmaPlotCorrectedMAID->SetMarkerColor(8); //green(not lime)
+    //    SigmaPlotSpec->SetMarkerStyle(22);//
+    //    SigmaPlotSpec->SetMarkerColor(2);  //red
+    //    SigmaPlotCorrectedSAID->SetMarkerStyle(29);//Filled triangle(black(default)
+    //    SigmaPlotCorrectedSAID->SetMarkerColor(9); //purple
+    //    SigmaPlotCorrectedMAID->SetMarkerStyle(30);//Filled triangle(black(default)
+    //    SigmaPlotCorrectedMAID->SetMarkerColor(8); //green(not lime)
 
-	//Set Fill Style/Color
+    SigmaPlotUnBin->SetMarkerStyle(22);//
+    SigmaPlotUnBin->SetMarkerColor(2);//purple  
+
+
+
+    //Set Fill Style/Color
     SigmaPlotSAID->SetFillStyle(0);
     SigmaPlotSAID->SetFillColor(0);
     SigmaPlotMAID->SetFillStyle(0);
@@ -369,50 +397,56 @@ else{
     SigmaPlotStrict->SetFillColor(0);
     SigmaPlotPSCF->SetFillStyle(0);
     SigmaPlotPSCF->SetFillColor(0);
-//    SigmaPlotCorrectedSAID->SetFillStyle(0);
-//    SigmaPlotCorrectedSAID->SetFillColor(0);
-//    SigmaPlotCorrectedMAID->SetFillStyle(0);
-//    SigmaPlotCorrectedMAID->SetFillColor(0);
-//    SigmaPlotSpec->SetFillStyle(0);
-//    SigmaPlotSpec->SetFillColor(0);
-//    SigmaPlot->SetFillStyle(0);
-//    SigmaPlot->SetFillColor(0);
-//    DivisionPlotSAID->SetFillStyle(0);
-//    DivisionPlotSAID->SetFillColor(0);
-//    DivisionPlotMAID->SetFillStyle(0);
-//    DivisionPlotMAID->SetFillColor(0);
+
+    SigmaPlotUnBin->SetFillStyle(0);
+    SigmaPlotUnBin->SetFillColor(0);
+    //    SigmaPlotCorrectedSAID->SetFillStyle(0);
+    //    SigmaPlotCorrectedSAID->SetFillColor(0);
+    //    SigmaPlotCorrectedMAID->SetFillStyle(0);
+    //    SigmaPlotCorrectedMAID->SetFillColor(0);
+    //    SigmaPlotSpec->SetFillStyle(0);
+    //    SigmaPlotSpec->SetFillColor(0);
+    //    SigmaPlot->SetFillStyle(0);
+    //    SigmaPlot->SetFillColor(0);
+    //    DivisionPlotSAID->SetFillStyle(0);
+    //    DivisionPlotSAID->SetFillColor(0);
+    //    DivisionPlotMAID->SetFillStyle(0);
+    //    DivisionPlotMAID->SetFillColor(0);
 
 
 
-	//Set Title
+    //Set Title
     SigmaPlotSAID->SetTitle("SAID");
     SigmaPlotMAID->SetTitle("MAID");
     SigmaPlotNonCut->SetTitle("NonCut");
     SigmaPlotNon->SetTitle("Non");
     SigmaPlotStrict->SetTitle("Strict");
     SigmaPlotPSCF->SetTitle("ProtonSAIDCorrection");
-//    SigmaPlotCorrectedSAID->SetTitle("CorrectedWithSAID");
-//    SigmaPlotCorrectedMAID->SetTitle("CorrectedWithMAID");
-//    SigmaPlotSpec->SetTitle("SpecMom0-50Mev");
-//    SigmaPlot->SetTitle("CoplanFitsOrig");//pink
-//    DivisionPlotSAID->SetTitle("SAIDDivision");//pink
-//    DivisionPlotMAID->SetTitle("MAIDDivision");//pink
+    SigmaPlot->SetTitle("CoplanFits");
+    SigmaPlotUnBin->SetTitle("UnBinnedits");
+    //    SigmaPlotCorrectedSAID->SetTitle("CorrectedWithSAID");
+    //    SigmaPlotCorrectedMAID->SetTitle("CorrectedWithMAID");
+    //    SigmaPlotSpec->SetTitle("SpecMom0-50Mev");
+    //    SigmaPlot->SetTitle("CoplanFitsOrig");//pink
+    //    DivisionPlotSAID->SetTitle("SAIDDivision");//pink
+    //    DivisionPlotMAID->SetTitle("MAIDDivision");//pink
 
 
-	//Create Multigraph and add plots to it 
+    //Create Multigraph and add plots to it 
     TMultiGraph* mg = new TMultiGraph();
-//    mg->Add(SigmaPlot);
-//    mg->Add(DivisionPlotSAID);
-//    mg->Add(DivisionPlotMAID);
-//    mg->Add(SigmaPlotSpec);
+    mg->Add(SigmaPlot);
+    mg->Add(SigmaPlotUnBin);
+    //    mg->Add(DivisionPlotSAID);
+    //    mg->Add(DivisionPlotMAID);
+    //    mg->Add(SigmaPlotSpec);
     mg->Add(SigmaPlotSAID);
-    mg->Add(SigmaPlotMAID);
-    mg->Add(SigmaPlotNonCut);
-    mg->Add(SigmaPlotNon);
-    mg->Add(SigmaPlotPSCF);
-    mg->Add(SigmaPlotStrict);
-//    mg->Add(SigmaPlotCorrectedSAID);
-//    mg->Add(SigmaPlotCorrectedMAID);
+//    mg->Add(SigmaPlotMAID);
+//    mg->Add(SigmaPlotNonCut);
+//    mg->Add(SigmaPlotNon);
+//    mg->Add(SigmaPlotPSCF);
+//    mg->Add(SigmaPlotStrict);
+    //    mg->Add(SigmaPlotCorrectedSAID);
+    //    mg->Add(SigmaPlotCorrectedMAID);
 
     TString hTitle ="Sigma"+PosTitle; // +VecChrisType[i*20] +(TString) i ;
     TString hName= "Sigma"+PosName; // +VecChrisType[i*20] + (TString)i ;
@@ -420,9 +454,9 @@ else{
     //  SigmaPlot->Draw("AP*");
     //  SigmaPlot->SetTitle(hTitle);
     //  SigmaPlot->SetName(hName);
-//    SigmaPlot->GetYaxis()->SetTitle("#Sigma");
-//    SigmaPlot->GetXaxis()->SetTitle("Cos#theta_{CM} ");
-//    SigmaPlot->GetXaxis()->CenterTitle();
+    //    SigmaPlot->GetYaxis()->SetTitle("#Sigma");
+    //    SigmaPlot->GetXaxis()->SetTitle("Cos#theta_{CM} ");
+    //    SigmaPlot->GetXaxis()->CenterTitle();
     //  SigmaPlot->Write();
     SigmaPlotNonCut->GetYaxis()->SetTitle("#Sigma");
     SigmaPlotNonCut->GetXaxis()->SetTitle("Cos#theta_{CM} ");
@@ -442,9 +476,9 @@ else{
     leg->SetFillStyle(0);
 
     mg->Write();
- //   leg->Write();//Sort the writing of the legend later
- //   DivisionPlotSAID->Write();
- //   DivisionPlotMAID->Write();
+    //   leg->Write();//Sort the writing of the legend later
+    //   DivisionPlotSAID->Write();
+    //   DivisionPlotMAID->Write();
     c3->Write();
 
   }
@@ -706,15 +740,15 @@ void GetSigmaTheoryFromFile(Double_t  ArrSigma[], Double_t ArrCosth[] , TString 
       if(IsTheoryMAID){
 	if(lineCount<26 || lineCount>(26+NThetaBins)  ){
 	  //stringstream(lineSpec)>>HeaderLines;
-	 // cout << HeaderLines << endl;
+	  // cout << HeaderLines << endl;
 	  lineCount=lineCount+1;
 	}
 	else{
-//	  stringstream(lineSpec)>>HeaderLines;
-	//  cout << "The Line is now = " << HeaderLines<< endl;
+	  //	  stringstream(lineSpec)>>HeaderLines;
+	  //  cout << "The Line is now = " << HeaderLines<< endl;
 	  stringstream(lineSpec)>>Costh>>Eg>>XSec >>T>>P >>Sigma ;
 	  lineCount=lineCount+1;
-	//  cout << Sigma << endl;
+	  //  cout << Sigma << endl;
 	  VecSigma.push_back(Sigma);
 	  VecCosth.push_back(Costh);
 	}

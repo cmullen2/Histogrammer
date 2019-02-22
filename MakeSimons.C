@@ -11,13 +11,12 @@ Double_t ConvertToBeamE(Double_t CME );
 vector<Double_t> ConstructBins(Double_t XMin, Double_t XMax, Double_t NBins);
 
 
-void CompareToSimons() {
+void MakeSimons() {
   std::ifstream inputFile("SigmaTableExHeads.txt");
   std::string line;
 
   vector<Double_t> MyCosthBins = ConstructBins(-1,1,20);
   Double_t BinWidth=(MyCosthBins[1] - MyCosthBins[0])/2 ;
-  //  cout << "Bin Width " <<BinWidth << endl;
 
   Double_t CMELow;//COMEnergy Low
   Double_t CMEHigh; //COMEnergy high
@@ -99,27 +98,23 @@ void CompareToSimons() {
 	if( VCosthMid[CurrentSimonCosthBin+k]>MyCosthBins[j]-BinWidth &&  VCosthMid[CurrentSimonCosthBin+k]<MyCosthBins[j]+BinWidth    ){
 	  DivCounter =DivCounter+1;
 	  
-	  //	  WeightI = VSigma[CurrentSimonCosthBin+k]/VSigmaE[CurrentSimonCosthBin+k];//Weight for Sigma 
 	  WeightI = 1/(VSigmaE[CurrentSimonCosthBin+k]*VSigmaE[CurrentSimonCosthBin+k]);//Weight for Sigma 
-	  //	if(VSigma[CurrentSimonCosthBin+k]<0){
-	  //	WeightISigmaI= WeightI*VSigma[CurrentSimonCosthBin+k]*-1;
-	  //}
-	  //	else{
 	  WeightISigmaI= WeightI*VSigma[CurrentSimonCosthBin+k]; //numerator WeightI*SigmaI;
-	  //}
 	  WeightISigmaISum = WeightISigmaISum + WeightISigmaI;
 	  WeightISum = WeightISum +WeightI; 
 	  SigmaSum = SigmaSum + VSigma[CurrentSimonCosthBin+k];
 	  SigmaErrSum = SigmaErrSum + VSigmaE[CurrentSimonCosthBin+k];
-	  //	cout <<"Individual    " << VSigmaE[CurrentSimonCosthBin+k] <<"  Sigma = " << VSigma[CurrentSimonCosthBin+k] << " Egamma= " << VCME[CurrentSimonCosthBin+k] <<"  Costh=" << VCosthMid[CurrentSimonCosthBin+k]  <<"  WeightISum = " << WeightISum << "  WeightISigmaISum = " << WeightISigmaISum     <<  "  WeightI= "<<WeightI<<    endl;
+//	  cout << VSigmaE[CurrentSimonCosthBin+k]  << "  Metch  "<< VSigma[CurrentSimonCosthBin+k] << "      " << WeightISigmaISum << "    " <<WeightISum << endl;
+//	  cout << ConvertToBeamE(VCME[std::accumulate(VNCosthBins.begin(),VNCosthBins.begin() +i,0)]) <<"   " <<  MyCosthBins[j] <<"      " << VCME[std::accumulate(VNCosthBins.begin(),VNCosthBins.begin() +i,0)]  << endl;
+
 	}
       }
-      //	cout << "Summation " << 1/sqrt(WeightsSum) << "    " << SigmaErrSum/DivCounter <<"    " <<DivCounter <<"     " <<"   "   <<endl;
-      //cout << WeightISigmaISum <<"  WeightISum  " << WeightISum << "     NewSigma="<< WeightISigmaISum/WeightISum <<"  With Error=" << 1/sqrt(WeightISum) <<endl;
       VNewWeightedSigma.push_back(WeightISigmaISum/WeightISum);
       VNewWeightedSigmaError.push_back( 1/sqrt(WeightISum) );
       VNewSigma.push_back(SigmaSum/DivCounter);
       VNewSigmaE.push_back(SigmaErrSum/DivCounter);
+//	cout << WeightISigmaISum/WeightISum << "    Yahoooooo " <<endl;
+//	cout << 1/sqrt(WeightISum) << "    Yahoooooo " <<endl;
     
     }
   }
@@ -142,20 +137,9 @@ void CompareToSimons() {
     if( !(isfinite(VNewWeightedSigmaError[i]))){
       VNewWeightedSigmaError[i]=0;
     }
-  }
-
-
-
-/*
-  for(Int_t i=0; i<1020;i++){
-
-	cout << VNewWeightedSigma[i] << endl;
-	cout << VNewWeightedSigmaError[i] << endl;
+	cout << VNewWeightedSigma[i] << " SUIgma "<< VNewEgam[i] <<"    "<< VNewCosth[i]<< endl; 
 
   }
-*/
-
-
 
   //*************************************************************************************************
   //Now constructing the new energy bins!
@@ -193,13 +177,11 @@ void CompareToSimons() {
   vector<Double_t> VWSigma;
   vector<Double_t> VWSigmaError;
 
-  cout << VNCosthBins.size() << endl;
-  cout << MyEgBins.size() << endl;
+//  cout << VNCosthBins.size() << endl;
+//  cout << MyEgBins.size() << endl;
   cout << MyCosthBins.size() << endl;
-  cout << BinWidthEg << endl;
+//  cout << BinWidthEg << endl;
 
-  // Loop through my Egamma bins and Loop through Simons 51 egamma bins checking if his Egamma bin matches my current Egamma bin within some bin width,
-  // If it does then Loop through my costh bins and take simons results and store them then wait for next match and store those also for same egamma bin. 
 
   Double_t WISum=0;
   Double_t WISigmaISum=0;
@@ -207,51 +189,33 @@ void CompareToSimons() {
   for(Int_t jj=0;jj<MyEgBins.size();jj++){  //Number of my bins for Eg 11bins 0-10    		12
     MatchedBinCounter=0;
     for(Int_t kk=0;kk<VNCosthBins.size();kk++){ //Number of Simons egamma bins in this costh bin	51
-      //cout << VNCosthBins[kk] << endl;
       if(VNewEgam[kk*MyCosthBins.size()]<(MyEgBins[jj]+BinWidthEg ) && VNewEgam[kk*MyCosthBins.size()]>(MyEgBins[jj]-BinWidthEg ) ){
 	DivisionCounter = DivisionCounter +1;
 	MatchedBinCounter = MatchedBinCounter +1;
-//	cout  << VNewEgam[kk*MyCosthBins.size()]<< "  Egam bine" << endl;
-//	cout << MatchedBinCounter <<" Match "<<  endl;
+
+	cout << kk <<"   " <<  MyEgBins[jj] <<endl;
 
 	for(Int_t bb=0; bb<MyCosthBins.size();bb++){		//my 20 costh bins
 	  VWSigmaError.push_back(VNewWeightedSigmaError[bb+kk*MyCosthBins.size()]);
 	  VWSigma.push_back(VNewWeightedSigma[bb+kk*MyCosthBins.size()]);
-//	  cout << VNewWeightedSigma[bb+kk*MyCosthBins.size()] << " Sigma " << endl;
+	 // cout << VNewEgam[kk*MyCosthBins.size()] << "  Egamma  " << "" <<  endl;
+
 	}
       }
     }
 
-//Here loop round the size of VWSigma/MatchedBinCounter i.e loop round 20 and loop round matchedbincounter outside this and add all to a sum.
-//0->20 1->21 etc.  Loop Costh then Mathced Bin then access costh+ bin*20 cos=0, bin=0 outcome=0 cos =0 bin=1 outcome =20 and so on and sum(weighted mean stuff) inside the mathced bin loop
-
-
-for (Int_t bb=0; bb<VWSigma.size();bb++){ 
-
-//	cout << VWSigma[bb]<< " THe ENd" << endl;
-//	cout << VWSigmaError[bb]<< " THe ENding" << endl;
-
-}
-
-//cout << MatchedBinCounter << endl;
 
     for(Int_t cc=0; cc<MyCosthBins.size();cc++){ 
       //Set up some vars to store here Same as very first loop used
       WISigmaISum=0;
       WISum=0;
-//cout << cc << " CosS" << endl;
       for(Int_t dd=0; dd<MatchedBinCounter;dd++){ 
 	Double_t WI =0;
 	Double_t WISigmaI=0;
 	WI=1/(VWSigmaError[cc+dd*20]* VWSigmaError[cc+dd*20]);
-//	WISigmaI= VWSigmaError[cc+dd*20] * VWSigma[cc+dd*20];
 	WISigmaI= WI * VWSigma[cc+dd*20];
 	WISigmaISum = WISigmaISum + WISigmaI;
 	WISum = WISum + WI;
-//	cout <<cc<<"  "<< dd << endl;
-//	cout << VWSigma[cc+dd*20] << " SIggy " <<endl;
-//	cout << VWSigmaError[cc+dd*20] <<endl;
-//	cout << WISigmaI <<"     " <<  WISigmaISum << endl;
       }
       VWFinalSigma.push_back(WISigmaISum/WISum);
       VWFinalSigmaError.push_back( 1/sqrt(WISum) );
@@ -259,20 +223,9 @@ for (Int_t bb=0; bb<VWSigma.size();bb++){
       VFinalCosth.push_back(MyCosthBins[cc]);
       VFinalEgamE.push_back(10);
       VFinalCosthE.push_back(0.05);
-
-//	cout << WISigmaISum/WISum << "  THe LAst SIgma"<< endl;
-//	cout << 1/sqrt(WISum) << "  THe LAst Errpr"<< endl;
-
-
     }
-
-//cout << VWFinalSigma[0] << endl;
-
-
   }
-
-
-    for(Int_t jj=0;jj<VWFinalSigma.size();jj++){
+  for(Int_t jj=0;jj<VWFinalSigma.size();jj++){
     if(TMath::IsNaN(VWFinalSigma[jj])){
       VWFinalSigma[jj]=0;
     }
@@ -281,91 +234,24 @@ for (Int_t bb=0; bb<VWSigma.size();bb++){
     }
 
     if( !(isfinite(VWSigmaError[jj]))){
-	VWSigmaError[jj]=0;
-}
+      VWSigmaError[jj]=0;
+    }
+//    cout << VFinalEgam[jj] << endl;
+//    cout << VFinalCosth[jj] << endl;
+//    cout << VWFinalSigma[jj] << endl;
+//    cout <<jj<< endl;
+
+  }
 
 
+  std::ofstream outfile;
+  outfile.open("Feb19NewSimonsResultsMyBins.txt",std::ios_base::app);
 
-cout << VFinalEgam[jj] << endl;
-cout << VFinalCosth[jj] << endl;
-cout << VWFinalSigma[jj] << endl;
-cout <<jj<< endl;
+  for(Int_t dd=0; dd<VWFinalSigma.size();dd++){
+    // outfile<<VFinalSigma[dd] <<"  "<<VFinalSigmaE[dd] <<"  "<<VFinalEgam[dd]<<"  "<<VFinalEgamE[dd] <<"  "<<VFinalCosth[dd]<< "  "<< VFinalCosthE[dd]<<endl;
+    outfile<<VWFinalSigma[dd] <<"  "<<VWFinalSigmaError[dd] <<"  "<<VFinalEgam[dd]<<"  "<<VFinalEgamE[dd] <<"  "<<VFinalCosth[dd]<< "  "<< VFinalCosthE[dd]<<endl;
 
-
-
-
-
-
-}
-
-
-
-
-
-/*
-for(Int_t jj=0;jj<MyEgBins.size();jj++){  //Number of my bins for Eg 11bins 0-10
-//Fill here
-if(SigmaSummations[4]!=0){   //Check if array element 4 isn't zero, this probably means the array has been filled and should be pushed back
-for(Int_t cc=0;cc<MyCosthBins.size(); cc++){
-VFinalSigma.push_back(SigmaSummations[cc]/DivisionCounter);
-VFinalSigmaE.push_back(SigmaSummationsE[cc]/DivisionCounter);
-VFinalEgam.push_back(MyEgBins[jj-1]);
-VFinalCosth.push_back(MyCosthBins[cc]);
-VFinalEgamE.push_back(10);
-VFinalCosthE.push_back(0.05);
-//        VFinalWeightedSigma.push_back(FinalWeightISigmaISum/FinalWeightISum);
-//        VFinalWeightedSigmaError.push_back( 1/sqrt(WeightISum) );
-SigmaSummations[cc]=0;
-SigmaSummationsE[cc]=0;
-//	SigmaWeightedSummations[cc]=0;
-//	SigmaWeightedSummationsE[cc]=0;
-
-}
-DivisionCounter=0;
-}
-for(Int_t kk=0;kk<VNCosthBins.size();kk++){ //Number of Simons egamma bins in this costh bin	
-if(VNewEgam[kk*MyCosthBins.size()]<(MyEgBins[jj]+BinWidthEg ) && VNewEgam[kk*MyCosthBins.size()]>(MyEgBins[jj]-BinWidthEg ) ){
-DivisionCounter = DivisionCounter +1;
-for(Int_t bb=0; bb<MyCosthBins.size();bb++){
-
-//	  FinalWeightI = 1/(VNewWeightedSigmaError[bb+kk*MyCosthBins.size()]*VNewWeightedSigmaError[bb+kk*MyCosthBins.size()]); 
-//          FinalWeightISigmaI= FinalWeightI*VNewWeightedSigma[bb+kk*MyCosthBins.size()];
-//          FinalWeightISigmaISum = FinalWeightISigmaISum + FinalWeightISigmaI;
-//          FinalWeightISum = FinaleWeightISum +FinalWeightI;
-
-
-SigmaSummations[bb] = SigmaSummations[bb] + VNewSigma[bb+kk*MyCosthBins.size()];
-SigmaSummationsE[bb] = SigmaSummationsE[bb] + VNewSigmaE[bb+kk*MyCosthBins.size()];
-
-//	  SigmaWeightedSummations[bb] = SigmaWeightedSummations[bb] + VNewSigma[bb+kk*MyCosthBins.size()];
-//	  SigmaWeightedSummationsE[bb] = SigmaWeightedSummationsE[bb] + VNewSigmaE[bb+kk*MyCosthBins.size()];
-
-
-cout << bb <<"  " << kk << endl;
-
-
-
-}
-}
-}
-}
-*/
-
-
-
-std::ofstream outfile;
-outfile.open("Feb19NewSimonsResultsMyBins.txt",std::ios_base::app);
-
-
-for(Int_t dd=0; dd<VFinalSigma.size();dd++){
-//cout << "Sigma="<<VFinalSigma[dd] <<"   EGam="<<VFinalEgam[dd] <<"   Costh="<<VFinalCosth[dd]<<endl;
-// outfile<<VFinalSigma[dd] <<"  "<<VFinalSigmaE[dd] <<"  "<<VFinalEgam[dd]<<"  "<<VFinalEgamE[dd] <<"  "<<VFinalCosth[dd]<< "  "<< VFinalCosthE[dd]<<endl;
-outfile<<VWFinalSigma[dd] <<"  "<<VWFinalSigmaError[dd] <<"  "<<VFinalEgam[dd]<<"  "<<VFinalEgamE[dd] <<"  "<<VFinalCosth[dd]<< "  "<< VFinalCosthE[dd]<<endl;
-
-}
-
-  //Output to text file and load it in my sigma script.
-  //Should make a general function for the above taking in two params for bins and the requested bins
+  }
 
 
 } //closing main function
