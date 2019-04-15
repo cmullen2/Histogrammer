@@ -1,10 +1,16 @@
 #include <stdlib.h>
 
 
-void PlotComparison() {
+void PlotComparisonThesisResults() {
 		
-  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/CheckFits/ResultsPPi0UnBinnedVsStrictCutsVsCoplanFits.root","recreate");
-  
+  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/CheckFits/OnePlotResultsPPi0UnBinnedVsStrictCutsVsCoplanFits.root","recreate");
+ 
+  TCanvas *Canvas1 = new TCanvas("Canvas_1_n2", "Canvas_1_n2",0,0,1600,2000);
+  Canvas1->SetCanvasSize(1600,2000);
+  Canvas1->SetWindowSize(1600,2000);
+  Canvas1->Divide(3,4,0,0,0);
+
+ 
 //  vector<Double_t> VecChrisSigma;
 //  vector<TString> VecChrisType;
 //  vector<Double_t> VecChrisCosth;
@@ -1133,7 +1139,8 @@ for(Int_t i=0;i<11;i++){//Number of eg bins*Number of folders(rand,sig,cut1) 41*
 
 }
 
-auto c3 = new TCanvas("c3","c3");
+    Canvas1->cd(i+1);
+//auto c3 = new TCanvas("c3","c3");
 
 TString PosTitle =Form("%f",ArrEg[0]) ;
 TString PosName = Form("%f",ArrEg[0]) ;
@@ -1306,6 +1313,8 @@ DivisionPlotSimon->SetTitle("Division");//pink
 
 
 TMultiGraph* mg = new TMultiGraph();
+mg->SetMaximum(1);
+mg->SetMinimum(0);
 mg->Add(SigmaPlot);
 mg->Add(SigmaPlotUnBin);
 //mg->Add(SigmaPlotLess);
@@ -1362,15 +1371,17 @@ mg->SetTitle(hTitle+";Cos#theta_{CM};#Sigma");
 
 
 mg->Draw("AP");
-TLegend* leg = c3->BuildLegend();
+//TLegend* leg = c3->BuildLegend();
+TLegend* leg = gPad->BuildLegend();
 leg->SetFillStyle(0);
 
-mg->Write();
+//mg->Write();
 leg->Write();//Sort the writing of the legend later
 DivisionPlotSimon->Write();
-c3->Write();
+//c3->Write();
 
 }
+Canvas1->Write();
 outfile->Close();
 } //closing main function
 	

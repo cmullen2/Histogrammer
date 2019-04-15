@@ -63,7 +63,8 @@ void THSSelector_vh::SlaveBegin(TTree * /*tree*/)
 //    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/NeutronWeightsSum/Coplan3BG/WeightsBothTotal.root","HSsWeights");
 //    THSHisto::LoadWeights("/scratch/chris/NeutronWeights/WeightsBothTotal.root","HSsWeights");
 //    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/NeutronWeightsSum/OnlyTimingWeights/StrictCuts/WeightsBothTotal.root","HSsWeights");
-    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/NeutronWeightsSum/CoplanPoly2ndOrder/WeightsBothTotal.root","HSsWeights");
+//    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/NeutronWeightsSum/CoplanPoly2ndOrder/WeightsBothTotal.root","HSsWeights");
+    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/NeutronWeightsSum/CoplanPoly2ndOrderV2/WeightsBothTotal.root","HSsWeights");
   //Initialise the ouput tree
    //Only done once. THSOutput::FinishOutput Resets the tree before new files
    //If you want to save additional branches to a new file, do it here

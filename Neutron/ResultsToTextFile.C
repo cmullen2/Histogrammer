@@ -6,7 +6,8 @@
 void ResultsToTextFile() {
 		
 //  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/NPi0ResultCoplan3BG.root");
-  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/NPi0ResultsCoplanFitsNoSpecMomCuts.root");
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/NPi0ResultsCoplanFitsNoSpecMomCuts.root");
+  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr112019/NPi0ResultsCoplanFitsNoSpecMomCutsWithCorrectNeutronAsOfApr2019.root");
   //  string dirs[3] = {"BG","Sig", "Cut1"};
   string dirs[3] = {"Random","Sig", "Cut1"};
 //  string dirs[3] = {"Sig","ThreeBGs","Cut1"};
@@ -127,7 +128,7 @@ void ResultsToTextFile() {
 
 
 std::ofstream textfile;
-textfile.open("MyResultsNewCoplanFitsNoSpecMomCut.txt",std::ios_base::app);
+textfile.open("MyResultsNewCoplanFitsApr11.txt",std::ios_base::app);
 
 for(Int_t ddd=0; ddd<VecAllSigma.size(); ddd++ ){
   textfile <<VecAllSigma[ddd]<<"  "<<VecAllSigmaErr[ddd]<<"  "<< VecAllEg[ddd]<<"  "<<VecAllEgErr[ddd]<<"  "<<VecAllCosth[ddd]<<"  "<<VecAllCosthErr[ddd]<<"  "<<VecFolder[ddd]<<endl;

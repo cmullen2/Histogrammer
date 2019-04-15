@@ -1,0 +1,82 @@
+<head>
+<title>My page </title>
+</head>
+<script type="text/javascript">
+function refreshImages(){
+var search="?"+(new Date()).getTime();
+for(var i=0;i<document.images.length;document.images[i++].src+=search);
+}
+</script>
+<body onload="refreshImages()">
+<TABLE cols=2 width="100%" border=0 NOSAVE>
+  <TBODY>
+  <TR NOSAVE>
+ <TD width=40%  vAlign=top  bgColor=white>
+<PRE>
+      W=1436. MeV     Sigma      
+   -----------------------------------
+    z     BG2014_02
+  -1.00    0.0000
+  -0.99    0.0833
+  -0.95    0.3255
+  -0.90    0.5049
+  -0.85    0.6124
+  -0.80    0.6803
+  -0.75    0.7247
+  -0.70    0.7542
+  -0.65    0.7740
+  -0.60    0.7869
+  -0.55    0.7949
+  -0.50    0.7994
+  -0.45    0.8009
+  -0.40    0.8003
+  -0.35    0.7977
+  -0.30    0.7936
+  -0.25    0.7881
+  -0.20    0.7812
+  -0.15    0.7730
+  -0.10    0.7636
+  -0.05    0.7529
+   0.00    0.7410
+   0.05    0.7276
+   0.10    0.7129
+   0.15    0.6966
+   0.20    0.6785
+   0.25    0.6587
+   0.30    0.6369
+   0.35    0.6129
+   0.40    0.5867
+   0.45    0.5580
+   0.50    0.5266
+   0.55    0.4924
+   0.60    0.4552
+   0.65    0.4149
+   0.70    0.3712
+   0.75    0.3240
+   0.80    0.2729
+   0.85    0.2170
+   0.90    0.1551
+   0.95    0.0844
+   0.99    0.0184
+   1.00    0.0000
+</PRE>
+</TD>
+<TD width=60% vAlign=top bgColor=white>
+<CENTER>
+<br>
+<img src="http://pwa.hiskp.uni-bonn.de/temp.gif
+" width=500>
+<br>
+<A href="http://pwa.hiskp.uni-bonn.de/temp.eps
+" target="_blank"> Download eps file </A>
+
+<PRE>
+      W=1436. MeV     Sigma      
+   ___________________________________
+
+</PRE>
+
+</CENTER>
+</TD>
+</TR></TBODY></TABLE>
+</body>

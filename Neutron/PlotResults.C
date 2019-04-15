@@ -9,14 +9,31 @@ void GetPi0SAID(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t T
 void GetPi0MAID(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow);
 
 
+
+
+
+//TheoryDataFromBnGa
+void GetPi0BnGa(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow);
+void GetBnGaSigmaFromFile(vector<Double_t>  &VecSigmaBnGa, vector<Double_t> &VecSigmaErrBnGa, vector<Double_t> &VecEgBnGa ,vector<Double_t> &VecEgErrBnGa ,vector<Double_t> &VecCosthBnGa ,vector<Double_t> &VecCosthErrBnGa, Double_t NThetaBins ,TString BnGaFileName );
+
+//Theory Data From SAID to use for comparison on plots
+void GetPi0SAIDMoreBins(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow);  
+void GetSAIDSigmaFromFile(vector<Double_t>  &VecSigmaSAIDMB, vector<Double_t> &VecSigmaErrSAIDMB, vector<Double_t> &VecEgSAIDMB ,vector<Double_t> &VecEgErrSAIDMB ,vector<Double_t> &VecCosthSAIDMB ,vector<Double_t> &VecCosthErrSAIDMB, Double_t NThetaBins ,TString SAIDMBFileName );
+
+
+
 void PlotResults() {
 		
   //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/ResultsNPi0TheoryDataComparisonNPi0Theory.root","recreate");
   //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/TestDelSoon.root","recreate");
-  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/NPi0UnBinnedVCoplan.root","recreate");
-  
+  //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/DevCodeNPi0.root","recreate");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/MeetingFeb28/NPi0AllPlotted.root","recreate");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr112019/NPi0CoplanFitsAndUnBinnedVersusNewVersionOfBoth.root","recreate");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr112019/NPi0CoplanFitsOldVsNewApr.root","recreate");
+  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr112019/NPi0UnBinnedOldVersusNewApr.root","recreate");
 
   Double_t NDataEgBins = 24 ; //Number of bins in data for looping
+  Double_t TheoryThetaBinsDouble = 40;
   Double_t TheoryThetaBins = 20;
   Double_t TheoryThetaLowSAID = -1;
   Double_t TheoryThetaLowMAID = 0;
@@ -56,7 +73,6 @@ void PlotResults() {
   vector<Double_t> VecAllChrisEgPSCF;
   vector<Double_t> VecAllChrisCosthPSCF;
 
-
   //Results From triple fit
   vector<Double_t> VecAllChrisSigma;
   vector<Double_t> VecAllChrisEg;
@@ -65,7 +81,6 @@ void PlotResults() {
   vector<Double_t> VecAllChrisSigmaErr;
   vector<Double_t> VecAllChrisEgErr;
   vector<Double_t> VecAllChrisCosthErr;
-
 
   //Results From triple fit + unbin
   vector<Double_t> VecAllChrisSigmaUnBin;
@@ -76,7 +91,24 @@ void PlotResults() {
   vector<Double_t> VecAllChrisEgErrUnBin;
   vector<Double_t> VecAllChrisCosthErrUnBin;
 
+  //Results From triple fit V2 Apr2019
+  vector<Double_t> VecAllChrisSigmaApr;
+  vector<Double_t> VecAllChrisEgApr;
+  vector<Double_t> VecAllChrisCosthApr;
+  vector<TString> VecAllChrisTypeApr;
+  vector<Double_t> VecAllChrisSigmaErrApr;
+  vector<Double_t> VecAllChrisEgErrApr;
+  vector<Double_t> VecAllChrisCosthErrApr;
 
+  //Results From triple fit + unbin V2 Apr 2019
+  vector<Double_t> VecAllChrisSigmaUnBinApr;
+  vector<Double_t> VecAllChrisEgUnBinApr;
+  vector<Double_t> VecAllChrisCosthUnBinApr;
+  vector<TString> VecAllChrisTypeUnBinApr;
+  vector<Double_t> VecAllChrisSigmaErrUnBinApr;
+  vector<Double_t> VecAllChrisEgErrUnBinApr;
+  vector<Double_t> VecAllChrisCosthErrUnBinApr;
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
   //My Results
   Double_t AllChrisSigma;
@@ -95,6 +127,25 @@ void PlotResults() {
   Double_t AllChrisSigmaErrUnBin;
   Double_t AllChrisEgErrUnBin;
   Double_t AllChrisCosthErrUnBin;
+
+
+  //My ResultsV2
+  Double_t AllChrisSigmaApr;
+  Double_t AllChrisEgApr;
+  Double_t AllChrisCosthApr;
+  TString AllChrisTypeApr;
+  Double_t AllChrisSigmaErrApr;
+  Double_t AllChrisEgErrApr;
+  Double_t AllChrisCosthErrApr;
+
+  //My ResultsUnBinV2
+  Double_t AllChrisSigmaUnBinApr;
+  Double_t AllChrisEgUnBinApr;
+  Double_t AllChrisCosthUnBinApr;
+  TString AllChrisTypeUnBinApr;
+  Double_t AllChrisSigmaErrUnBinApr;
+  Double_t AllChrisEgErrUnBinApr;
+  Double_t AllChrisCosthErrUnBinApr;
 
   //	NonStrictCuts No SpecMomCut
   Double_t AllChrisSigmaNonCut;
@@ -121,7 +172,7 @@ void PlotResults() {
   Double_t AllChrisEgErrStrict;
   Double_t AllChrisCosthErrStrict;
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////
 
   TString InFileNonCut = "Data/MyResultsBGSUBBEDNPi0NonStrictCutsAnalysis.txt";
   GetSigmaFromFile( VecAllChrisSigmaNonCut, VecAllChrisSigmaErrNonCut, VecAllChrisEgNonCut, VecAllChrisEgErrNonCut, VecAllChrisCosthNonCut,  VecAllChrisCosthErrNonCut,  InFileNonCut );
@@ -149,6 +200,15 @@ void PlotResults() {
   GetSigmaFromFile( VecAllChrisSigmaUnBin, VecAllChrisSigmaErrUnBin, VecAllChrisEgUnBin, VecAllChrisEgErrUnBin, VecAllChrisCosthUnBin,  VecAllChrisCosthErrUnBin,  InFileUnBin );
 
 
+  TString InFileApr = "Data/MyResultsNewCoplanFitsApr11.txt";
+  GetSigmaFromFile( VecAllChrisSigmaApr, VecAllChrisSigmaErrApr, VecAllChrisEgApr, VecAllChrisEgErrApr, VecAllChrisCosthApr,  VecAllChrisCosthErrApr,  InFileApr );
+
+
+  TString InFileUnBinApr = "Data/MyResultsUnBinnedNeutronSigmaApr11.txt";
+  GetSigmaFromFile( VecAllChrisSigmaUnBinApr, VecAllChrisSigmaErrUnBinApr, VecAllChrisEgUnBinApr, VecAllChrisEgErrUnBinApr, VecAllChrisCosthUnBinApr,  VecAllChrisCosthErrUnBinApr,  InFileUnBinApr );
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
   //My Results
   Double_t ArrSigma[20];
@@ -158,7 +218,6 @@ void PlotResults() {
   Double_t ArrCosthErr[20];
   Double_t ArrEgErr[20];
 
-
   //My Results UnBin
   Double_t ArrSigmaUnBin[20];
   Double_t ArrCosthUnBin[20];
@@ -166,6 +225,22 @@ void PlotResults() {
   Double_t ArrSigmaErrUnBin[20];
   Double_t ArrCosthErrUnBin[20];
   Double_t ArrEgErrUnBin[20];
+
+  //My ResultsV2
+  Double_t ArrSigmaApr[20];
+  Double_t ArrCosthApr[20];
+  Double_t ArrEgApr[20];
+  Double_t ArrSigmaErrApr[20];
+  Double_t ArrCosthErrApr[20];
+  Double_t ArrEgErrApr[20];
+
+  //My Results UnBinV2
+  Double_t ArrSigmaUnBinApr[20];
+  Double_t ArrCosthUnBinApr[20];
+  Double_t ArrEgUnBinApr[20];
+  Double_t ArrSigmaErrUnBinApr[20];
+  Double_t ArrCosthErrUnBinApr[20];
+  Double_t ArrEgErrUnBinApr[20];
 
 
   Double_t ArrSigmaPSCF[20];
@@ -190,6 +265,10 @@ void PlotResults() {
   Double_t ArrSigmaErrStrict[20];
   Double_t ArrCosthErrStrict[20];
   Double_t ArrEgErrStrict[20];
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
   for(Int_t i=0;i<NDataEgBins;i++){//Number of eg bins//Deprecated*Number of folders(rand,sig,cut1) 41*3
     for(Int_t j=0;j<20;j++){ //Number of Costh Bins
@@ -223,7 +302,6 @@ void PlotResults() {
       ArrCosthErr[j] = VecAllChrisCosthErr[j+i*20];
       ArrEgErr[j] = VecAllChrisEgErr[j+i*20];
 
-
       //MyResults
       ArrSigmaUnBin[j] = VecAllChrisSigmaUnBin[j+i*20];
       ArrCosthUnBin[j] = VecAllChrisCosthUnBin[j+i*20];
@@ -232,34 +310,55 @@ void PlotResults() {
       ArrCosthErrUnBin[j] = VecAllChrisCosthErrUnBin[j+i*20];
       ArrEgErrUnBin[j] = VecAllChrisEgErrUnBin[j+i*20];
 
+      //MyResultsV2
+      ArrSigmaApr[j] = VecAllChrisSigmaApr[j+i*20];
+      ArrCosthApr[j] = VecAllChrisCosthApr[j+i*20];
+      ArrEgApr[j] = VecAllChrisEgApr[j+i*20];
+      ArrSigmaErrApr[j] = VecAllChrisSigmaErrApr[j+i*20];
+      ArrCosthErrApr[j] = VecAllChrisCosthErrApr[j+i*20];
+      ArrEgErrApr[j] = VecAllChrisEgErrApr[j+i*20];
+
+      //MyResults Unbin V2
+      ArrSigmaUnBinApr[j] = VecAllChrisSigmaUnBinApr[j+i*20];
+      ArrCosthUnBinApr[j] = VecAllChrisCosthUnBinApr[j+i*20];
+      ArrEgUnBinApr[j] = VecAllChrisEgUnBinApr[j+i*20];
+      ArrSigmaErrUnBinApr[j] = VecAllChrisSigmaErrUnBinApr[j+i*20];
+      ArrCosthErrUnBinApr[j] = VecAllChrisCosthErrUnBinApr[j+i*20];
+      ArrEgErrUnBinApr[j] = VecAllChrisEgErrUnBinApr[j+i*20];
+
+
+
+
 
       TheoryEgamma= VecAllChrisEg[j+i*20];
       //  TheoryEgamma= VecAllChrisEgNonCut[j+i*20];
 
 
 
-//for(Int_t ff=0; ff<VecAllChrisSigmaPSCF.size(); ff++){
+      //for(Int_t ff=0; ff<VecAllChrisSigmaPSCF.size(); ff++){
 
-	cout <<"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  " << VecAllChrisSigmaPSCF[5+(i-9)*20] <<endl;
-//}
-//0,1,->10 i.e 11 in PSCF, i goes 0->23 i.e 24 : 430=9=i, 630 =19 so map is 9=0 and 19 = 11
+      //	cout <<"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  " << VecAllChrisSigmaPSCF[5+(i-9)*20] <<endl;
+      //}
+      //0,1,->10 i.e 11 in PSCF, i goes 0->23 i.e 24 : 430=9=i, 630 =19 so map is 9=0 and 19 = 11
 
-//cout << "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG " << i <<"  " << TheoryEgamma <<endl;
+      //cout << "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG " << i <<"  " << TheoryEgamma <<endl;
 
 
-//FIX THIS ISSUE
+      //FIX THIS ISSUE
       if(TheoryEgamma>420 && TheoryEgamma<640){
-//	if(   VecAllChrisSigmaPSCF[5+i*20]!=0 && VecAllChrisSigmaPSCF[6+i*20]!=0 ){ //i is wrong here since only have protoncorrection from 430>
-	  // ArrSigmaPSCF[j]=  VecAllChrisSigmaNon[j+i*20]*VecAllChrisSigmaPSCF[10+i*20];//Different NEgammaBins for Proton vs neutron
-	  ArrSigmaPSCF[j]=  VecAllChrisSigma[j+(i-9)*20]/((VecAllChrisSigmaPSCF[5+(i-9)*20]+VecAllChrisSigmaPSCF[6+(i-9)*20]+VecAllChrisSigmaPSCF[7+(i-9)*20] + VecAllChrisSigmaPSCF[8+(i-9)*20] +VecAllChrisSigmaPSCF[9+(i-9)*20])/5);//Different NEgammaBins for Proton vs neutron
-	cout <<"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX00000" << VecAllChrisSigmaPSCF[5+(i-9)*20] <<endl;
+	//	if(   VecAllChrisSigmaPSCF[5+i*20]!=0 && VecAllChrisSigmaPSCF[6+i*20]!=0 ){ //i is wrong here since only have protoncorrection from 430>
+	// ArrSigmaPSCF[j]=  VecAllChrisSigmaNon[j+i*20]*VecAllChrisSigmaPSCF[10+i*20];//Different NEgammaBins for Proton vs neutron
+	//	  ArrSigmaPSCF[j]=  VecAllChrisSigma[j+(i-9)*20]/((VecAllChrisSigmaPSCF[5+(i-9)*20]+VecAllChrisSigmaPSCF[6+(i-9)*20]+VecAllChrisSigmaPSCF[7+(i-9)*20] + VecAllChrisSigmaPSCF[8+(i-9)*20] +VecAllChrisSigmaPSCF[9+(i-9)*20])/5);//Different NEgammaBins for Proton vs neutron
+	//	  ArrSigmaPSCF[j]=  VecAllChrisSigma[j+(i-9)*20]*((VecAllChrisSigmaPSCF[5+(i-9)*20]+VecAllChrisSigmaPSCF[6+(i-9)*20]+VecAllChrisSigmaPSCF[7+(i-9)*20] + VecAllChrisSigmaPSCF[8+(i-9)*20] +VecAllChrisSigmaPSCF[9+(i-9)*20])/5);//Different NEgammaBins for Proton vs neutron
+	ArrSigmaPSCF[j]=  VecAllChrisSigma[j+i*20]*((VecAllChrisSigmaPSCF[5+(i-9)*20]+VecAllChrisSigmaPSCF[6+(i-9)*20]+VecAllChrisSigmaPSCF[7+(i-9)*20] + VecAllChrisSigmaPSCF[8+(i-9)*20] +VecAllChrisSigmaPSCF[9+(i-9)*20])/5);//Different NEgammaBins for Proton vs neutron
+	cout <<"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX00000" << VecAllChrisSigmaPSCF[5+(i-9)*20]<< "  " << VecAllChrisSigmaPSCF[6+(i-9)*20] <<"  " <<  VecAllChrisSigmaPSCF[7+(i-9)*20] <<"  " <<  VecAllChrisSigmaPSCF[8+(i-9)*20] <<"   " <<  VecAllChrisSigmaPSCF[9+(i-9)*20] <<endl;
 
 
 
-//	}
-//	else{
-//	  ArrSigmaPSCF[j]=0;
-//	}
+	//	}
+	//	else{
+	//	  ArrSigmaPSCF[j]=0;
+	//	}
 
       }
       else{
@@ -289,6 +388,26 @@ void PlotResults() {
     TString InFileNameMAID = "tmp/PageMAID.txt";
     Double_t IsMAID=0;
 
+    TString InFileNameSAIDMB = "tmp/PageSAIDMoreBins.txt";
+    vector<Double_t> VecSigmaSAIDMB;
+    vector<Double_t> VecSigmaErrSAIDMB;
+    vector<Double_t> VecEgSAIDMB;
+    vector<Double_t> VecEgErrSAIDMB;
+    vector<Double_t> VecCosthSAIDMB;
+    vector<Double_t> VecCosthErrSAIDMB;
+
+
+    TString InFileNameBnGa = "tmp/PageBnGa.txt";
+    vector<Double_t> VecSigmaBnGa;
+    vector<Double_t> VecSigmaErrBnGa;
+    vector<Double_t> VecEgBnGa;
+    vector<Double_t> VecEgErrBnGa;
+    vector<Double_t> VecCosthBnGa;
+    vector<Double_t> VecCosthErrBnGa;
+
+
+
+
     /*
       Double_t ArrSigmaMineCorrectedMAID[20];
       Double_t ArrSigmaMineCorrectedSAID[20];
@@ -303,6 +422,54 @@ void PlotResults() {
     GetPi0MAID( TheoryEgamma,  TheoryThetaBins, TheoryThetaHighMAID, TheoryThetaLowMAID);
     IsMAID=1;
     GetSigmaTheoryFromFile(ArrSigmaMAID, ArrCosthMAID ,  InFileNameMAID,  TheoryThetaBins,IsMAID);
+
+
+
+    //GetBonnGatchina Predictions
+    GetPi0BnGa( TheoryEgamma,  TheoryThetaBins, TheoryThetaHighSAID, TheoryThetaLowSAID);
+    GetBnGaSigmaFromFile( VecSigmaBnGa, VecSigmaErrBnGa,VecEgBnGa ,VecEgErrBnGa ,VecCosthBnGa ,VecCosthErrBnGa, TheoryThetaBins, InFileNameBnGa );
+
+    //Get SAID More Bins Prediction
+    GetPi0SAIDMoreBins( TheoryEgamma,  TheoryThetaBinsDouble, TheoryThetaHighSAID, TheoryThetaLowSAID);
+    GetSAIDSigmaFromFile( VecSigmaSAIDMB, VecSigmaErrSAIDMB,VecEgSAIDMB, VecEgErrSAIDMB ,VecCosthSAIDMB ,VecCosthErrSAIDMB, TheoryThetaBinsDouble, InFileNameSAIDMB );
+
+    //Fill arrays for bnga
+    Int_t NumBnGaPts = VecSigmaBnGa.size();
+    Double_t ArrSigmaBnGa[NumBnGaPts];
+    Double_t ArrSigmaErrBnGa[NumBnGaPts];
+    Double_t ArrEgBnGa[NumBnGaPts];
+    Double_t ArrEgErrBnGa[NumBnGaPts];
+    Double_t ArrCosthBnGa[NumBnGaPts];
+    Double_t ArrCosthErrBnGa[NumBnGaPts];
+
+    for(Int_t vv=0; vv<VecSigmaBnGa.size();vv++){
+      ArrSigmaBnGa[vv] = VecSigmaBnGa[vv];
+      ArrSigmaErrBnGa[vv] = VecSigmaErrBnGa[vv];
+      ArrEgBnGa[vv] = VecEgBnGa[vv];
+      ArrEgErrBnGa[vv] = VecEgErrBnGa[vv];
+      ArrCosthBnGa[vv] = VecCosthBnGa[vv];
+      ArrCosthErrBnGa[vv] = VecCosthErrBnGa[vv];
+    }
+
+    //Fill arrays for said more bins
+    Int_t NumSAIDMBPts = VecSigmaSAIDMB.size();
+    Double_t ArrSigmaSAIDMB[NumSAIDMBPts];
+    Double_t ArrSigmaErrSAIDMB[NumSAIDMBPts];
+    Double_t ArrEgSAIDMB[NumSAIDMBPts];
+    Double_t ArrEgErrSAIDMB[NumSAIDMBPts];
+    Double_t ArrCosthSAIDMB[NumSAIDMBPts];
+    Double_t ArrCosthErrSAIDMB[NumSAIDMBPts];
+
+    for(Int_t vv=0; vv<VecSigmaSAIDMB.size();vv++){
+      ArrSigmaSAIDMB[vv] = VecSigmaSAIDMB[vv];
+      ArrSigmaErrSAIDMB[vv] = VecSigmaErrSAIDMB[vv];
+      ArrEgSAIDMB[vv] = VecEgSAIDMB[vv];
+      ArrEgErrSAIDMB[vv] = VecEgErrSAIDMB[vv];
+      ArrCosthSAIDMB[vv] = VecCosthSAIDMB[vv];
+      ArrCosthErrSAIDMB[vv] = VecCosthErrSAIDMB[vv];
+    }
+
+
 
     for(Int_t j=0;j<20;j++){
       //      if(ArrSigmaSAID[j]!=0){
@@ -340,6 +507,8 @@ void PlotResults() {
     //Declare Graphs
     TGraph* SigmaPlot=new TGraphErrors(20,ArrCosth,ArrSigma,ArrCosthErr,ArrSigmaErr);
     TGraph* SigmaPlotUnBin=new TGraphErrors(20,ArrCosthUnBin,ArrSigmaUnBin,ArrCosthErrUnBin,ArrSigmaErrUnBin);
+    TGraph* SigmaPlotApr=new TGraphErrors(20,ArrCosthApr,ArrSigmaApr,ArrCosthErrApr,ArrSigmaErrApr);
+    TGraph* SigmaPlotUnBinApr=new TGraphErrors(20,ArrCosthUnBinApr,ArrSigmaUnBinApr,ArrCosthErrUnBinApr,ArrSigmaErrUnBinApr);
     TGraph* SigmaPlotNonCut=new TGraphErrors(20,ArrCosthNonCut,ArrSigmaNonCut,ArrCosthErrNonCut,ArrSigmaErrNonCut);
     TGraph* SigmaPlotNon=new TGraphErrors(20,ArrCosthNon,ArrSigmaNon,ArrCosthErrNon,ArrSigmaErrNon);
     TGraph* SigmaPlotStrict=new TGraphErrors(20,ArrCosthStrict,ArrSigmaStrict,ArrCosthErrStrict,ArrSigmaErrStrict);
@@ -348,11 +517,18 @@ void PlotResults() {
     //    TGraph* DivisionPlotMAID=new TGraph(20,ArrCosthMAIDNew,ArrSigmaMAIDDiv);
     TGraph* SigmaPlotMAID=new TGraphErrors(20,ArrCosth,ArrSigmaMAIDNew,ArrCosthErrNonCut,ArrSigmaErrNonCut);
     //    TGraph* SigmaPlotCorrectedMAID=new TGraphErrors(20,ArrCosthMAIDNew,ArrSigmaMineCorrectedMAID,ArrCosthErr,ArrSigmaErr);
-    //    TGraph* SigmaPlotCorrectedSAID=new TGraphErrors(20,ArrCosthSAID,ArrSigmaMineCorrectedSAID,ArrCosthErr,ArrSigmaErr);
+    //   TGraph* SigmaPlotCorrectedSAID=new TGraphErrors(20,ArrCosthSAID,ArrSigmaMineCorrectedSAID,ArrCosthErr,ArrSigmaErr);
     //SpecMom Binned cuts Analysis
     //    TGraph* SigmaPlotSpec=new TGraphErrors(20,ArrCosthSpec,ArrSigmaSpec,ArrCosthErrSpec,ArrSigmaErrSpec);
     //    TGraph* SigmaPlotPSCF=new TGraphErrors(20,ArrCosthNon,ArrSigmaPSCF,ArrCosthErrNon,ArrSigmaErrNon);
     TGraph* SigmaPlotPSCF=new TGraphErrors(20,ArrCosth,ArrSigmaPSCF,ArrCosthErr,ArrSigmaErr);
+
+
+    TGraph* SigmaPlotBnGa=new TGraphErrors( sizeof(ArrSigmaBnGa)/sizeof(ArrSigmaBnGa[0]),ArrCosthBnGa,ArrSigmaBnGa,ArrCosthErrBnGa,ArrSigmaErrBnGa);
+    TGraph* SigmaPlotSAIDMB=new TGraphErrors( sizeof(ArrSigmaSAIDMB)/sizeof(ArrSigmaSAIDMB[0]),ArrCosthSAIDMB,ArrSigmaSAIDMB,ArrCosthErrSAIDMB,ArrSigmaErrSAIDMB);
+
+
+
 
     //Set Marker Style/Color
     //    DivisionPlotSAID->SetMarkerStyle(31);
@@ -380,7 +556,22 @@ void PlotResults() {
     //    SigmaPlotCorrectedMAID->SetMarkerColor(8); //green(not lime)
 
     SigmaPlotUnBin->SetMarkerStyle(22);//
-    SigmaPlotUnBin->SetMarkerColor(2);//purple  
+    SigmaPlotUnBin->SetMarkerColor(2);//red  
+
+
+    SigmaPlotApr->SetMarkerStyle(22);//
+    SigmaPlotApr->SetMarkerColor(3);//green  
+
+    SigmaPlotUnBinApr->SetMarkerStyle(22);//
+    SigmaPlotUnBinApr->SetMarkerColor(6);//pink  
+
+
+    SigmaPlotBnGa->SetMarkerStyle(23);//filled upside down triangle(blue)
+    SigmaPlotBnGa->SetMarkerColor(7);//pink
+ 
+    SigmaPlotSAIDMB->SetMarkerStyle(23);//filled upside down triangle(blue)
+    SigmaPlotSAIDMB->SetMarkerColor(6);//pink
+
 
 
 
@@ -400,6 +591,12 @@ void PlotResults() {
 
     SigmaPlotUnBin->SetFillStyle(0);
     SigmaPlotUnBin->SetFillColor(0);
+
+    SigmaPlotApr->SetFillStyle(0);
+    SigmaPlotApr->SetFillColor(0);
+
+    SigmaPlotUnBinApr->SetFillStyle(0);
+    SigmaPlotUnBinApr->SetFillColor(0);
     //    SigmaPlotCorrectedSAID->SetFillStyle(0);
     //    SigmaPlotCorrectedSAID->SetFillColor(0);
     //    SigmaPlotCorrectedMAID->SetFillStyle(0);
@@ -413,40 +610,56 @@ void PlotResults() {
     //    DivisionPlotMAID->SetFillStyle(0);
     //    DivisionPlotMAID->SetFillColor(0);
 
-
+    SigmaPlotBnGa->SetFillStyle(0);//pink
+    SigmaPlotBnGa->SetFillColor(0);//pink
+ 
+    SigmaPlotSAIDMB->SetFillStyle(0);//pink
+    SigmaPlotSAIDMB->SetFillColor(0);//pink
 
     //Set Title
     SigmaPlotSAID->SetTitle("SAID");
     SigmaPlotMAID->SetTitle("MAID");
     SigmaPlotNonCut->SetTitle("NonCut");
     SigmaPlotNon->SetTitle("Non");
-    SigmaPlotStrict->SetTitle("Strict");
+    SigmaPlotStrict->SetTitle("StrictCuts");
     SigmaPlotPSCF->SetTitle("ProtonSAIDCorrection");
     SigmaPlot->SetTitle("CoplanFits");
-    SigmaPlotUnBin->SetTitle("UnBinnedits");
+    SigmaPlotUnBin->SetTitle("UnBinnedFit");
+    SigmaPlotApr->SetTitle("CoplanFitsApr");
+    SigmaPlotUnBinApr->SetTitle("UnBinnedFitApr");
     //    SigmaPlotCorrectedSAID->SetTitle("CorrectedWithSAID");
     //    SigmaPlotCorrectedMAID->SetTitle("CorrectedWithMAID");
     //    SigmaPlotSpec->SetTitle("SpecMom0-50Mev");
     //    SigmaPlot->SetTitle("CoplanFitsOrig");//pink
     //    DivisionPlotSAID->SetTitle("SAIDDivision");//pink
     //    DivisionPlotMAID->SetTitle("MAIDDivision");//pink
+    SigmaPlotBnGa->SetTitle("BonnGatchina");//pink
+    SigmaPlotSAIDMB->SetTitle("SAIDMoreBins");//pink
 
 
     //Create Multigraph and add plots to it 
     TMultiGraph* mg = new TMultiGraph();
-    mg->Add(SigmaPlot);
+//    mg->Add(SigmaPlot);
     mg->Add(SigmaPlotUnBin);
+
+//    mg->Add(SigmaPlotApr);
+    mg->Add(SigmaPlotUnBinApr);
     //    mg->Add(DivisionPlotSAID);
     //    mg->Add(DivisionPlotMAID);
     //    mg->Add(SigmaPlotSpec);
-    mg->Add(SigmaPlotSAID);
-//    mg->Add(SigmaPlotMAID);
-//    mg->Add(SigmaPlotNonCut);
-//    mg->Add(SigmaPlotNon);
+//    mg->Add(SigmaPlotSAID);
+    //    mg->Add(SigmaPlotMAID);
+    //    mg->Add(SigmaPlotNonCut);
+    //    mg->Add(SigmaPlotNon);
 //    mg->Add(SigmaPlotPSCF);
-//    mg->Add(SigmaPlotStrict);
+//        mg->Add(SigmaPlotStrict);
     //    mg->Add(SigmaPlotCorrectedSAID);
     //    mg->Add(SigmaPlotCorrectedMAID);
+
+//    mg->Add(SigmaPlotBnGa);
+//    mg->Add(SigmaPlotSAIDMB);
+
+
 
     TString hTitle ="Sigma"+PosTitle; // +VecChrisType[i*20] +(TString) i ;
     TString hName= "Sigma"+PosName; // +VecChrisType[i*20] + (TString)i ;
@@ -484,9 +697,6 @@ void PlotResults() {
   }
   outfile->Close();
 } //closing main function
-	
-
-
 
 void GetSigmaFromFile(vector<Double_t>  &VecSigma, vector<Double_t> &VecSigmaErr, vector<Double_t> &VecEg ,vector<Double_t> &VecEgErr ,vector<Double_t> &VecCosth ,vector<Double_t> &VecCosthErr, TString InFileName ){
 
@@ -679,9 +889,6 @@ void GetPi0MAID(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t T
 
 };
 
-
-
-
 /*
   void GetSigmaTheoryFromFile(vector<Double_t>  &VecSigma, vector<Double_t> &VecCosth , TString InFileName,Double_t NThetaBins ){
 
@@ -715,9 +922,6 @@ void GetPi0MAID(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t T
 
   }
 */
-
-
-
 
 void GetSigmaTheoryFromFile(Double_t  ArrSigma[], Double_t ArrCosth[] , TString InFileName,Double_t NThetaBins, Double_t IsTheoryMAID ){
 
@@ -782,14 +986,11 @@ void GetSigmaTheoryFromFile(Double_t  ArrSigma[], Double_t ArrCosth[] , TString 
 
 }
 
-
 Double_t ConvertToCME(Double_t taggE){
 
   return TMath::Sqrt((938.27+taggE)*(938.27+taggE)-taggE*taggE);
 
 }
-
-
 
 void GetCorrectionFromFile(vector<Double_t>  &VecSigma, vector<Double_t> &VecEg ,vector<Double_t> &VecCosth , TString InFileName ){
 
@@ -816,13 +1017,146 @@ void GetCorrectionFromFile(vector<Double_t>  &VecSigma, vector<Double_t> &VecEg 
 
 
 
+void GetPi0BnGa(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow){
+
+
+  TString  Header;
+  TString  Ranges;
+  TString  Total ;
+  TString  Line  ;
+  //  TString  Reaction = "pion_00"; 
+  TString  Reaction = "pion_pd"; 
+  //  TString  obs = "cs";
+  TString  obs = "s";
+  TString  fixVar = "W";
+  TString  runVar ="z"; //"cosA"; z=cosA
+  Double_t W = ConvertToCME(Egamma);
+
+
+  //  Header = "http://pwa.hiskp.uni-bonn.de/obs_int_new1.pl?param02="+ Reaction + "&param03="+obs+ "_&param01=BG2014_02";
+  Header = "https://pwa.hiskp.uni-bonn.de/obs_int_gn.pl?param02="+ Reaction + "&param03="+obs+ "_&param01=BG2014_02";
+  Ranges = "&param04=" +fixVar+Form("&param05=%f",W)+ "&param12=1&param11=20&param10=" +runVar+Form("&param06=%f",ThLow) + Form("&param07=%f",ThHigh)+ "&param08=0&param09=0";
+  Total = Header + Ranges;
+  Line = "wget '"+Total+"' -O tmp/PageBnGa.txt";
+  gSystem->Exec(Line);
+
+
+
+
+}
+
+void GetBnGaSigmaFromFile(vector<Double_t>  &VecSigmaBnGa, vector<Double_t> &VecSigmaErrBnGa, vector<Double_t> &VecEgBnGa ,vector<Double_t> &VecEgErrBnGa ,vector<Double_t> &VecCosthBnGa ,vector<Double_t> &VecCosthErrBnGa, Double_t NThetaBins ,TString BnGaFileName ){
+
+
+  Double_t lineCount=0;
+  Double_t Sigma;
+  Double_t SigmaErr;
+  Double_t Eg;
+  Double_t EgErr;
+  Double_t Costh;
+  Double_t CosthErr;
+  std::ifstream inputFileBn(BnGaFileName);
+  std::string lineBn;
+  if (inputFileBn.is_open()){
+    while(getline(inputFileBn, lineBn) ){
+      if(lineCount<19 || lineCount>(19+2*NThetaBins)  ){
+        lineCount=lineCount+1;
+      }
+      else{
+        stringstream(lineBn)>>Costh >> Sigma;
+        VecSigmaBnGa.push_back(Sigma);
+        VecEgBnGa.push_back(0);
+        VecCosthBnGa.push_back(Costh);
+        VecSigmaErrBnGa.push_back(0.0001);
+        VecEgErrBnGa.push_back(10);
+        VecCosthErrBnGa.push_back(0.005);
+
+        lineCount=lineCount+1;
+
+      }
+
+    }
+  }
+  inputFileBn.close();
+
+
+
+
+}
+
+void GetPi0SAIDMoreBins(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow){
+
+
+  TString  Header;
+  TString  Ranges;
+  TString  Total ;
+  TString  Line  ;
+  //  TString  Reaction = "1"; //Choosing first reaction from (http://gwdac.phys.gwu.edu/analysis/pr_analysis.html) 1 is Pi0P can check in the saved webpage
+  TString  Reaction = "4"; //Choosing first reaction from (http://gwdac.phys.gwu.edu/analysis/pr_analysis.html) 1 is Pi0P can check in the saved webpage
+  TString  obs = "S";
+  TString  fixVar = "ELab";
+  TString  runVar = "cosA";
+
+  Double_t thetaStep = (ThHigh-ThLow)/(NThetaBins);
+
+  Header ="http://gwdac.phys.gwu.edu/cgi-bin/go3pr2?sl=CM12&rt=" + Reaction+ "&ot="+obs;
+  Ranges = "&iv="+runVar+ Form("&il=%f&ii=%f&iu=%f",ThLow,thetaStep,ThHigh)+ "&fv="+fixVar+Form("&fn=%f",Egamma);
+  Total =Header +  Ranges ;
+  Line = "wget '"+Total+"' -O tmp/PageSAIDMoreBins.txt";
+
+  gSystem->Exec(Line);
 
 
 
 
 
 
-///cgi-bin/maid1?switch=215&param2=1&param4=1&param50=3&value35=0&value36=1232&value37=30&value41=10&value42=180&param99=0&param11=1&param12=1&param13=1&param14=1&param15=1&param16=1&param17=1&param18=1&param19=1&param20=1&param21=1&param22=1&param23=1&param24=1&param25=1&param26=1&value11=1.0&value12=1.0&value13=1.0&value51=1.0&value52=1.0&value53=1.0&value54=1.0&value55=1.0&value56=1.0&value57=1.0&value58=1.0&value59=1.0&value60=1.0&value61=1.0&value62=1.0&value63=1.0&value64=1.0&value65=1.0&value66=1.0&value67=1.0&value68=1.0&value69=1.0&value70=1.0&value71=1.0&value72=1.0&value73=1.0&value74=1.0&value75=1.0&value76=1.0&value77=1.0&value78=1.0&value79=1.0&value80=1.0&value81=1.0&value82=1.0&value83=1.0&value84=1.0
+}  
+
+void GetSAIDSigmaFromFile(vector<Double_t>  &VecSigmaSAIDMB, vector<Double_t> &VecSigmaErrSAIDMB, vector<Double_t> &VecEgSAIDMB ,vector<Double_t> &VecEgErrSAIDMB ,vector<Double_t> &VecCosthSAIDMB ,vector<Double_t> &VecCosthErrSAIDMB, Double_t NThetaBins ,TString SAIDMBFileName ){
+
+
+  Double_t lineCount=0;
+  Double_t Sigma;
+  Double_t SigmaErr;
+  Double_t Eg;
+  Double_t EgErr;
+  Double_t Costh;
+  Double_t CosthErr;
+  std::ifstream inputFileBn(SAIDMBFileName);
+  std::string lineBn;
+  if (inputFileBn.is_open()){
+    while(getline(inputFileBn, lineBn) ){
+      if(lineCount<7 || lineCount>(7+NThetaBins)  ){
+        lineCount=lineCount+1;
+      }
+      else{
+        stringstream(lineBn)>>Costh >> Sigma;
+        VecSigmaSAIDMB.push_back(Sigma);
+        VecEgSAIDMB.push_back(0);
+        VecCosthSAIDMB.push_back(Costh);
+        VecSigmaErrSAIDMB.push_back(0.0001);
+        VecEgErrSAIDMB.push_back(10);
+        VecCosthErrSAIDMB.push_back(0.005);
+
+        lineCount=lineCount+1;
+
+
+      }
+
+    }
+  }
+  inputFileBn.close();
+
+
+
+
+
+}
+
+
+
+
 
 
 

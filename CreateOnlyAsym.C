@@ -17,7 +17,8 @@ void CreateOnlyAsym() {
 //  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0ResultNonStrictCutsOnlyTimingWsDariaSpecMom.root");
 
 //  TFile *outfile =new TFile("/w/work1/home/chris/HistoSelector/InvMassCutAsymsBinsProtonChannel.root","recreate");
-  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsPPi0ResultPoly2ndOrdMoreBinsFinalNewFit.root","recreate");
+////////  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsPPi0ResultPoly2ndOrdMoreBinsFinalNewFit.root","recreate");
+  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsPPi0ResultPoly2ndOrdMoreBinsFinalNewFitWithFluxCorrections.root","recreate");
 //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsPPi0ResultPoly2ndOrdSpecGreaterThan100.root","recreate");
 //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsPPi0ResultPoly2ndOrdSpecLessThan100.root","recreate");
 //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsPPi0ResultOnlyTimingWeights.root","recreate");
@@ -76,15 +77,37 @@ void CreateOnlyAsym() {
 	      TH1F* PolPos = (TH1F*)infile->Get(PolPosName);
 	      TH1F* hist = (TH1F*) histKey->ReadObj();
 	      //Give Asym a proper name and heading
-	      TH1* Asym = PolPos->GetAsymmetry(hist);  //CHANGE THIS TO USE SAME AS SIMON THE ENERGY CORRECTION
+/////	      TH1* Asym = PolPos->GetAsymmetry(hist);  //CHANGE THIS TO USE SAME AS SIMON THE ENERGY CORRECTION
 	  //    TF1* fit=new TF1("cos2phi","[0]+[1]*cos(TMath::DegToRad()*(2*x+[2]))",-180,180);
 	      TF1* fit=new TF1("cos2phi","[0]+[1]*TMath::Cos(TMath::DegToRad()*(2*x+[2]))",-180,180); //New FIT FEB 2019
 	      fit->SetParLimits(2,87.53,93.09);
-	      Asym->Fit("cos2phi");
+// Removed temp	      Asym->Fit("cos2phi");
 	      //Asym->Draw(); 
 	      Double_t MeanPolPos =  PolarPos->GetMean();
 	      Double_t MeanPolNeg =  PolarNeg->GetMean();
 	      Double_t AvePol = (MeanPolPos + MeanPolNeg)/2;
+
+
+		Double_t FluxNeg = hist->Integral();
+		Double_t FluxPos = PolPos->Integral();
+
+		//Method from Simons thesis
+	     
+
+	      PolPos->Scale(FluxNeg);   //FluxNeg*PolPos;  
+	      TH1F* YieldPos = PolPos;
+	      hist->Scale(FluxPos);
+	      TH1F*  YieldNeg =hist;  
+
+		TH1* YieldSub = YieldPos->Add(YieldNeg,-1);//THis changed yield pos
+		YieldPos->Scale(MeanPolNeg);
+		YieldNeg->Scale(MeanPolPos);
+
+//  	      TH1* FluxAdjAsym = YieldPos - YieldNeg/(MeanPolNeg*YieldPos + MeanPolPos*YieldNeg)  ;
+  	      TH1* FluxAdjAsym = YieldSub/(YieldPos + YieldNeg)  ;
+		FluxAdjAsym->Fit("cos2phi");
+
+
 	      Double_t Par1 = fit->GetParameter(1) ;
 	      Double_t Err1 =fit->GetParError(1) ;
 	 	if(AvePol==0)AvePol=0.0000000001;
@@ -102,7 +125,8 @@ void CreateOnlyAsym() {
 	      VecSigmaErr.push_back(Err1);
 	      VecCosth.push_back(CosthBin);
 	      VecCosthErr.push_back(0.1);
-	      Asym->Write();
+// removed temp	      Asym->Write();
+	      FluxAdjAsym->Write();
 	  //    hist->Write();
 	  //    PolPos->Write();
 	      PolarPos->Write();
