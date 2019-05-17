@@ -62,19 +62,24 @@ void ChrisHSHTMLComparison(){
 //  TString FitVariable="GammaAveTagDiffTime";
 
 
+//  TString FitName = "UnBinnedPhiOffsetParamFixedSaveAsym/";
+//  TString FitVariable="GammaAveTagDiffTime";
 
   Int_t Len = fileDir.Length();
   TString FitType=fileDir(Len-4,Len);
 
   gSystem->Setenv("FITNAME",FitName);
   gSystem->Setenv("FITVAR",FitVariable);
+  gSystem->Setenv("FITTYPE",FitType);
   cout << " Getting Fit Result  "<< FitName<< "for fit of " << FitVariable << endl;
-  gSystem->Exec("mkdir -p /home/chris/public_html/Meetings/outhtmlComparisonFits/Proton/$FITNAME$FITVAR"); 
+//  gSystem->Exec("mkdir -p /home/chris/public_html/Meetings/outhtmlComparisonFits/Proton/$FITTYPE$FITNAME$FITVAR"); 
+  gSystem->Exec("mkdir -p /home/chris/public_html/Meetings/outhtmlComparisonFits/Neutron/$FITTYPE$FITNAME$FITVAR"); 
 
 
 
   ofstream outHtml;
-  TString outDir="/home/chris/public_html/Meetings/outhtmlComparisonFits/Proton/"+FitName+FitVariable +"/";
+//  TString outDir="/home/chris/public_html/Meetings/outhtmlComparisonFits/Proton/"+FitType+FitName+FitVariable +"/";
+  TString outDir="/home/chris/public_html/Meetings/outhtmlComparisonFits/Neutron/"+FitType+FitName+FitVariable +"/";
   outHtml.open(outDir+"summary.html");
   TCanvas *can = new TCanvas("can","can",800,600);
   gStyle->SetOptFit();
@@ -134,6 +139,7 @@ void ChrisHSHTMLComparison(){
 
 
 
+//    TFile *ResultFile= TFile::Open(fileDir+"/"+FitName+"Results"+JobName+".root");//For Unbinned
     TFile *ResultFile= TFile::Open(fileDir+"/"+FitName+"Results"+JobName+".root");
     if(!ResultFile){
 	
@@ -141,7 +147,7 @@ void ChrisHSHTMLComparison(){
 	//can->SaveAs(outDir+imFileName);
 	//can->Clear();
 	gPad->SaveAs(outDir+imFileName);
-	TString DefaultImage = "../../../../stoneimage.gif" ;
+	TString DefaultImage = "../../../../../stoneimage.gif" ;
 //	TString DefaultImage = "~chris/Meetings/stoneimage.gif" ;
         outHtml << "<td><image src=\""+DefaultImage+"\" width=\"80%\"></image>" << endl;
 	continue;
@@ -165,6 +171,6 @@ void ChrisHSHTMLComparison(){
     outHtml << "<td><image src=\""+imFileName+"\" width=\"80%\"></image>" << endl;
 
   }
-*/
+
 }
  

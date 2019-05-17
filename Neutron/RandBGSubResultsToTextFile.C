@@ -6,7 +6,8 @@ void RandBGSubResultsToTextFile() {
 		
 //  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDNPi0ResultsNonStrictCutsAnalysis.root");
 //  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDNPi0ResultsNonStrictCutsSpecMomCutAnalysis.root");
-  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDNPi0ResultsStrictCutsSpecMomCutAnalysis.root");
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDNPi0ResultsStrictCutsSpecMomCutAnalysis.root");
+  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr252019/BGSUBBEDNPi0ResultsCutsAnalysisSimulationCutsWithCorrectNeutronAsOfApr2019TimingExtendedTo40SpecMomCutFixedSubRatio.root");
   string dirs[1] = {"SignalTiming"};
   vector<TString> histNames;
   vector<TString> phihistNames;
@@ -125,7 +126,8 @@ void RandBGSubResultsToTextFile() {
 std::ofstream textfile;
 //textfile.open("MyResultsBGSUBBEDNPi0NonStrictCutsAnalysis.txt",std::ios_base::app);
 //textfile.open("MyResultsBGSUBBEDNPi0NonStrictCutsSpecMomCutAnalysis.txt",std::ios_base::app);
-textfile.open("MyResultsBGSUBBEDNPi0StrictCutsSpecMomCutAnalysis.txt",std::ios_base::app);
+//textfile.open("MyResultsBGSUBBEDNPi0StrictCutsSpecMomCutAnalysis.txt",std::ios_base::app);
+textfile.open("MyResultsBGSUBBEDNPi0April25RunFixedSubRatio.txt",std::ios_base::app);
 
 for(Int_t ddd=0; ddd<VecAllSigma.size(); ddd++ ){
   textfile <<VecAllSigma[ddd]<<"  "<<VecAllSigmaErr[ddd]<<"  "<< VecAllEg[ddd]<<"  "<<VecAllEgErr[ddd]<<"  "<<VecAllCosth[ddd]<<"  "<<VecAllCosthErr[ddd]<<"  "<<VecFolder[ddd]<<endl;

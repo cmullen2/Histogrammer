@@ -7,9 +7,36 @@ void MakeSigmaGraph(vector<Double_t> sigma, vector<Double_t> error, vector<Doubl
 
 void RandBGSubCreateOnlyAsym() {
 		
-  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDPPi0StrictCutsDariaPhiRandBGSub.root");
-  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsBGSUBBEDPPi0StrictCutsDariaPhiRandBGSub.root","recreate");
-  string dirs[1] = {"SignalTiming"};
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDPPi0StrictCutsDariaPhiRandBGSub.root");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/AsymsBGSUBBEDPPi0StrictCutsDariaPhiRandBGSub.root","recreate");
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0PPi0CutResultsSimulationCutsApr2019TimingExtended40.root");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/AsymsBGSUBBEDPPi0PPi0CutResultsSimulationCutsApr2019TimingExtended40.root","recreate");
+
+
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN10To10.root");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/AsymsBGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN10To10.root","recreate");
+
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN30ToN10.root");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/AsymsBGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN30ToN10.root","recreate");
+
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2Coplan10To30.root");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/AsymsBGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2Coplan10To30.root","recreate");
+
+
+  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN30ToN10And10To30.root");
+  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/AsymsBGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN30ToN10And10To30.root","recreate");
+
+
+
+
+
+
+
+//  string dirs[1] = {"SignalTiming"};
+//  string dirs[1] = {"SignalTimingCoplanN10To10"};
+//  string dirs[1] = {"SignalTimingCoplanN30ToN10"};
+//  string dirs[1] = {"SignalTimingCoplan10To30"};
+  string dirs[1] = {"SignalTimingCoplanN30ToN10And10To30"};
   vector<TString> histNames;
   vector<TString> phihistNames;
   vector<Double_t> VecSigma;

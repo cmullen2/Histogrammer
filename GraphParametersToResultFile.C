@@ -104,7 +104,9 @@ void GraphParametersToResultFile(TString DirName, TString FitName,TString Var){
 
 
 std::ofstream textfile;
-textfile.open("MyResultsUnBinnedProtonSigma.txt",std::ios_base::app);
+//textfile.open("MyResultsUnBinnedProtonSigma.txt",std::ios_base::app);
+//textfile.open("MyResultsUnBinnedProtonSigmaScaleHalfToTwo.txt",std::ios_base::app);
+textfile.open("MyResultsUnBinnedProtonSigmaMay17th.txt",std::ios_base::app);
 
 for(Int_t ddd=0; ddd<VecAllSigma.size(); ddd++ ){
   textfile <<VecAllSigma[ddd]<<"  "<<VecAllSigmaErr[ddd]<<"  "<< VecAllEg[ddd]<<"  "<< VecAllEgErr[ddd]<<"  " <<VecAllCosth[ddd] <<"  " << VecAllCosthErr[ddd] <<endl;

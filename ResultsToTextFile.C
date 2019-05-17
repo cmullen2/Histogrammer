@@ -13,10 +13,12 @@ void ResultsToTextFile() {
 //  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0ResultStrictCutsOnlyTimingWs.root");
 //  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0ResultCutsAnalysis.root");
 //  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0ResultNonStrictCutsOnlyTimingWsSpecMomSpecMomCutRandBGSubDariaPhi.root");
-  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0StrictCutsDariaPhiRandBGSub.root");
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0StrictCutsDariaPhiRandBGSub.root");
+  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/PPi0ResultsCoplanFitsApr2019.root");
+
   //  string dirs[3] = {"BG","Sig", "Cut1"};
-//  string dirs[3] = {"Random","Sig", "Cut1"};
-  string dirs[3] = {"Random","TimeCoinc", "Cut1"};
+  string dirs[3] = {"Random","Sig", "Cut1"};
+//  string dirs[3] = {"Random","TimeCoinc", "Cut1"};
 //  string dirs[1] = { "Cut1"};
   //  string dirs[4] = {"NPipPi0","PPi0Pim","Sig", "Cut1"};
   vector<TString> histNames;
@@ -135,7 +137,8 @@ void ResultsToTextFile() {
 
 
 std::ofstream textfile;
-textfile.open("MyResultsNewStrictDariaPhi.txt",std::ios_base::app);
+//textfile.open("MyResultsNewStrictDariaPhi.txt",std::ios_base::app);
+textfile.open("MyResultsNewCoplanFitsApr2019.txt",std::ios_base::app);
 
 for(Int_t ddd=0; ddd<VecAllSigma.size(); ddd++ ){
   textfile <<VecAllSigma[ddd]<<"  "<<VecAllSigmaErr[ddd]<<"  "<< VecAllEg[ddd]<<"  "<<VecAllEgErr[ddd]<<"  "<<VecAllCosth[ddd]<<"  "<<VecAllCosthErr[ddd]<<"  "<<VecFolder[ddd]<<endl;

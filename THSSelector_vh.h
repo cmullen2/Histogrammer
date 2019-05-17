@@ -40,6 +40,12 @@ public :
    TTreeReaderValue<Double_t> Costh = {fReader, "Costh"};
    TTreeReaderValue<Double_t> SpecMom = {fReader, "SpecMom"};
    TTreeReaderValue<Double_t> Coplanarity = {fReader, "Coplanarity"};
+   TTreeReaderValue<Double_t> PionPhi = {fReader, "PionPhi"};
+   TTreeReaderValue<Double_t> PionTheta = {fReader, "PionTheta"};
+   TTreeReaderValue<Double_t> ProtonPhi = {fReader, "ProtonPhi"};
+   TTreeReaderValue<Double_t> ProtonTheta = {fReader, "ProtonTheta"};
+   TTreeReaderValue<Double_t> ProtonDetector = {fReader, "ProtonDetector"};
+   TTreeReaderValue<Double_t> MissMassPion = {fReader, "MissMassPion"};
    TTreeReaderValue<Double_t> BeamEnergy = {fReader, "BeamEnergy"};
    TTreeReaderValue<Double_t> W = {fReader, "W"};
    TTreeReaderValue<Double_t> InvMass = {fReader, "InvMass"};

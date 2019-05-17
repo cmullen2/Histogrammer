@@ -4,8 +4,21 @@
 
 void RandBGSubResultsToTextFile() {
 		
-  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDPPi0NonStrictCutsDariaPhiRandBGSub.root");
-  string dirs[1] = {"SignalTiming"};
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDPPi0NonStrictCutsDariaPhiRandBGSub.root");
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0PPi0CutResultsSimulationCutsApr2019TimingExtended40.root");
+ 
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN10To10.root");
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN30ToN10.root");
+//  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2Coplan10To30.root");
+  TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN30ToN10And10To30.root");
+
+
+
+//  string dirs[1] = {"SignalTiming"};
+//  string dirs[1] = {"SignalTimingCoplanN10To10"};
+//  string dirs[1] = {"SignalTimingCoplanN30ToN10"};
+//  string dirs[1] = {"SignalTimingCoplan10To30"};
+  string dirs[1] = {"SignalTimingCoplanN30ToN10And10To30"};
   vector<TString> histNames;
   vector<TString> phihistNames;
   vector<Double_t> VecSigma;
@@ -121,7 +134,11 @@ cout << phiHist << "   hPhi"<<endl;
 
 
 std::ofstream textfile;
-textfile.open("MyResultsNewBGSUBBEDNonStrictDariaPhi.txt",std::ios_base::app);
+//textfile.open("MyResultsNewBGSUBBEDApril25Run.txt",std::ios_base::app);
+//textfile.open("MyResultsNewBGSUBBEDMay10RunCoplanN10To10.txt",std::ios_base::app);
+//textfile.open("MyResultsNewBGSUBBEDMay10RunN30ToN10.txt",std::ios_base::app);
+//textfile.open("MyResultsNewBGSUBBEDMay10Run10To30.txt",std::ios_base::app);
+textfile.open("MyResultsNewBGSUBBEDMay10RunCoplanN30ToN10And10To30.txt",std::ios_base::app);
 
 for(Int_t ddd=0; ddd<VecAllSigma.size(); ddd++ ){
   textfile <<VecAllSigma[ddd]<<"  "<<VecAllSigmaErr[ddd]<<"  "<< VecAllEg[ddd]<<"  "<<VecAllEgErr[ddd]<<"  "<<VecAllCosth[ddd]<<"  "<<VecAllCosthErr[ddd]<<"  "<<VecFolder[ddd]<<endl;

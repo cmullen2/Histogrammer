@@ -3,7 +3,9 @@
 
 void PlotComparison() {
 		
-  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/CheckFits/ResultsPPi0UnBinnedVsStrictCutsVsCoplanFits.root","recreate");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/CheckFits/ResultsPPi0UnBinnedVsStrictCutsVsCoplanFits.root","recreate");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/CheckFits/ResultsPPi0UnBinnedScaleHalfToTwoVsUnBinned.root","recreate");
+  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/ResultsPPi0CutsApr25Vs.root","recreate");
   
 //  vector<Double_t> VecChrisSigma;
 //  vector<TString> VecChrisType;
@@ -25,6 +27,17 @@ void PlotComparison() {
   vector<Double_t> VecAllChrisSigmaErrUnBin;
   vector<Double_t> VecAllChrisEgErrUnBin;
   vector<Double_t> VecAllChrisCosthErrUnBin;
+
+// Unbinned fit results with Coplan Sig Scale set to 0.5 to 2 
+  vector<Double_t> VecAllChrisSigmaUnBinScale;
+  vector<Double_t> VecAllChrisEgUnBinScale;
+  vector<Double_t> VecAllChrisCosthUnBinScale;
+//  vector<TString> VecAllChrisTypeUnBin;
+  vector<Double_t> VecAllChrisSigmaErrUnBinScale;
+  vector<Double_t> VecAllChrisEgErrUnBinScale;
+  vector<Double_t> VecAllChrisCosthErrUnBinScale;
+
+
 
 //Binned Spectator momentum will need 8 of these, means need to adjust other scripts, Need a spearate script to read in the 8 spectator ones and separate them. Then load in 8 here.
 //0-50Mev
@@ -167,6 +180,17 @@ void PlotComparison() {
   vector<Double_t> VecAllChrisCosthErrCuts;
 
 
+	//CutsAnalysis April25 using wider timinng bg
+  vector<Double_t> VecAllChrisSigmaCutsApr;
+  vector<Double_t> VecAllChrisEgCutsApr;
+  vector<Double_t> VecAllChrisCosthCutsApr;
+  vector<TString> VecAllChrisTypeCutsApr;
+  vector<Double_t> VecAllChrisSigmaErrCutsApr;
+  vector<Double_t> VecAllChrisEgErrCutsApr;
+  vector<Double_t> VecAllChrisCosthErrCutsApr;
+
+
+
 	//NonStrictDariaPhiAnalysis
   vector<Double_t> VecAllChrisSigmaCutsNon;
   vector<Double_t> VecAllChrisEgCutsNon;
@@ -231,6 +255,18 @@ void PlotComparison() {
   Double_t AllChrisSigmaErrUnBin;
   Double_t AllChrisEgErrUnBin;
   Double_t AllChrisCosthErrUnBin;
+
+
+	//My UnBinned Results Scale0.5to2
+  Double_t AllChrisSigmaUnBinScale;
+  Double_t AllChrisEgUnBinScale;
+  Double_t AllChrisCosthUnBinScale;
+//  TString AllChrisTypeUnBin;
+  Double_t AllChrisSigmaErrUnBinScale;
+  Double_t AllChrisEgErrUnBinScale;
+  Double_t AllChrisCosthErrUnBinScale;
+
+
 
 	//Binned SpecMom
   Double_t AllChrisSigmaSpec;
@@ -365,6 +401,14 @@ void PlotComparison() {
   Double_t AllChrisCosthErrCuts;
 
 
+	//CutsAnalysisApr25
+  Double_t AllChrisSigmaCutsApr;
+  Double_t AllChrisEgCutsApr;
+  Double_t AllChrisCosthCutsApr;
+  TString AllChrisTypeCutsApr;
+  Double_t AllChrisSigmaErrCutsApr;
+  Double_t AllChrisEgErrCutsApr;
+  Double_t AllChrisCosthErrCutsApr;
 
 	//NonStrictCutsDariaPhiAnalysis
   Double_t AllChrisSigmaCutsNon;
@@ -441,6 +485,22 @@ void PlotComparison() {
       VecAllChrisSigmaErrUnBin.push_back(AllChrisSigmaErrUnBin);
       VecAllChrisEgErrUnBin.push_back(AllChrisEgErrUnBin);
       VecAllChrisCosthErrUnBin.push_back(AllChrisCosthErrUnBin);
+    }
+  }
+
+  //read in my unbinned results from text file
+  std::ifstream inputFileUnBinScale("Data/CutResultsUnBinnedProtonSigmaScaleHalfToTwo.txt");
+  std::string lineUnBinScale;
+  if (inputFileUnBinScale.is_open()){
+    while(getline(inputFileUnBinScale, lineUnBinScale) ){
+      stringstream(lineUnBinScale)>>AllChrisSigmaUnBinScale >>AllChrisSigmaErrUnBinScale>>AllChrisEgUnBinScale>>AllChrisEgErrUnBinScale >> AllChrisCosthUnBinScale>>AllChrisCosthErrUnBinScale; //>> AllChrisTypeUnBin;
+      VecAllChrisSigmaUnBinScale.push_back(AllChrisSigmaUnBinScale);
+      VecAllChrisEgUnBinScale.push_back(AllChrisEgUnBinScale);
+      VecAllChrisCosthUnBinScale.push_back(AllChrisCosthUnBinScale);
+//      VecAllChrisTypeUnBin.push_back(AllChrisTypeUnBin);
+      VecAllChrisSigmaErrUnBinScale.push_back(AllChrisSigmaErrUnBinScale);
+      VecAllChrisEgErrUnBinScale.push_back(AllChrisEgErrUnBinScale);
+      VecAllChrisCosthErrUnBinScale.push_back(AllChrisCosthErrUnBinScale);
     }
   }
 
@@ -678,6 +738,24 @@ void PlotComparison() {
   }
 
 
+
+  //read in CutsAnalysisApr25 results from text file
+  std::ifstream inputFileCutsApr("Data/CutResultsNewCutsBasedApr25Analysis.txt");
+  std::string lineCutsApr;
+  if (inputFileCutsApr.is_open()){
+    while(getline(inputFileCutsApr, lineCutsApr) ){
+      stringstream(lineCutsApr)>>AllChrisSigmaCutsApr >>AllChrisSigmaErrCutsApr>>AllChrisEgCutsApr>>AllChrisEgErrCutsApr >> AllChrisCosthCutsApr>>AllChrisCosthErrCutsApr>> AllChrisTypeCutsApr;
+      VecAllChrisSigmaCutsApr.push_back(AllChrisSigmaCutsApr);
+      VecAllChrisEgCutsApr.push_back(AllChrisEgCutsApr);
+      VecAllChrisCosthCutsApr.push_back(AllChrisCosthCutsApr);
+      VecAllChrisTypeCutsApr.push_back(AllChrisTypeCutsApr);
+      VecAllChrisSigmaErrCutsApr.push_back(AllChrisSigmaErrCutsApr);
+      VecAllChrisEgErrCutsApr.push_back(AllChrisEgErrCutsApr);
+      VecAllChrisCosthErrCutsApr.push_back(AllChrisCosthErrCutsApr);
+    }
+  }
+
+
   //read in CutsAnalysis results from text file
   std::ifstream inputFileCutsNon("Data/CutResultsNewNonStrictDariaPhi.txt");
   std::string lineCutsNon;
@@ -778,6 +856,14 @@ Double_t ArrEgUnBin[20];
 Double_t ArrSigmaErrUnBin[20];
 Double_t ArrCosthErrUnBin[20];
 Double_t ArrEgErrUnBin[20];
+
+	//My UnBinned Results Scale0.5to2
+Double_t ArrSigmaUnBinScale[20];
+Double_t ArrCosthUnBinScale[20];
+Double_t ArrEgUnBinScale[20];
+Double_t ArrSigmaErrUnBinScale[20];
+Double_t ArrCosthErrUnBinScale[20];
+Double_t ArrEgErrUnBinScale[20];
 
 	//My Results Spec Binned Cuts Analysis
 Double_t ArrSigmaSpec[20];
@@ -897,6 +983,16 @@ Double_t ArrSigmaErrCuts[20];
 Double_t ArrCosthErrCuts[20];
 Double_t ArrEgErrCuts[20];
 
+
+//CutsBasedAnalysisApr25
+Double_t ArrSigmaCutsApr[20];
+Double_t ArrCosthCutsApr[20];
+Double_t ArrEgCutsApr[20];
+Double_t ArrSigmaErrCutsApr[20];
+Double_t ArrCosthErrCutsApr[20];
+Double_t ArrEgErrCutsApr[20];
+
+
 //NonStrictCutsDariaPhiAnalysis
 Double_t ArrSigmaCutsNon[20];
 Double_t ArrCosthCutsNon[20];
@@ -960,6 +1056,14 @@ for(Int_t i=0;i<11;i++){//Number of eg bins*Number of folders(rand,sig,cut1) 41*
 	ArrSigmaErrUnBin[j] = VecAllChrisSigmaErrUnBin[j+i*20];
 	ArrCosthErrUnBin[j] = VecAllChrisCosthErrUnBin[j+i*20];
 	ArrEgErrUnBin[j] = VecAllChrisEgErrUnBin[j+i*20];
+
+	//MyUnBinnedResultsScale0.5To2
+	ArrSigmaUnBinScale[j] = VecAllChrisSigmaUnBinScale[j+i*20];
+	ArrCosthUnBinScale[j] = VecAllChrisCosthUnBinScale[j+i*20];
+	ArrEgUnBinScale[j] = VecAllChrisEgUnBinScale[j+i*20];
+	ArrSigmaErrUnBinScale[j] = VecAllChrisSigmaErrUnBinScale[j+i*20];
+	ArrCosthErrUnBinScale[j] = VecAllChrisCosthErrUnBinScale[j+i*20];
+	ArrEgErrUnBinScale[j] = VecAllChrisEgErrUnBinScale[j+i*20];
 
 	//MyResults SPecMom bins cuts analysis
 	ArrSigmaSpec[j] = VecAllChrisSigmaSpec[j+i*20];
@@ -1078,6 +1182,14 @@ for(Int_t i=0;i<11;i++){//Number of eg bins*Number of folders(rand,sig,cut1) 41*
 	ArrCosthErrCuts[j] = VecAllChrisCosthErrCuts[j+i*20];
 	ArrEgErrCuts[j] = VecAllChrisEgErrCuts[j+i*20];
 
+	// CutsBasedApr Analysis
+	ArrSigmaCutsApr[j] = VecAllChrisSigmaCutsApr[j+i*20];
+	ArrCosthCutsApr[j] = VecAllChrisCosthCutsApr[j+i*20];
+	ArrEgCutsApr[j] = VecAllChrisEgCutsApr[j+i*20];
+	ArrSigmaErrCutsApr[j] = VecAllChrisSigmaErrCutsApr[j+i*20];
+	ArrCosthErrCutsApr[j] = VecAllChrisCosthErrCutsApr[j+i*20];
+	ArrEgErrCutsApr[j] = VecAllChrisEgErrCutsApr[j+i*20];
+
 	// NonStrictCutsDariaPhi Analysis
 	ArrSigmaCutsNon[j] = VecAllChrisSigmaCutsNon[j+i*20];
 	ArrCosthCutsNon[j] = VecAllChrisCosthCutsNon[j+i*20];
@@ -1146,6 +1258,7 @@ TString PosName = Form("%f",ArrEg[0]) ;
 
 	TGraph* SigmaPlot=new TGraphErrors(20,ArrCosth,ArrSigma,ArrCosthErr,ArrSigmaErr);
 	TGraph* SigmaPlotUnBin=new TGraphErrors(20,ArrCosthUnBin,ArrSigmaUnBin,ArrCosthErrUnBin,ArrSigmaErrUnBin);
+	TGraph* SigmaPlotUnBinScale=new TGraphErrors(20,ArrCosthUnBinScale,ArrSigmaUnBinScale,ArrCosthErrUnBinScale,ArrSigmaErrUnBinScale);
 	TGraph* SigmaPlotSimon=new TGraphErrors(20,ArrCosthSimon,ArrSigmaSimon,ArrCosthSimonErr,ArrSigmaSimonErr);
 	TGraph* DivisionPlotSimon=new TGraph(20,ArrCosthSimon,ArrSigmaDiv);
 
@@ -1155,6 +1268,7 @@ TString PosName = Form("%f",ArrEg[0]) ;
 	TGraph* SigmaPlotStrict=new TGraphErrors(20,ArrCosthStrict,ArrSigmaStrict,ArrCosthErrStrict,ArrSigmaErrStrict);
 	TGraph* SigmaPlotInv=new TGraphErrors(20,ArrCosthInv,ArrSigmaInv,ArrCosthErrInv,ArrSigmaErrInv);
 	TGraph* SigmaPlotCuts=new TGraphErrors(20,ArrCosthCuts,ArrSigmaCuts,ArrCosthErrCuts,ArrSigmaErrCuts);
+	TGraph* SigmaPlotCutsApr=new TGraphErrors(20,ArrCosthCutsApr,ArrSigmaCutsApr,ArrCosthErrCutsApr,ArrSigmaErrCutsApr);
 	TGraph* SigmaPlotCutsNon=new TGraphErrors(20,ArrCosthCutsNon,ArrSigmaCutsNon,ArrCosthErrCutsNon,ArrSigmaErrCutsNon);
 	TGraph* SigmaPlotStrictDar=new TGraphErrors(20,ArrCosthStrictDar,ArrSigmaStrictDar,ArrCosthErrStrictDar,ArrSigmaErrStrictDar);
 
@@ -1180,6 +1294,7 @@ DivisionPlotSimon->SetMarkerColor(4);//blue
 
 SigmaPlot->SetMarkerStyle(22);//Filled triangle(black(default)
 SigmaPlotUnBin->SetMarkerStyle(29);//Filled triangle(black(default)
+SigmaPlotUnBinScale->SetMarkerStyle(29);//Filled triangle(black(default)
 SigmaPlotLess->SetMarkerStyle(29);//filled star(yellow)
 SigmaPlotGreater->SetMarkerStyle(31);//line star (like two crosses at 90deg to each other)(blue)
 SigmaPlotTiming->SetMarkerStyle(33);//diamond(light blue)
@@ -1188,6 +1303,7 @@ SigmaPlotStrictBG->SetMarkerStyle(29);//filled star(blue)
 SigmaPlotNonStrictBG->SetMarkerStyle(29);//filled star(blue)
 SigmaPlotStrictDar->SetMarkerStyle(22);//triangle(blue)
 SigmaPlotCuts->SetMarkerStyle(31);//line star(yellow)
+SigmaPlotCutsApr->SetMarkerStyle(31);//line star(yellow)
 SigmaPlotCutsNon->SetMarkerStyle(22);//filled triangle
 SigmaPlotInv->SetMarkerStyle(34);//Celtic cross(pink)
 
@@ -1245,6 +1361,7 @@ SigmaPlotSpec8->SetTitle("SpecMom350-400Mev");
 //1=black 2=red 3 = green 4=blue 5 =yellow 6 = pink 7=cyan
 //used black red cyan pink new
 SigmaPlotUnBin->SetMarkerColor(4);//(blue)
+SigmaPlotUnBinScale->SetMarkerColor(2);//(red)
 SigmaPlotLess->SetMarkerColor(5);//(yellow)
 SigmaPlotGreater->SetMarkerColor(4);//(blue)
 SigmaPlotTiming->SetMarkerColor(7);//light blue
@@ -1253,12 +1370,15 @@ SigmaPlotStrictBG->SetMarkerColor(3);// green
 SigmaPlotNonStrictBG->SetMarkerColor(5);//yellow
 SigmaPlotStrictDar->SetMarkerColor(6);// pink
 SigmaPlotCuts->SetMarkerColor(5);// blue
+SigmaPlotCutsApr->SetMarkerColor(5);// blue
 SigmaPlotCutsNon->SetMarkerColor(7);// light blue
 SigmaPlotInv->SetMarkerColor(6);//pink
 
 
 SigmaPlotUnBin->SetFillStyle(0);
 SigmaPlotUnBin->SetFillColor(0);
+SigmaPlotUnBinScale->SetFillStyle(0);
+SigmaPlotUnBinScale->SetFillColor(0);
 SigmaPlotLess->SetFillStyle(0);
 SigmaPlotLess->SetFillColor(0);
 SigmaPlotGreater->SetFillStyle(0);
@@ -1275,6 +1395,8 @@ SigmaPlotStrictDar->SetFillStyle(0);// pink
 SigmaPlotStrictDar->SetFillColor(0);// pink
 SigmaPlotCuts->SetFillStyle(0);// blue
 SigmaPlotCuts->SetFillColor(0);// blue
+SigmaPlotCutsApr->SetFillStyle(0);// blue
+SigmaPlotCutsApr->SetFillColor(0);// blue
 SigmaPlotCutsNon->SetFillStyle(0);// light blue
 SigmaPlotCutsNon->SetFillColor(0);// light blue
 SigmaPlotInv->SetFillStyle(0);//pink
@@ -1288,6 +1410,7 @@ DivisionPlotSimon->SetFillColor(0);//pink
 
 
 SigmaPlotUnBin->SetTitle("UnBinnedFit");
+SigmaPlotUnBinScale->SetTitle("UnBinnedFitScale");
 SigmaPlotLess->SetTitle("Less");
 SigmaPlotGreater->SetTitle("Greater");
 SigmaPlotTiming->SetTitle("Timing");//light blue
@@ -1297,6 +1420,7 @@ SigmaPlotNonStrictBG->SetTitle("NonStrictBG");//yellow
 //SigmaPlotStrictDar->SetTitle("StrictDar");// pink
 SigmaPlotStrictDar->SetTitle("StrictCuts");// pink
 SigmaPlotCuts->SetTitle("Cuts");// blue
+SigmaPlotCutsApr->SetTitle("CutsApr");// blue
 SigmaPlotCutsNon->SetTitle("CutsNon");// light blue
 SigmaPlotInv->SetTitle("Inv");//pink
 SigmaPlot->SetTitle("CoplanFits");//pink
@@ -1306,16 +1430,18 @@ DivisionPlotSimon->SetTitle("Division");//pink
 
 
 TMultiGraph* mg = new TMultiGraph();
-mg->Add(SigmaPlot);
+//mg->Add(SigmaPlot);
 mg->Add(SigmaPlotUnBin);
+mg->Add(SigmaPlotUnBinScale);
 //mg->Add(SigmaPlotLess);
 //mg->Add(SigmaPlotGreater);
 //mg->Add(SigmaPlotTiming);
 //mg->Add(SigmaPlotStrict);
-mg->Add(SigmaPlotStrictDar);
+//mg->Add(SigmaPlotStrictDar);
 //////mg->Add(SigmaPlotStrictBG);
 //////mg->Add(SigmaPlotNonStrictBG);
 //mg->Add(SigmaPlotCuts);
+//mg->Add(SigmaPlotCutsApr);
 //mg->Add(SigmaPlotCutsNon);
 //mg->Add(SigmaPlotInv);
 //mg->Add(SigmaPlotSimon);

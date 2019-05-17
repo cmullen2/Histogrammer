@@ -2,13 +2,24 @@
 
 
 //TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0StrictCutsDariaPhiRandBGSub.root");
-TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0NonStrictCutsDariaPhiRandBGSub.root");
+//TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0NonStrictCutsDariaPhiRandBGSub.root");
+//TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/PPi0CutResultsSimulationCutsApr2019TimingExtended40.root");
+TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/PPi0CutResultsMay2019CoplanBinningSystematicsV2.root");
 
 void RandBGSub() { 
  // TFile* ofile = new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDPPi0StrictCutsDariaPhiRandBGSub.root","recreate");	
-  TFile* ofile = new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDPPi0NonStrictCutsDariaPhiRandBGSub.root","recreate");	
+//  TFile* ofile = new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDPPi0NonStrictCutsDariaPhiRandBGSub.root","recreate");	
+//  TFile* ofile = new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0PPi0CutResultsSimulationCutsApr2019TimingExtended40.root","recreate");	
+//  TFile* ofile = new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN10To10.root","recreate");	
+//  TFile* ofile = new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN30ToN10.root","recreate");	
+//  TFile* ofile = new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2Coplan10To30.root","recreate");	
+  TFile* ofile = new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/BGSUBBEDPPi0CutResultsMay2019CoplanBinningSystematicsV2CoplanN30ToN10And10To30.root","recreate");	
 
-  string dirs[5] = {"Random","TimeCoinc", "Cut1","SignalTiming","BackgroundTiming"};
+//  string dirs[5] = {"Random","TimeCoinc", "Cut1","SignalTiming","BackgroundTiming"};
+//  string dirs[5] = {"Random","TimeCoinc", "Cut1","SignalTimingCoplanN10To10","BackgroundTimingCoplanN10To10"};
+//  string dirs[5] = {"Random","TimeCoinc", "Cut1","SignalTimingCoplanN30ToN10","BackgroundTimingCoplanN30ToN10"};
+//  string dirs[5] = {"Random","TimeCoinc", "Cut1","SignalTimingCoplan10To30","BackgroundTimingCoplan10To30"};
+  string dirs[5] = {"Random","TimeCoinc", "Cut1","SignalTimingCoplanN30ToN10And10To30","BackgroundTimingCoplanN30ToN10And10To30"};
 				
   TDirectory *weightsDir = infile->GetDirectory(dirs[3].c_str());	//WeightsDir is top lev folder
   TIter	nextTbinDir(weightsDir->GetListOfKeys());
@@ -40,7 +51,8 @@ void RandBGSub() {
 	  TString histBgName ="/" + dirs[4] + "/" + (TString)tbinDir->GetName()+ "/"  +  (TString)ebinDir->GetName() + "/" + (TString)polbinDir->GetName() + "/" + (TString)histKey->GetName() ;
    	  TH1F* histBg = (TH1F*)infile->Get(histBgName); 
 	  //Adding signal and bg histo based on ratio of two windows
-	  hist->Add(histBg,-1.0);
+//	  hist->Add(histBg,-1.0);
+	  hist->Add(histBg,-0.5);
 //	cout<< histKey->GetName() << " =signal  " <<endl; 
 //	cout<< histBgName << " =background  " <<endl; 
 	  hist->Write();  //Sort out file name and set up directory structure in outfile

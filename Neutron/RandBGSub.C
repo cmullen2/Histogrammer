@@ -3,10 +3,12 @@
 
 //TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/NPi0ResultsNonStrictCutsAnalysis.root");
 //TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/NPi0ResultsNonStrictCutsSpecMomCutAnalysis.root");
-TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/NPi0ResultsStrictCutsSpecMomCutAnalysis.root");
+//TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/NPi0ResultsStrictCutsSpecMomCutAnalysis.root");
+TFile *infile = TFile::Open("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr252019/NPi0ResultsCutsAnalysisSimulationCutsWithCorrectNeutronAsOfApr2019TimingExtendedTo40SpecMomCut.root");
 
 void RandBGSub() { 
-  TFile* ofile = new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDNPi0ResultsStrictCutsSpecMomCutAnalysis.root","recreate");	
+ // TFile* ofile = new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/BGSUBBEDNPi0ResultsStrictCutsSpecMomCutAnalysis.root","recreate");	
+  TFile* ofile = new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr252019/BGSUBBEDNPi0ResultsCutsAnalysisSimulationCutsWithCorrectNeutronAsOfApr2019TimingExtendedTo40SpecMomCutFixedSubRatio.root","recreate");	
 
   string dirs[3] = { "Cut1","SignalTiming","BackgroundTiming"};
 				
@@ -40,7 +42,8 @@ void RandBGSub() {
 	  TString histBgName ="/" + dirs[2] + "/" + (TString)tbinDir->GetName()+ "/"  +  (TString)ebinDir->GetName() + "/" + (TString)polbinDir->GetName() + "/" + (TString)histKey->GetName() ;
    	  TH1F* histBg = (TH1F*)infile->Get(histBgName); 
 	  //Adding signal and bg histo based on ratio of two windows
-	  hist->Add(histBg,-1.0);
+//	  hist->Add(histBg,-1.0);
+	  hist->Add(histBg,-0.5);
 //	cout<< histKey->GetName() << " =signal  " <<endl; 
 //	cout<< histBgName << " =background  " <<endl; 
 	  hist->Write();  //Sort out file name and set up directory structure in outfile

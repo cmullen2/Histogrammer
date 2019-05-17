@@ -8,7 +8,8 @@
   //Directory=>1 out file for every in file
   //file=> 1 total output file
   //HSout("/w/work1/home/chris/HistoSelector/InvMassCutBinsFixedCutsSameAsConfigBins2.root");
-  HSout("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0NonStrictCutsSpecMomBins.root");
+//  HSout("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0NewFitsScaleHalfToTwo.root");
+  HSout("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/PPi0CutResultsMay2019CoplanBinningSystematicsV2.root");
   
   //Set up the input chain to be analysed,could remove HSin() if you want
   TChain* tree=new TChain("HSParticles","datachain");

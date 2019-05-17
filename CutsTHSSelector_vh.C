@@ -65,6 +65,7 @@ void CutsTHSSelector_vh::SlaveBegin(TTree * /*tree*/)
 //    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/ProtonWeightsSum/OnlyTimingWeights/WeightsBothTotal.root","HSsWeights");
 //    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/ProtonWeightsSum/OnlyTimingAndInvMassWeights/WeightsBothTotal.root","HSsWeights");
 /////////    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/ProtonWeightsSum/OnlyTimingWeights/StrictCuts/WeightsBothTotal.root","HSsWeights");
+//    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/ProtonWeightsSum/OnlyTimingWeights/StrictCuts/WeightsBothTotal.root","HSsWeights");
   //Initialise the ouput tree
    //Only done once. THSOutput::FinishOutput Resets the tree before new files
    //If you want to save additional branches to a new file, do it here

@@ -41,11 +41,12 @@ void THSSelector_vh::Begin(TTree * /*tree*/)
 
    fBins=new THSBins("HSBins");
 //   fBins->AddAxis("BeamEnergy",41,100,920);
-   fBins->AddAxis("BeamEnergy",16,400,720);
+   fBins->AddAxis("BeamEnergy",24,240,720);
+///////////   fBins->AddAxis("BeamEnergy",16,400,720);
    fBins->AddAxis("Costh",20,-1,1);
    fBins->AddAxis("PolStateD",2,-1,1);
 //   fBins->AddAxis("Coplanarity",5,-50,50);
-   fBins->AddAxis("SpecMom",8,0,400);
+//   fBins->AddAxis("SpecMom",8,0,400);
    if(!fInput) fInput=new TList();
    fInput->Add(fBins); 
 }
@@ -69,6 +70,8 @@ void THSSelector_vh::SlaveBegin(TTree * /*tree*/)
 /////////    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/ProtonWeightsSum/OnlyTimingWeights/StrictCuts/WeightsBothTotal.root","HSsWeights");
 /////////    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/ProtonWeightsSum/OnlyTimingWeights/StrictCutsSpecMom/WeightsBothTotal.root","HSsWeights");
 //    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/ProtonWeightsSum/OnlyTimingWeights/NonStrictCutsSpecMom/WeightsBothTotal.root","HSsWeights");
+//    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/ProtonWeightsSum/CoplanPoly2ndOrder/ScaleHalfToTwo/WeightsBothTotal.root","HSsWeights");
+//////////////////////////    THSHisto::LoadWeights("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/Fitting/Pi0Analysis/MergeWeights/ProtonWeightsSum/CoplanPoly2ndOrder/Apr25NewSims/WeightsBothTotal.root","HSsWeights");
   //Initialise the ouput tree
    //Only done once. THSOutput::FinishOutput Resets the tree before new files
    //If you want to save additional branches to a new file, do it here
@@ -80,10 +83,22 @@ void THSSelector_vh::SlaveBegin(TTree * /*tree*/)
   //Initialise and configure histogramming
    THSHisto::InitialiseHisto(fInput);
    //Load histograms for each species that has a weight
-   THSHisto::LoadCutsForWeights(); //Loop over weights species and make weighted histograms for each
+//   THSHisto::LoadCutsForWeights(); //Loop over weights species and make weighted histograms for each
    THSHisto::LoadCut("Cut1");
    THSHisto::LoadCut("SignalTiming"); //From -5 to 5ns
    THSHisto::LoadCut("BackgroundTiming");//Two regions -20 to -30 and 20 to 30
+
+
+   THSHisto::LoadCut("SignalTimingCoplanN10To10"); //From -5 to 5ns
+   THSHisto::LoadCut("SignalTimingCoplanN30ToN10"); //From -5 to 5ns
+   THSHisto::LoadCut("SignalTimingCoplan10To30"); //From -5 to 5ns
+   THSHisto::LoadCut("SignalTimingCoplanN30ToN10And10To30"); //From -5 to 5ns
+
+   THSHisto::LoadCut("BackgroundTimingCoplanN10To10"); //From -5 to 5ns
+   THSHisto::LoadCut("BackgroundTimingCoplanN30ToN10"); //From -5 to 5ns
+   THSHisto::LoadCut("BackgroundTimingCoplan10To30"); //From -5 to 5ns
+   THSHisto::LoadCut("BackgroundTimingCoplanN30ToN10And10To30"); //From -5 to 5ns
+
    
  //  THSHisto::LoadCut("SignalWithPol0Cut");
    THSHisto::LoadHistograms();
@@ -115,8 +130,8 @@ Bool_t THSSelector_vh::Process(Long64_t entry)
  //  fWeight=0; //For unweighted histograms
    //if(fBins) fCurrBin=fBins->FindBin(var1,var2,...);//if fBins is defined need to give this meaningful arguments
   // if(fBins) fCurrBin=fBins->FindBin(*BeamEnergy,*Costh,*PolStateD,*Coplanarity);
-   if(fBins) fCurrBin=fBins->FindBin(*BeamEnergy,*Costh,*PolStateD,*SpecMom);
-//   if(fBins) fCurrBin=fBins->FindBin(*BeamEnergy,*Costh,*PolStateD);
+//   if(fBins) fCurrBin=fBins->FindBin(*BeamEnergy,*Costh,*PolStateD,*SpecMom);
+   if(fBins) fCurrBin=fBins->FindBin(*BeamEnergy,*Costh,*PolStateD);
 //   if(fBins) fCurrBin=fBins->FindBin(*PolStateD);
    FillHistograms("Cut1");
 
@@ -124,7 +139,25 @@ Bool_t THSSelector_vh::Process(Long64_t entry)
   fWeight=1;
   if(*GammaAveTagDiffTime>-5 && *GammaAveTagDiffTime<5)FillHistograms("SignalTiming");
 //  fWeight=-1/2;
-  if( (*GammaAveTagDiffTime>-30 && *GammaAveTagDiffTime<-20) )FillHistograms("BackgroundTiming");
+  if( (*GammaAveTagDiffTime>-30 && *GammaAveTagDiffTime<-20) || (*GammaAveTagDiffTime<30 && *GammaAveTagDiffTime>20) )FillHistograms("BackgroundTiming");
+
+
+
+  if(*GammaAveTagDiffTime>-5 && *GammaAveTagDiffTime<5 && *Coplanarity<10 && *Coplanarity>-10)FillHistograms("SignalTimingCoplanN10To10");
+  if(*GammaAveTagDiffTime>-5 && *GammaAveTagDiffTime<5 && *Coplanarity<-10 && *Coplanarity>-30)FillHistograms("SignalTimingCoplanN30ToN10");
+  if(*GammaAveTagDiffTime>-5 && *GammaAveTagDiffTime<5 && *Coplanarity<30 && *Coplanarity>10)FillHistograms("SignalTimingCoplan10To30");
+  if(  (*GammaAveTagDiffTime>-5 && *GammaAveTagDiffTime<5 && *Coplanarity<-10 && *Coplanarity>-30)  || (*GammaAveTagDiffTime>-5 && *GammaAveTagDiffTime<5 && *Coplanarity<30 && *Coplanarity>10)    )FillHistograms("SignalTimingCoplanN30ToN10And10To30");
+
+
+
+  if(    (*GammaAveTagDiffTime>-30 && *GammaAveTagDiffTime<-20 && *Coplanarity<10 && *Coplanarity>-10) ||   (*GammaAveTagDiffTime>20 && *GammaAveTagDiffTime<30 && *Coplanarity<10 && *Coplanarity>-10)   )FillHistograms("BackgroundTimingCoplanN10To10");
+  if(    (*GammaAveTagDiffTime>-30 && *GammaAveTagDiffTime<-20 && *Coplanarity<-10 && *Coplanarity>-30) ||  (*GammaAveTagDiffTime>20 && *GammaAveTagDiffTime<30 && *Coplanarity<-10 && *Coplanarity>-30)  )FillHistograms("BackgroundTimingCoplanN30ToN10");
+  if(    (*GammaAveTagDiffTime>-30 && *GammaAveTagDiffTime<-20 && *Coplanarity<30 && *Coplanarity>10) ||    (*GammaAveTagDiffTime>20 && *GammaAveTagDiffTime<30 && *Coplanarity<30 && *Coplanarity>10)   )FillHistograms("BackgroundTimingCoplan10To30");
+
+  if(    ( (*GammaAveTagDiffTime>-30 && *GammaAveTagDiffTime<-20 && *Coplanarity<-10 && *Coplanarity>-30)  || (*GammaAveTagDiffTime>-30 && *GammaAveTagDiffTime<-20 && *Coplanarity<30 && *Coplanarity>10) ) ||         ( (*GammaAveTagDiffTime>20 && *GammaAveTagDiffTime<30 && *Coplanarity<-10 && *Coplanarity>-30)  || (*GammaAveTagDiffTime>20 && *GammaAveTagDiffTime<30 && *Coplanarity<30 && *Coplanarity>10) )    )FillHistograms("BackgroundTimingCoplanN30ToN10And10To30");
+
+
+
 
 
 //   FillHistograms("SignalWithPol0Cut");
@@ -160,10 +193,10 @@ void THSSelector_vh::HistogramList(TString sLabel){
   //now define all histograms and add to Output
   //label includes kinematic bin and additional cut name
   // e.g fOutput->Add(MapHist(new TH1F("Mp1","M_{p1}",100,0,2)));
-  fOutput->Add(MapHist(new TH1F("MissMass","M_{miss}",100,1850,2200)));
+  fOutput->Add(MapHist(new TH1F("MissMass","M_{miss}",100,1850,2300)));
 //  fOutput->Add(MapHist(new TH1F("AlsoMissMass","M_{miss}",100,1850,2300)));
   fOutput->Add(MapHist(new TH1F("Phi","Phi",20,-180,180)));
-  fOutput->Add(MapHist(new TH1F("Timing","Timing",100,-80,20)));
+  fOutput->Add(MapHist(new TH1F("Timing","Timing",100,-80,50)));
   fOutput->Add(MapHist(new TH1F("Coplanarity","Coplanarity",100,-50,50)));
   fOutput->Add(MapHist(new TH1F("InvMass","InvMass_{Pi0}",100,75,200)));
   fOutput->Add(MapHist(new TH1F("SpectatorMomentum","SpectatorMomentum",100,0,400)));
@@ -175,6 +208,15 @@ void THSSelector_vh::HistogramList(TString sLabel){
   fOutput->Add(MapHist(new TH1F("BeamEnergy","BeamEnergy",300,0,1500)));
   fOutput->Add(MapHist(new TH1F("PolErrs","PolErrs",10,-2,2)));
   fOutput->Add(MapHist(new TH1F("WII","WII",100,-300,200)));
+
+
+
+  fOutput->Add(MapHist(new TH1F("PionPhi","PionPhi",100,-3.2,3.2)));
+  fOutput->Add(MapHist(new TH1F("PionTheta","PionTheta",100,0,3.2)));
+  fOutput->Add(MapHist(new TH1F("ProtonPhi","ProtonPhi",100,-3.2,3.2)));
+  fOutput->Add(MapHist(new TH1F("ProtonTheta","ProtonTheta",100,0,3.2)));
+  fOutput->Add(MapHist(new TH1F("ProtonDetector","ProtonDetector",100,0,50)));
+  fOutput->Add(MapHist(new TH1F("MissMassPion","MissMassPion",300,950,1500)));
 
   //2D histos
 //  fOutput->Add(MapHist(new TH2F("SpectatorMomentumVsMissMass","SpectatorMomentumVsMissMass",200,0,800,200,1850,2300)));
@@ -188,11 +230,11 @@ void THSSelector_vh::HistogramList(TString sLabel){
   fOutput->Add(MapHist(new TH2F("PolarisationVsW","PolarisationVsW",200,-1.1,1.1,200,950,2300)));
   fOutput->Add(MapHist(new TH2F("CosthVsW","CosthVsW",200,-1,1,200,950,2300)));
   fOutput->Add(MapHist(new TH2F("BeamEnergyVsW","BeamEnergyVsW",200,0,1600,200,950,2300)));
-
-  fOutput->Add(MapHist(new TH2F("CoplanarityVsTiming","CoplanarityVsTiming",200,-180,180,200,-100,0)));
-  fOutput->Add(MapHist(new TH2F("CoplanarityVsPhi","CoplanarityVsPhi",200,-180,180,200,-180,180)));
-  fOutput->Add(MapHist(new TH2F("TimingVsPhi","TimingVsPhi",200,-100,0,200,-180,180)));
 */
+//  fOutput->Add(MapHist(new TH2F("CoplanarityVsTiming","CoplanarityVsTiming",200,-180,180,200,-100,0)));
+  fOutput->Add(MapHist(new TH2F("CoplanarityVsPhi","CoplanarityVsPhi",200,-180,180,200,-180,180)));
+//  fOutput->Add(MapHist(new TH2F("TimingVsPhi","TimingVsPhi",200,-100,0,200,-180,180)));
+
 
   //end of histogram list
   //ParticleList("NAME"); //Create standard histograms for a THSParticle
@@ -204,16 +246,38 @@ void THSSelector_vh::FillHistograms(TString sCut){
 
 //if(*W>1040 &&  *Costh<0.8 ){
 //if(*MissMass< && *MissMass>){
+
+/*
 if(*InvMass<200 && *InvMass>80){
-  //if(*PolErrs==0){   //TAKEN OUT FOR LIN POL PRODCUTION DATA SYSTEMATICS
+  if(*PolErrs==0){   //TAKEN OUT FOR LIN POL PRODCUTION DATA SYSTEMATICS
 	if(*AnyErrs==0){
 		if(*TopoMine==1){
-			if(*BeamEnergy>0 && *BeamEnergy<1500){
+			//if(*BeamEnergy>240 && *BeamEnergy<1500){
+			if(*BeamEnergy>400 && *BeamEnergy<720){
 				if(*GammaAveTagDiffTime<20 && *GammaAveTagDiffTime>-80){
 					if(*Coplanarity<50 && *Coplanarity>-50){
-						if(*MissMass<2100 && *MissMass>1850){
+						if(*MissMass<2300 && *MissMass>1850){
 							if(*ConeAngle<0.5 ){
-							//	if(*SpecMom<200){
+
+*/
+
+
+
+//Cuts For CutsBAsed	
+if(*InvMass<160 && *InvMass>110){
+  if(*PolErrs==0){   //TAKEN OUT FOR LIN POL PRODCUTION DATA SYSTEMATICS
+	if(*AnyErrs==0){
+		if(*TopoMine==1){
+			//if(*BeamEnergy>240 && *BeamEnergy<1500){
+			if(*BeamEnergy>240 && *BeamEnergy<720){
+				if(*GammaAveTagDiffTime<40 && *GammaAveTagDiffTime>-80){
+					if(*Coplanarity<30 && *Coplanarity>-30){
+						if(*MissMass<2100 && *MissMass>1850){
+							if(*ConeAngle<0.3 ){
+								if(*SpecMom<200){
+
+
+
 					//	if(*Pol>0.04){
 
   //Get histogram from list
@@ -234,6 +298,15 @@ if(*InvMass<200 && *InvMass>80){
   FindHist("PolErrs")->Fill(*PolErrs,fWeight);
   FindHist("WII")->Fill(*WII,fWeight);
 
+
+  FindHist("PionPhi")->Fill(*PionPhi,fWeight);//1D
+  FindHist("PionTheta")->Fill(*PionTheta,fWeight);//1D
+  FindHist("ProtonPhi")->Fill(*ProtonPhi,fWeight);//1D
+  FindHist("ProtonTheta")->Fill(*ProtonTheta,fWeight);//1D
+  FindHist("ProtonDetector")->Fill(*ProtonDetector,fWeight);//1D
+  FindHist("MissMassPion")->Fill(*MissMassPion,fWeight);//1D
+
+
   //2D histos(Not allowed due to memory constraints)
 //  ((TH2F*)FindHist("SpectatorMomentumVsMissMass"))->Fill(*SpecMom,*MissMass,fWeight);
 /*  ((TH2F*)FindHist("MissMassVsW"))->Fill(*MissMass,*W,fWeight);
@@ -246,13 +319,13 @@ if(*InvMass<200 && *InvMass>80){
   ((TH2F*)FindHist("PolarisationVsW"))->Fill(*Pol,*W,fWeight);
   ((TH2F*)FindHist("CosthVsW"))->Fill(*Costh,*W,fWeight);
   ((TH2F*)FindHist("BeamEnergyVsW"))->Fill(*BeamEnergy,*W,fWeight);
-
-  ((TH2F*)FindHist("CoplanarityVsTiming"))->Fill(*Coplanarity,*GammaAveTagDiffTime,fWeight);
-  ((TH2F*)FindHist("CoplanarityVsPhi"))->Fill(*Coplanarity,*Phi,fWeight);
-  ((TH2F*)FindHist("TimingVsPhi"))->Fill(*GammaAveTagDiffTime,*Phi,fWeight);
 */
+//  ((TH2F*)FindHist("CoplanarityVsTiming"))->Fill(*Coplanarity,*GammaAveTagDiffTime,fWeight);
+  ((TH2F*)FindHist("CoplanarityVsPhi"))->Fill(*Coplanarity,*Phi,fWeight);
+//  ((TH2F*)FindHist("TimingVsPhi"))->Fill(*GammaAveTagDiffTime,*Phi,fWeight);
+
 //}
-//}//SpecMom Cut
+}//SpecMom Cut
 }//ConeAngleCut
 }//MissMassCut
 }//CoplanarityCut
@@ -260,7 +333,7 @@ if(*InvMass<200 && *InvMass>80){
 }//W cut
 }//Topo cut
 }//AnyErrs cut
-//}//PolErrs cut
+}//PolErrs cut
 }//InvMass cut
 //}//MissMass cut
 
