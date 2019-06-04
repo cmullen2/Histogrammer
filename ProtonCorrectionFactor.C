@@ -1,76 +1,25 @@
 #include <stdlib.h>
 #include <TString.h>
-
-// FIX SAID By getting -1->1 with 0.05 increments and only use either a curve/line or every second point(skip -1 but select -0.95)
-
-/*
-  void GetSigmaFromFile(vector<Double_t>  &VecSigma, vector<Double_t> &VecSigmaErr, vector<Double_t> &VecEg ,vector<Double_t> &VecEgErr ,vector<Double_t> &VecCosth ,vector<Double_t> &VecCosthErr, TString InFileName );
-  //void GetSigmaTheoryFromFile(vector<Double_t>  &VecSigma2, vector<Double_t> &VecCosth2,  TString InFileName2,  Double_t NThetaBins2 );
-  void GetSigmaTheoryFromFile(Double_t  ArrSigma2[], Double_t ArrCosth2[],  TString InFileName2,  Double_t NThetaBins2, Double_t IsTheoryMAID );
-
-  Double_t ConvertToCME(Double_t taggE);
-
-
-  void GetPi0SAIDDataResults(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow,Double_t EgammaHigh ,Double_t EgammaLow);  //Next Step MAID, and getting the right theory points, DONE
-  void GetPi0SAID(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow);  //Next Step MAID, and getting the right theory points, DONE
-  // get NPi0 cuts sorted using the sims and run cuts analysis,
-  //  do fits analysis,
-  //  do unbinned phi for both channels, 
-  //  get a correction factor for costheta0 bin from SAID for every bin from PPi0 and apply to NPi0,
-  //   then classification with the separate folder  
-  void GetPi0MAID(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow);
-  //void DecodePi0SAID(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow);
-  */
-
-
 //Read in data from 
 void GetSigmaFromFile(vector<Double_t>  &VecSigma, vector<Double_t> &VecSigmaErr, vector<Double_t> &VecEg ,vector<Double_t> &VecEgErr ,vector<Double_t> &VecCosth ,vector<Double_t> &VecCosthErr, TString InFileName );
-
 //Read in theory points from files
 void GetSigmaTheoryFromFile(Double_t  ArrSigma2[], Double_t ArrCosth2[],  TString InFileName2,  Double_t NThetaBins2, Double_t IsTheoryMAID );
 Double_t ConvertToCME(Double_t taggE);
-
 //Download theory files for SAID and MAID
 void GetPi0SAID(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow);  
 void GetPi0MAID(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow);
-
 //Simon results from SAID
 void GetPi0SAIDDataResults(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow,Double_t EgammaHigh ,Double_t EgammaLow);  
 void GetPreviousDataResults(TString InFileDataResults, Double_t EgammaBin);  
 void GetPreviousDataResultsSigmaFromFile(vector<Double_t>  &VecSigmaDR, vector<Double_t> &VecSigmaErrDR, vector<Double_t> &VecEgDR ,vector<Double_t> &VecEgErrDR ,vector<Double_t> &VecCosthDR ,vector<Double_t> &VecCosthErrDR, TString PrevDataFileName );
-
 //TheoryDataFromBnGa
 void GetPi0BnGa(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow);
 void GetBnGaSigmaFromFile(vector<Double_t>  &VecSigmaBnGa, vector<Double_t> &VecSigmaErrBnGa, vector<Double_t> &VecEgBnGa ,vector<Double_t> &VecEgErrBnGa ,vector<Double_t> &VecCosthBnGa ,vector<Double_t> &VecCosthErrBnGa, Double_t NThetaBins ,TString BnGaFileName );
-
 //Theory Data From SAID to use for comparison on plots
 void GetPi0SAIDMoreBins(Double_t Egamma, Double_t NThetaBins,Double_t ThHigh, Double_t ThLow);  
 void GetSAIDSigmaFromFile(vector<Double_t>  &VecSigmaSAIDMB, vector<Double_t> &VecSigmaErrSAIDMB, vector<Double_t> &VecEgSAIDMB ,vector<Double_t> &VecEgErrSAIDMB ,vector<Double_t> &VecCosthSAIDMB ,vector<Double_t> &VecCosthErrSAIDMB, Double_t NThetaBins ,TString SAIDMBFileName );
-
-
-void TestFuncArray() {
-		
-  // TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0SAIDCorrection10PercentCorrection.root","recreate");
-  //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/PPi0SimonAllPointsVsCoplanFits.root","recreate");
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/MeetingFeb28/DevPPi0CorrFactorV2.root","recreate");
-
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/MeetingFeb28/PPi0SimonVData.root","recreate");
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/MeetingFeb28/PPi0SimonVCorrData.root","recreate");
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/MeetingFeb28/PPi0SAIDVCorrData.root","recreate");
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/MeetingFeb28/PPi0SAIDVData.root","recreate");
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/MeetingFeb28/PPi0BnGaVData.root","recreate");
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/MeetingFeb28/PPi0BnGaVCorrData.root","recreate");
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/MeetingFeb28/PPi0AllPlotted.root","recreate");
-
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/SigmaPPi0CutsAnalysisCutResultsRawVTheory.root","recreate");
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/SigmaPPi0CutsAnalysisCorrectionVCorrection.root","recreate");
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/SigmaPPi0CutsAnalysisCorrectionVTheory.root","recreate");
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/SigmaPPi0CutsAnalysisRawVUnBinnedFitsVCoplanFits.root","recreate"); 
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/SigmaPPi0CutsAnalysisCorrectionVNewCoplanCorrection.root","recreate");
-//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/SigmaPPi0CutsAnalysisRawVUnBinnedFitsVCoplanFitsWithN10To10.root","recreate"); 
-//   TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/SigmaPPi0DetermingUnbinnedCorrFactor.root","recreate"); 
-   TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/DeleteWM.root","recreate"); 
-
+void ProtonCorrectionFactor() {
+  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestProtonApr252019/DeleteWMV2.root","recreate"); 
   Double_t TheoryThetaBinsDouble = 40;
   Double_t TheoryThetaBins = 20;
   Double_t TheoryThetaLowSAID = -1;
@@ -80,8 +29,7 @@ void TestFuncArray() {
   Double_t TheoryEgamma;
   Double_t TheoryEgammaHigh;
   Double_t TheoryEgammaLow;
-
-//Results from coplan fit then histograms May 6th 2019
+  //Results from coplan fit then histograms May 6th 2019
   vector<Double_t> VecAllChrisSigma;
   vector<Double_t> VecAllChrisEg;
   vector<Double_t> VecAllChrisCosth;
@@ -89,17 +37,15 @@ void TestFuncArray() {
   vector<Double_t> VecAllChrisSigmaErr;
   vector<Double_t> VecAllChrisEgErr;
   vector<Double_t> VecAllChrisCosthErr;
-
   //Binned Spectator momentum will need 8 of these, means need to adjust other scripts, Need a spearate script to read in the 8 spectator ones and separate them. Then load in 8 here.
   //0-50Mev
-  vector<Double_t> VecAllChrisSigmaSpec;
+/*  vector<Double_t> VecAllChrisSigmaSpec;
   vector<Double_t> VecAllChrisEgSpec;
   vector<Double_t> VecAllChrisCosthSpec;
   vector<TString> VecAllChrisTypeSpec;
   vector<Double_t> VecAllChrisSigmaErrSpec;
   vector<Double_t> VecAllChrisEgErrSpec;
   vector<Double_t> VecAllChrisCosthErrSpec;
-
   //Simons Results
   vector<Double_t> VecAllSimonSigma;
   vector<Double_t> VecAllSimonEg;
@@ -107,15 +53,13 @@ void TestFuncArray() {
   vector<Double_t> VecAllSimonSigmaErr;
   vector<Double_t> VecAllSimonEgErr;
   vector<Double_t> VecAllSimonCosthErr;
-
   //Simons Results WeightedMean
   vector<Double_t> VecAllSimonSigmaV2;
   vector<Double_t> VecAllSimonEgV2;
   vector<Double_t> VecAllSimonCosthV2;
   vector<Double_t> VecAllSimonSigmaErrV2;
   vector<Double_t> VecAllSimonEgErrV2;
-  vector<Double_t> VecAllSimonCosthErrV2;
-
+  vector<Double_t> VecAllSimonCosthErrV2;*/
   //Cuts Analysis Results Apr252019
   vector<Double_t> VecAllChrisSigmaCuts;
   vector<Double_t> VecAllChrisEgCuts;
@@ -123,7 +67,6 @@ void TestFuncArray() {
   vector<Double_t> VecAllChrisSigmaErrCuts;
   vector<Double_t> VecAllChrisEgErrCuts;
   vector<Double_t> VecAllChrisCosthErrCuts;
-
   //UnBinned Analysis Results May62019
   vector<Double_t> VecAllChrisSigmaUnbin;
   vector<Double_t> VecAllChrisEgUnbin;
@@ -131,9 +74,6 @@ void TestFuncArray() {
   vector<Double_t> VecAllChrisSigmaErrUnbin;
   vector<Double_t> VecAllChrisEgErrUnbin;
   vector<Double_t> VecAllChrisCosthErrUnbin;
-
-
-
   //My Results
   Double_t AllChrisSigma;
   Double_t AllChrisEg;
@@ -142,7 +82,6 @@ void TestFuncArray() {
   Double_t AllChrisSigmaErr;
   Double_t AllChrisEgErr;
   Double_t AllChrisCosthErr;
-
   //My Results CutsAnalysisApr25
   Double_t AllChrisSigmaCuts;
   Double_t AllChrisEgCuts;
@@ -151,7 +90,6 @@ void TestFuncArray() {
   Double_t AllChrisSigmaErrCuts;
   Double_t AllChrisEgErrCuts;
   Double_t AllChrisCosthErrCuts;
-
   //My Results UnBinAnalysisMay6
   Double_t AllChrisSigmaUnbin;
   Double_t AllChrisEgUnbin;
@@ -160,8 +98,7 @@ void TestFuncArray() {
   Double_t AllChrisSigmaErrUnbin;
   Double_t AllChrisEgErrUnbin;
   Double_t AllChrisCosthErrUnbin;
-
-  //Binned SpecMom
+/*  //Binned SpecMom
   Double_t AllChrisSigmaSpec;
   Double_t AllChrisEgSpec;
   Double_t AllChrisCosthSpec;
@@ -169,7 +106,6 @@ void TestFuncArray() {
   Double_t AllChrisSigmaErrSpec;
   Double_t AllChrisEgErrSpec;
   Double_t AllChrisCosthErrSpec;
-
   //Simon Results
   Double_t AllSimonSigma;
   Double_t AllSimonEg;
@@ -177,47 +113,34 @@ void TestFuncArray() {
   Double_t AllSimonSigmaErr;
   Double_t AllSimonEgErr;
   Double_t AllSimonCosthErr;
-	
   //Simon Results
   Double_t AllSimonSigmaV2;
   Double_t AllSimonEgV2;
   Double_t AllSimonCosthV2;
   Double_t AllSimonSigmaErrV2;
   Double_t AllSimonEgErrV2;
-  Double_t AllSimonCosthErrV2;
-
-
-
-
-  //  Double_t Eg1 =580 ;
-  //  Double_t NThetaBins = 20 ;
-  //  Double_t ThetaHigh =180 ;
-  //  Double_t ThetaLow =0 ;
-  // GetPi0SAID( Eg1, NThetaBins, ThetaHigh, ThetaLow);
-//  TString InFile = "Data/CutResultsNew.txt";
-  TString InFile = "Data/CutResultsNewCoplanFitsApr2019.txt";
+  Double_t AllSimonCosthErrV2;*/
+  //  TString InFile = "Data/CutResultsNew.txt";
+//  TString InFile = "Data/CutResultsNewCoplanFitsApr2019.txt";
+  TString InFile = "Data/Results410To710NewCoplanFitsApr2019.txt";
   GetSigmaFromFile( VecAllChrisSigma, VecAllChrisSigmaErr, VecAllChrisEg, VecAllChrisEgErr, VecAllChrisCosth,  VecAllChrisCosthErr,  InFile );
-
-//  TString InFileCuts = "Data/CutResultsNewBGSUBBEDApril25Run.txt";
-//  GetSigmaFromFile( VecAllChrisSigmaCuts, VecAllChrisSigmaErrCuts, VecAllChrisEgCuts, VecAllChrisEgErrCuts, VecAllChrisCosthCuts,  VecAllChrisCosthErrCuts,  InFileCuts );
-
-  TString InFileCuts = "Data/CutResultsNewBGSUBBEDMay10RunCoplanN10To10.txt";
+  //  TString InFileCuts = "Data/CutResultsNewBGSUBBEDApril25Run.txt";
+  //  GetSigmaFromFile( VecAllChrisSigmaCuts, VecAllChrisSigmaErrCuts, VecAllChrisEgCuts, VecAllChrisEgErrCuts, VecAllChrisCosthCuts,  VecAllChrisCosthErrCuts,  InFileCuts );
+//  TString InFileCuts = "Data/CutResultsNewBGSUBBEDMay10RunCoplanN10To10.txt";
+  TString InFileCuts = "Data/Results410To710NewBGSUBBEDMay10RunCoplanN10To10.txt";
   GetSigmaFromFile( VecAllChrisSigmaCuts, VecAllChrisSigmaErrCuts, VecAllChrisEgCuts, VecAllChrisEgErrCuts, VecAllChrisCosthCuts,  VecAllChrisCosthErrCuts,  InFileCuts );
-
-  TString InFileUnbin = "Data/CutResultsUnBinnedProtonSigmaMay6th.txt";
+//  TString InFileUnbin = "Data/CutResultsUnBinnedProtonSigmaMay6th.txt";
+//  TString InFileUnbin = "Data/Results410To710UnBinnedProtonSigmaMay17th.txt";
+  TString InFileUnbin = "Data/Results410To710UnBinnedProtonSigmaMay22nd.txt";
   GetSigmaFromFile( VecAllChrisSigmaUnbin, VecAllChrisSigmaErrUnbin, VecAllChrisEgUnbin, VecAllChrisEgErrUnbin, VecAllChrisCosthUnbin,  VecAllChrisCosthErrUnbin,  InFileUnbin );
-
+/*
   TString InFileSpec = "Data/CutResultsNewNonStrictSpecMomBins0to50Mev.txt";
   GetSigmaFromFile( VecAllChrisSigmaSpec, VecAllChrisSigmaErrSpec, VecAllChrisEgSpec, VecAllChrisEgErrSpec, VecAllChrisCosthSpec,  VecAllChrisCosthErrSpec,  InFileSpec);
-
-
   TString InFileSimon = "Data/NewSimonsResultsMyBins.txt";
   GetSigmaFromFile( VecAllSimonSigma, VecAllSimonSigmaErr, VecAllSimonEg, VecAllSimonEgErr, VecAllSimonCosth,  VecAllSimonCosthErr,  InFileSimon);
-
   TString InFileSimonV2 = "Data/Feb19NewSimonsResultsMyBins.txt";
   GetSigmaFromFile( VecAllSimonSigmaV2, VecAllSimonSigmaErrV2, VecAllSimonEgV2, VecAllSimonEgErrV2, VecAllSimonCosthV2,  VecAllSimonCosthErrV2,  InFileSimonV2);
-
-
+*/
   //My Results
   Double_t ArrSigma[20];
   Double_t ArrCosth[20];
@@ -225,8 +148,6 @@ void TestFuncArray() {
   Double_t ArrSigmaErr[20];
   Double_t ArrCosthErr[20];
   Double_t ArrEgErr[20];
-
-
   //My Results CutsAnalysisApr252019
   Double_t ArrSigmaCuts[20];
   Double_t ArrCosthCuts[20];
@@ -234,23 +155,20 @@ void TestFuncArray() {
   Double_t ArrSigmaErrCuts[20];
   Double_t ArrCosthErrCuts[20];
   Double_t ArrEgErrCuts[20];
-
- //My Results UnbinAnalysisMay6th2019
+  //My Results UnbinAnalysisMay6th2019
   Double_t ArrSigmaUnbin[20];
   Double_t ArrCosthUnbin[20];
   Double_t ArrEgUnbin[20];
   Double_t ArrSigmaErrUnbin[20];
   Double_t ArrCosthErrUnbin[20];
   Double_t ArrEgErrUnbin[20];
-
   //My Results Spec Binned Cuts Analysis
-  Double_t ArrSigmaSpec[20];
+/*  Double_t ArrSigmaSpec[20];
   Double_t ArrCosthSpec[20];
   Double_t ArrEgSpec[20];
   Double_t ArrSigmaErrSpec[20];
   Double_t ArrCosthErrSpec[20];
   Double_t ArrEgErrSpec[20];
-
   //Simons results
   Double_t ArrSigmaSimon[20];
   Double_t ArrSigmaDiv[20];
@@ -260,7 +178,6 @@ void TestFuncArray() {
   Double_t ArrSigmaDivErr[20];  //Need to think about computing this! Or set to zero for now.
   Double_t ArrCosthSimonErr[20];
   Double_t ArrEgSimonErr[20];
-
   //Simons results
   Double_t ArrSigmaSimonV2[20];
   Double_t ArrSigmaDivV2[20];
@@ -269,13 +186,9 @@ void TestFuncArray() {
   Double_t ArrSigmaSimonErrV2[20];
   Double_t ArrSigmaDivErrV2[20];  //Need to think about computing this! Or set to zero for now.
   Double_t ArrCosthSimonErrV2[20];
-  Double_t ArrEgSimonErrV2[20];
-
-
-
-  for(Int_t i=0;i<11;i++){//Number of eg bins*Number of folders(rand,sig,cut1) 41*3
+  Double_t ArrEgSimonErrV2[20];*/
+  for(Int_t i=0;i<16;i++){//Number of eg bins*Number of folders(rand,sig,cut1) 41*3
     for(Int_t j=0;j<20;j++){
-
       //MyResults
       ArrSigma[j] = VecAllChrisSigma[j+i*20];
       ArrCosth[j] = VecAllChrisCosth[j+i*20];
@@ -283,7 +196,6 @@ void TestFuncArray() {
       ArrSigmaErr[j] = VecAllChrisSigmaErr[j+i*20];
       ArrCosthErr[j] = VecAllChrisCosthErr[j+i*20];
       ArrEgErr[j] = VecAllChrisEgErr[j+i*20];
-
       //MyResults CutsAnalysisApr252019
       ArrSigmaCuts[j] = VecAllChrisSigmaCuts[j+i*20];
       ArrCosthCuts[j] = VecAllChrisCosthCuts[j+i*20];
@@ -291,7 +203,6 @@ void TestFuncArray() {
       ArrSigmaErrCuts[j] = VecAllChrisSigmaErrCuts[j+i*20];
       ArrCosthErrCuts[j] = VecAllChrisCosthErrCuts[j+i*20];
       ArrEgErrCuts[j] = VecAllChrisEgErrCuts[j+i*20];
-
       //MyResults UnbinAnalysisMay6th2019
       ArrSigmaUnbin[j] = VecAllChrisSigmaUnbin[j+i*20];
       ArrCosthUnbin[j] = VecAllChrisCosthUnbin[j+i*20];
@@ -299,16 +210,13 @@ void TestFuncArray() {
       ArrSigmaErrUnbin[j] = VecAllChrisSigmaErrUnbin[j+i*20];
       ArrCosthErrUnbin[j] = VecAllChrisCosthErrUnbin[j+i*20];
       ArrEgErrUnbin[j] = VecAllChrisEgErrUnbin[j+i*20];
-
-
       //MyResults SPecMom bins cuts analysis
-      ArrSigmaSpec[j] = VecAllChrisSigmaSpec[j+i*20];
+/*      ArrSigmaSpec[j] = VecAllChrisSigmaSpec[j+i*20];
       ArrCosthSpec[j] = VecAllChrisCosthSpec[j+i*20];
       ArrEgSpec[j] = VecAllChrisEgSpec[j+i*20];
       ArrSigmaErrSpec[j] = VecAllChrisSigmaErrSpec[j+i*20];
       ArrCosthErrSpec[j] = VecAllChrisCosthErrSpec[j+i*20];
       ArrEgErrSpec[j] = VecAllChrisEgErrSpec[j+i*20];
-
       //Simons Results
       ArrSigmaSimon[j] = VecAllSimonSigma[j+i*20];
       ArrCosthSimon[j] = VecAllSimonCosth[j+i*20];
@@ -316,7 +224,6 @@ void TestFuncArray() {
       ArrSigmaSimonErr[j] = VecAllSimonSigmaErr[j+i*20];
       ArrCosthSimonErr[j] = VecAllSimonCosthErr[j+i*20];
       ArrEgSimonErr[j] = VecAllSimonEgErr[j+i*20];
-
       //Simons Results
       ArrSigmaSimonV2[j] = VecAllSimonSigmaV2[j+i*20];
       ArrCosthSimonV2[j] = VecAllSimonCosthV2[j+i*20];
@@ -324,7 +231,6 @@ void TestFuncArray() {
       ArrSigmaSimonErrV2[j] = VecAllSimonSigmaErrV2[j+i*20];
       ArrCosthSimonErrV2[j] = VecAllSimonCosthErrV2[j+i*20];
       ArrEgSimonErrV2[j] = VecAllSimonEgErrV2[j+i*20];
-
       if(VecAllSimonSigma[j+i*20]!=0){
 	ArrSigmaDiv[j] = VecAllChrisSigma[j+i*20]/VecAllSimonSigma[j+i*20]; 
       }
@@ -337,27 +243,11 @@ void TestFuncArray() {
       }
       else{
         ArrSigmaDivV2[j]=0;
-      }
-
-
+      }*/
       TheoryEgamma= VecAllChrisEg[j+i*20];
-//      TheoryEgammaHigh= VecAllChrisEg[j+i*20] +10;
-//      TheoryEgammaLow= VecAllChrisEg[j+i*20] -10;
       TheoryEgammaHigh= VecAllChrisEg[j+i*20] +2.5;
       TheoryEgammaLow= VecAllChrisEg[j+i*20] -2.5;
     }
-
-
-
-
-
-
-    //    vector<Double_t> VecSigmaSAID;
-    //    vector<Double_t> VecSigmaErrSAID;
-    //    vector<Double_t> VecEgSAID;
-    //    vector<Double_t> VecEgErrSAID;
-    //    vector<Double_t> VecCosthSAID;
-    //    vector<Double_t> VecCosthErrSAID;
     Double_t ArrSigmaSAID[20];
     Double_t ArrSigmaSAIDDiv[20];
     Double_t ArrSigmaSAIDCutsDiv[20];
@@ -366,10 +256,6 @@ void TestFuncArray() {
     Double_t ArrCosthSAID[20];
     TString InFileNameSAID = "tmp/PageSAID.txt";
     Double_t IsSAID=0;
-
-
-    //    Double_t ArrSigmaBnGa[20];
-    //    Double_t ArrCosthBnGa[20];
     TString InFileNameBnGa = "tmp/PageBnGa.txt";
     vector<Double_t> VecSigmaBnGa;
     vector<Double_t> VecSigmaErrBnGa;
@@ -377,9 +263,6 @@ void TestFuncArray() {
     vector<Double_t> VecEgErrBnGa;
     vector<Double_t> VecCosthBnGa;
     vector<Double_t> VecCosthErrBnGa;
-    //    Double_t IsBnGa=2;
-
-
     TString InFileNameSAIDMB = "tmp/PageSAIDMoreBins.txt";
     vector<Double_t> VecSigmaSAIDMB;
     vector<Double_t> VecSigmaErrSAIDMB;
@@ -387,7 +270,6 @@ void TestFuncArray() {
     vector<Double_t> VecEgErrSAIDMB;
     vector<Double_t> VecCosthSAIDMB;
     vector<Double_t> VecCosthErrSAIDMB;
-
     Double_t ArrSigmaMAID[20];
     Double_t ArrSigmaMAIDNew[20];
     Double_t ArrSigmaMAIDDiv[20];
@@ -395,7 +277,6 @@ void TestFuncArray() {
     Double_t ArrCosthMAIDNew[20];
     TString InFileNameMAID = "tmp/PageMAID.txt";
     Double_t IsMAID=1;
-
     TString InFileNameSAIDData = "tmp/PageSAIDDataResults.txt";
     vector<Double_t> VecSigmaGA;
     vector<Double_t> VecSigmaErrGA;
@@ -403,43 +284,28 @@ void TestFuncArray() {
     vector<Double_t> VecEgErrGA;
     vector<Double_t> VecCosthGA;
     vector<Double_t> VecCosthErrGA;
-
     TString PrevDataDir;
     TString PrevDataDir1 ="tmp/PreviousData/" ;
     TString PrevDataFileNameGA;
     PrevDataDir = PrevDataDir1 + Form("%f",TheoryEgamma)+"/"; //+ ".000000/";
     PrevDataFileNameGA = PrevDataDir + "GA\(16\).txt";
     cout << TheoryEgamma <<"YASDASJDJASJDJASNDJNASNDNASNDNSA" << endl;
-
     Double_t ArrSigmaMineCorrectedMAID[20];
     Double_t ArrSigmaMineCorrectedSAID[20];
     Double_t ArrSigmaMineCorrectedSAIDCuts[20];
     Double_t ArrSigmaMineCorrectedSAIDUnBin[20];
-
-
-
     //GetSAID Predictions
     GetPi0SAID( TheoryEgamma,  TheoryThetaBins, TheoryThetaHighSAID, TheoryThetaLowSAID);
-    //    GetSigmaTheoryFromFile(VecSigmaSAID, VecCosthSAID ,  InFileNameSAID,  TheoryThetaBins);
     GetSigmaTheoryFromFile(ArrSigmaSAID, ArrCosthSAID ,  InFileNameSAID,  TheoryThetaBins,IsSAID);
-
     //GetMAID predictions //MAID File gives me 21 for some reason, fix later,removed last(180) point for now
     GetPi0MAID( TheoryEgamma,  TheoryThetaBins, TheoryThetaHighMAID, TheoryThetaLowMAID);
-    //   IsMAID=1;
     GetSigmaTheoryFromFile(ArrSigmaMAID, ArrCosthMAID ,  InFileNameMAID,  TheoryThetaBins,IsMAID);
-
-
     //GetBonnGatchina Predictions
     GetPi0BnGa( TheoryEgamma,  TheoryThetaBins, TheoryThetaHighSAID, TheoryThetaLowSAID);
-    //    GetSigmaTheoryFromFile(ArrSigmaBnGa, ArrCosthBnGa ,  InFileNameBnGa,  TheoryThetaBins,IsBnGa);
     GetBnGaSigmaFromFile( VecSigmaBnGa, VecSigmaErrBnGa,VecEgBnGa ,VecEgErrBnGa ,VecCosthBnGa ,VecCosthErrBnGa, TheoryThetaBins, InFileNameBnGa );
-
     //Get SAID More Bins Prediction
     GetPi0SAIDMoreBins( TheoryEgamma,  TheoryThetaBinsDouble, TheoryThetaHighSAID, TheoryThetaLowSAID);
     GetSAIDSigmaFromFile( VecSigmaSAIDMB, VecSigmaErrSAIDMB,VecEgSAIDMB, VecEgErrSAIDMB ,VecCosthSAIDMB ,VecCosthErrSAIDMB, TheoryThetaBinsDouble, InFileNameSAIDMB );
-
-
-
     //Fill arrays for bnga
     Int_t NumBnGaPts = VecSigmaBnGa.size();
     Double_t ArrSigmaBnGa[NumBnGaPts];
@@ -448,7 +314,6 @@ void TestFuncArray() {
     Double_t ArrEgErrBnGa[NumBnGaPts];
     Double_t ArrCosthBnGa[NumBnGaPts];
     Double_t ArrCosthErrBnGa[NumBnGaPts];
-
     for(Int_t vv=0; vv<VecSigmaBnGa.size();vv++){
       ArrSigmaBnGa[vv] = VecSigmaBnGa[vv];
       ArrSigmaErrBnGa[vv] = VecSigmaErrBnGa[vv];
@@ -457,7 +322,6 @@ void TestFuncArray() {
       ArrCosthBnGa[vv] = VecCosthBnGa[vv];
       ArrCosthErrBnGa[vv] = VecCosthErrBnGa[vv];
     }
-
     //Fill arrays for said more bins
     Int_t NumSAIDMBPts = VecSigmaSAIDMB.size();
     Double_t ArrSigmaSAIDMB[NumSAIDMBPts];
@@ -466,7 +330,6 @@ void TestFuncArray() {
     Double_t ArrEgErrSAIDMB[NumSAIDMBPts];
     Double_t ArrCosthSAIDMB[NumSAIDMBPts];
     Double_t ArrCosthErrSAIDMB[NumSAIDMBPts];
-
     for(Int_t vv=0; vv<VecSigmaSAIDMB.size();vv++){
       ArrSigmaSAIDMB[vv] = VecSigmaSAIDMB[vv];
       ArrSigmaErrSAIDMB[vv] = VecSigmaErrSAIDMB[vv];
@@ -475,25 +338,17 @@ void TestFuncArray() {
       ArrCosthSAIDMB[vv] = VecCosthSAIDMB[vv];
       ArrCosthErrSAIDMB[vv] = VecCosthErrSAIDMB[vv];
     }
-
-
-
-
     //Get the Data that SAID uses for this bin since do not have simons data in Glasgow
     GetPi0SAIDDataResults( TheoryEgamma,  TheoryThetaBins, TheoryThetaHighSAID, TheoryThetaLowSAID,TheoryEgammaHigh,TheoryEgammaLow);
     GetPreviousDataResults(InFileNameSAIDData,TheoryEgamma );
     GetPreviousDataResultsSigmaFromFile( VecSigmaGA, VecSigmaErrGA,VecEgGA ,VecEgErrGA ,VecCosthGA ,VecCosthErrGA, PrevDataFileNameGA );
-
-
     Int_t a = VecSigmaGA.size();
-    //   cout <<a << endl;
     Double_t ArrSigmaPrevDataGA[a];
     Double_t ArrSigmaErrPrevDataGA[a];
     Double_t ArrEgPrevDataGA[a];
     Double_t ArrEgErrPrevDataGA[a];
     Double_t ArrCosthPrevDataGA[a];
     Double_t ArrCosthErrPrevDataGA[a];
-
     for(Int_t ff=0; ff<VecSigmaGA.size();ff++){
       ArrSigmaPrevDataGA[ff] = VecSigmaGA[ff];
       ArrSigmaErrPrevDataGA[ff] = VecSigmaErrGA[ff];
@@ -502,100 +357,105 @@ void TestFuncArray() {
       ArrCosthPrevDataGA[ff] = VecCosthGA[ff];
       ArrCosthErrPrevDataGA[ff] = VecCosthErrGA[ff];
     }
-
-
-
-
-
     for(Int_t j=0;j<20;j++){
-
-      if(VecAllChrisSigma[j+i*20]!=0){
-	//      if(ArrSigmaSAID[j]!=0){
+      if(VecAllChrisSigmaUnbin[j+i*20]!=0){
 	ArrSigmaSAIDDiv[j] = ArrSigmaSAID[j]/VecAllChrisSigma[j+i*20]; 
 	ArrSigmaSAIDCutsDiv[j] = ArrSigmaSAID[j]/VecAllChrisSigmaCuts[j+i*20]; 
 	ArrSigmaSAIDUnBinDiv[j] = ArrSigmaSAID[j]/VecAllChrisSigmaUnbin[j+i*20]; 
+	cout << j << "     Test " <<  ArrSigmaSAID[j]<< "    " << VecAllChrisSigmaUnbin[j+i*20]<<"      "<< ArrSigmaSAIDUnBinDiv[j]   << endl;
+
+
 	ArrSigmaSAIDUnBinDivErr[j] = VecAllChrisSigmaErrUnbin[j+i*20]/VecAllChrisSigmaUnbin[j+i*20]; 
-	//	ArrSigmaSAIDDiv[j] = VecAllChrisSigma[j+i*20]/ArrSigmaSAID[j]; 
-	//	ArrSigmaSAIDDiv[j] = VecAllChrisSigma[j+i*20]/( (ArrSigmaSAID[5]+ArrSigmaSAID[6]+ArrSigmaSAID[7]+ArrSigmaSAID[8]+ArrSigmaSAID[9]) /5); //New method Feb19
       }
       else{
 	ArrSigmaSAIDDiv[j]=0;
       }
-
-	
       //Convert ArrCosthMAID to Costh from theta and reverse the ordering in both arrays
       ArrCosthMAIDNew[j] = TMath::Cos( TMath::DegToRad()*  (ArrCosthMAID[19-j] ) );
       ArrSigmaMAIDNew[j] = ArrSigmaMAID[19-j];
-
       if(ArrSigmaMAIDNew[j]!=0){
 	ArrSigmaMAIDDiv[j] = VecAllChrisSigma[j+i*20]/ArrSigmaMAIDNew[j]; 
-	//	ArrSigmaMAIDDiv[j] = VecAllChrisSigma[j+i*20]/ArrSigmaMAIDNew[j]; //New method feb19 to use 0->-0.5 average
       }
       else{
 	ArrSigmaMAIDDiv[j]=0;
       }
-
     }
-
     //May Overwrite every iter Probs need to close every cos iter
     std::ofstream textfile;
-    textfile.open("SAIDProtonCorrectionFactor.txt",std::ios_base::app);
-
-
+    textfile.open("PCSAIDProtonCorrectionFactor.txt",std::ios_base::app);
     std::ofstream textfileCuts;
-    textfileCuts.open("SAIDProtonCorrectionFactorCuts.txt",std::ios_base::app);
-
+    textfileCuts.open("PCSAIDProtonCorrectionFactorCuts.txt",std::ios_base::app);
     std::ofstream textfileUnBin;
-    textfileUnBin.open("SAIDProtonCorrectionFactorUnBin.txt",std::ios_base::app);
-
-    for(Int_t j=0;j<20;j++){
-
-      //      ArrSigmaMineCorrectedMAID[j]=VecAllChrisSigma[j+i*20]/ArrSigmaMAIDDiv[10];
-      //      ArrSigmaMineCorrectedSAID[j]=VecAllChrisSigma[j+i*20]/ArrSigmaSAIDDiv[10] ;
-      //      textfile << ArrSigmaSAIDDiv[j] <<"  " << VecAllChrisEg[j+i*20]  <<"  " << VecAllChrisCosth[j+i*20] <<endl;
+    textfileUnBin.open("PCSAIDProtonCorrectionFactorUnBin.txt",std::ios_base::app);
+    std::ofstream textfileUnBinFinalResults;
+//    textfileUnBinFinalResults.open("ProtonCorrectedByFittingUnBinResults410To710UnBinnedProtonSigmaMay22nd.txt",std::ios_base::app);
+    textfileUnBinFinalResults.open("ProtonCorrectedUnBinResults410To710UnBinnedProtonSigmaMay22nd.txt",std::ios_base::app);
 
 
-      ArrSigmaMineCorrectedMAID[j]=VecAllChrisSigma[j+i*20]/( 1.1 );
-
-      ArrSigmaMineCorrectedSAID[j]=VecAllChrisSigma[j+i*20]*(   (ArrSigmaSAIDDiv[5]+ ArrSigmaSAIDDiv[6] +ArrSigmaSAIDDiv[7] + ArrSigmaSAIDDiv[8] +ArrSigmaSAIDDiv[9]   )/5 );
-
-      ArrSigmaMineCorrectedSAIDCuts[j]=VecAllChrisSigmaCuts[j+i*20]*(   (ArrSigmaSAIDCutsDiv[5]+ ArrSigmaSAIDCutsDiv[6] +ArrSigmaSAIDCutsDiv[7] + ArrSigmaSAIDCutsDiv[8] +ArrSigmaSAIDCutsDiv[9]   )/5 );
-
-//      ArrSigmaMineCorrectedSAIDUnBin[j]=VecAllChrisSigmaUnbin[j+i*20]*(   (ArrSigmaSAIDUnBinDiv[5]+ ArrSigmaSAIDUnBinDiv[6] +ArrSigmaSAIDUnBinDiv[7] + ArrSigmaSAIDUnBinDiv[8] +ArrSigmaSAIDUnBinDiv[9]   )/5 );
-      ArrSigmaMineCorrectedSAIDUnBin[j]=VecAllChrisSigmaUnbin[j+i*20]*(   (ArrSigmaSAIDUnBinDiv[5]*VecAllChrisSigmaErrUnbin[5+i*20] + ArrSigmaSAIDUnBinDiv[6]*VecAllChrisSigmaErrUnbin[6+i*20] +ArrSigmaSAIDUnBinDiv[7]*VecAllChrisSigmaErrUnbin[7+i*20] + ArrSigmaSAIDUnBinDiv[8]*VecAllChrisSigmaErrUnbin[8+i*20] +ArrSigmaSAIDUnBinDiv[9]*VecAllChrisSigmaErrUnbin[9+i*20]   )/(VecAllChrisSigmaErrUnbin[5+i*20] + VecAllChrisSigmaErrUnbin[6+i*20] + VecAllChrisSigmaErrUnbin[7+i*20] + VecAllChrisSigmaErrUnbin[8+i*20] +   VecAllChrisSigmaErrUnbin[9+i*20])    );
-
-      Double_t CorrectionFactor = (   (ArrSigmaSAIDDiv[5]+ ArrSigmaSAIDDiv[6] +ArrSigmaSAIDDiv[7] + ArrSigmaSAIDDiv[8] +ArrSigmaSAIDDiv[9]   )/5 );
-
-      Double_t CorrectionFactorCuts = (   (ArrSigmaSAIDCutsDiv[5]+ ArrSigmaSAIDCutsDiv[6] +ArrSigmaSAIDCutsDiv[7] + ArrSigmaSAIDCutsDiv[8] +ArrSigmaSAIDCutsDiv[9]   )/5 );
-
-//      Double_t CorrectionFactorUnBin = (   (ArrSigmaSAIDUnBinDiv[5]+ ArrSigmaSAIDUnBinDiv[6] +ArrSigmaSAIDUnBinDiv[7] + ArrSigmaSAIDUnBinDiv[8] +ArrSigmaSAIDUnBinDiv[9]   )/5 );
-//      Double_t CorrectionFactorUnBin = (ArrSigmaSAIDUnBinDiv[5]*VecAllChrisSigmaErrUnbin[5+i*20] + ArrSigmaSAIDUnBinDiv[6]*VecAllChrisSigmaErrUnbin[6+i*20] +ArrSigmaSAIDUnBinDiv[7]*VecAllChrisSigmaErrUnbin[7+i*20] + ArrSigmaSAIDUnBinDiv[8]*VecAllChrisSigmaErrUnbin[8+i*20] +ArrSigmaSAIDUnBinDiv[9]*VecAllChrisSigmaErrUnbin[9+i*20]   )/(VecAllChrisSigmaErrUnbin[5+i*20] + VecAllChrisSigmaErrUnbin[6+i*20] + VecAllChrisSigmaErrUnbin[7+i*20] + VecAllChrisSigmaErrUnbin[8+i*20] +   VecAllChrisSigmaErrUnbin[9+i*20] )   ; 
-
-      Double_t CorrectionFactorUnBin = (   ArrSigmaSAIDUnBinDiv[5]/( (ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5])*(ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5])) +ArrSigmaSAIDUnBinDiv[6]/( (ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])*(ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])) +ArrSigmaSAIDUnBinDiv[7]/( (ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7])*(ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7])) +ArrSigmaSAIDUnBinDiv[8]/( (ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8])*(ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8])) +ArrSigmaSAIDUnBinDiv[5]/( (ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9])*(ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9]))   ) /(    1/((ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5])*(ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5])) +1/((ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])*(ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])) +1/((ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7])*(ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7])) +1/((ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8])*(ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8])) +1/((ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9])*(ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9]))   )    ; 
+    std::ofstream textfileSAIDFinalResults;
+    textfileSAIDFinalResults.open("SAIDProtonResults.txt",std::ios_base::app);
 
 
-      Double_t CorrectionFactorUnBinError = sqrt(1/(1/(  (ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5])*(ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5]) + (ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])*(ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])   + (ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7])*(ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7]) + (ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8])*(ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8]) + (ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9])*(ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9])   )   )  ) ; 
+    for(Int_t k=0;k<20;k++){
+
+	//Corrected by 1.1 factor
+      ArrSigmaMineCorrectedMAID[k]=VecAllChrisSigma[k+i*20]/( 1.1 );
+
+ 	//Corrected Coplan fits to SAID straight mean
+      Double_t SumArrSigmaSAIDDiv5To9 = ArrSigmaSAIDDiv[5]+ ArrSigmaSAIDDiv[6] +ArrSigmaSAIDDiv[7] + ArrSigmaSAIDDiv[8] +ArrSigmaSAIDDiv[9];
+      ArrSigmaMineCorrectedSAID[k]=VecAllChrisSigma[k+i*20]*( (SumArrSigmaSAIDDiv5To9)/5 );
+
+	//Corrected Cuts to SAID straight mean
+      Double_t SumArrSigmaSAIDCutsDiv5To9 = ArrSigmaSAIDCutsDiv[5]+ ArrSigmaSAIDCutsDiv[6] +ArrSigmaSAIDCutsDiv[7] + ArrSigmaSAIDCutsDiv[8] +ArrSigmaSAIDCutsDiv[9];
+      ArrSigmaMineCorrectedSAIDCuts[k]=VecAllChrisSigmaCuts[k+i*20]*(   (SumArrSigmaSAIDCutsDiv5To9)/5 );
 
 
-      //      cout << "HERERERERERE " << ArrSigmaSAIDDiv[5]<<"   "<< ArrSigmaSAIDDiv[6]<<"   "<< ArrSigmaSAIDDiv[7]<< "    "<< ArrSigmaSAIDDiv[8]<< "    "<<ArrSigmaSAIDDiv[9] <<endl;
 
-      //      ArrSigmaMineCorrectedMAID[j]=VecAllChrisSigma[j+i*20]/( (ArrSigmaMAIDDiv[5] + ArrSigmaMAIDDiv[6] + ArrSigmaMAIDDiv[7] + ArrSigmaMAIDDiv[8] +ArrSigmaMAIDDiv[9])/5 );
-      //      ArrSigmaMineCorrectedSAID[j]=VecAllChrisSigma[j+i*20]/(   (ArrSigmaSAIDDiv[5]+ ArrSigmaSAIDDiv[6] +ArrSigmaSAIDDiv[7] + ArrSigmaSAIDDiv[8] +ArrSigmaMAIDDiv[9]   )/5 );
-      textfile << ArrSigmaSAIDDiv[j] << "    " << VecAllChrisEg[j+i*20] <<"   " << VecAllChrisCosth[j+i*20]<<"   "<< CorrectionFactor <<endl;
+        //Corrected UnBinned to SAID weighted mean
+        Double_t DivUnBin5TimesErrSquared = (ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5])*(ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5]);
+        Double_t DivUnBin6TimesErrSquared = (ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])*(ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6]);
+        Double_t DivUnBin7TimesErrSquared = (ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7])*(ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7]);
+        Double_t DivUnBin8TimesErrSquared = (ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8])*(ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8]);
+        Double_t DivUnBin9TimesErrSquared = (ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9])*(ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9]);
+        
+// THis LINE NEEDS FIXESD NOW
+//       ArrSigmaMineCorrectedSAIDUnBin[k]=VecAllChrisSigmaUnbin[k+i*20]*(   (ArrSigmaSAIDUnBinDiv[5]*VecAllChrisSigmaErrUnbin[5+i*20] + ArrSigmaSAIDUnBinDiv[6]*VecAllChrisSigmaErrUnbin[6+i*20] +ArrSigmaSAIDUnBinDiv[7]*VecAllChrisSigmaErrUnbin[7+i*20] + ArrSigmaSAIDUnBinDiv[8]*VecAllChrisSigmaErrUnbin[8+i*20] +ArrSigmaSAIDUnBinDiv[9]*VecAllChrisSigmaErrUnbin[9+i*20]   )/(VecAllChrisSigmaErrUnbin[5+i*20] + VecAllChrisSigmaErrUnbin[6+i*20] + VecAllChrisSigmaErrUnbin[7+i*20] + VecAllChrisSigmaErrUnbin[8+i*20] +   VecAllChrisSigmaErrUnbin[9+i*20])    );
 
-      textfileCuts << ArrSigmaSAIDCutsDiv[j] << "    " << VecAllChrisEg[j+i*20] <<"   " << VecAllChrisCosth[j+i*20]<<"   "<< CorrectionFactorCuts <<endl;
 
-      textfileUnBin << ArrSigmaSAIDUnBinDiv[j] << "    " << VecAllChrisEg[j+i*20] <<"   " << VecAllChrisCosth[j+i*20]<<"   "<< CorrectionFactorUnBin <<"   "<< CorrectionFactorUnBinError<< "  " << ArrSigmaSAID[j]<<"   " <<VecAllChrisSigmaUnbin[j+i*20] <<"  "<< VecAllChrisSigmaErrUnbin[j+i*20]<<"   "<< ArrSigmaSAIDUnBinDivErr[j] <<endl;
+	//Correction Factors for each method
+      Double_t CorrectionFactor = (SumArrSigmaSAIDDiv5To9 )/5 ;
+      Double_t CorrectionFactorCuts = (SumArrSigmaSAIDCutsDiv5To9)/5;
+      Double_t CorrectionFactorUnBin = (   ArrSigmaSAIDUnBinDiv[5]/(DivUnBin5TimesErrSquared) +ArrSigmaSAIDUnBinDiv[6]/(DivUnBin6TimesErrSquared ) +ArrSigmaSAIDUnBinDiv[7]/(DivUnBin7TimesErrSquared ) +ArrSigmaSAIDUnBinDiv[8]/(DivUnBin8TimesErrSquared) +ArrSigmaSAIDUnBinDiv[9]/(DivUnBin9TimesErrSquared ) )    /(    1/(DivUnBin5TimesErrSquared) +1/(DivUnBin6TimesErrSquared)+1/(DivUnBin7TimesErrSquared) +1/(DivUnBin8TimesErrSquared) +1/( DivUnBin9TimesErrSquared  )  ) ; 
+      Double_t CorrectionFactorUnBinError = sqrt(1/(  1/(DivUnBin5TimesErrSquared) + 1/(DivUnBin6TimesErrSquared) + 1/(DivUnBin7TimesErrSquared) + 1/(DivUnBin8TimesErrSquared)  + 1/(DivUnBin9TimesErrSquared) )); 
+     ArrSigmaMineCorrectedSAIDUnBin[k]= VecAllChrisSigmaUnbin[k+i*20]* CorrectionFactorUnBin;
+//   ArrSigmaMineCorrectedSAIDUnBin[k]= VecAllChrisSigmaUnbin[k+i*20]* 0.8913;
+
+cout <<"CFCFCFCFCFCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF  "<< CorrectionFactorUnBin << "    " << CorrectionFactor << "       " << CorrectionFactorCuts << endl;
+
+
+//      Double_t CorrectionFactorUnBin = (   ArrSigmaSAIDUnBinDiv[5]/( (ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5])*(ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5])) +ArrSigmaSAIDUnBinDiv[6]/( (ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])*(ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])) +ArrSigmaSAIDUnBinDiv[7]/( (ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7])*(ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7])) +ArrSigmaSAIDUnBinDiv[8]/( (ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8])*(ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8])) +ArrSigmaSAIDUnBinDiv[5]/( (ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9])*(ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9]))   ) /(    1/((ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5])*(ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5])) +1/((ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])*(ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])) +1/((ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7])*(ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7])) +1/((ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8])*(ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8])) +1/((ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9])*(ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9]))   )    ; 
+//      Double_t CorrectionFactorUnBinError = sqrt(1/(1/(  (ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5])*(ArrSigmaSAIDUnBinDiv[5]*ArrSigmaSAIDUnBinDivErr[5]) + (ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])*(ArrSigmaSAIDUnBinDiv[6]*ArrSigmaSAIDUnBinDivErr[6])   + (ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7])*(ArrSigmaSAIDUnBinDiv[7]*ArrSigmaSAIDUnBinDivErr[7]) + (ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8])*(ArrSigmaSAIDUnBinDiv[8]*ArrSigmaSAIDUnBinDivErr[8]) + (ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9])*(ArrSigmaSAIDUnBinDiv[9]*ArrSigmaSAIDUnBinDivErr[9])   )   )  ) ; 
+
+      textfile << ArrSigmaSAIDDiv[k] << "        " << VecAllChrisEg[k+i*20] <<"   " << VecAllChrisCosth[k+i*20]<<"   "<< CorrectionFactor <<endl;
+
+      textfileCuts << ArrSigmaSAIDCutsDiv[k] << "        " << VecAllChrisEg[k+i*20] <<"   " << VecAllChrisCosth[k+i*20]<<"   "<< CorrectionFactorCuts <<endl;
+
+      textfileUnBin << ArrSigmaSAIDUnBinDiv[k] << "    " << VecAllChrisEg[k+i*20] <<"   " << VecAllChrisCosth[k+i*20]<<"   "<< CorrectionFactorUnBin <<"   "<< CorrectionFactorUnBinError<< "  " << ArrSigmaSAID[k]<<"   " <<VecAllChrisSigmaUnbin[k+i*20] <<"  "<< VecAllChrisSigmaErrUnbin[k+i*20]<<"   "<< ArrSigmaSAIDUnBinDivErr[k] <<endl;
+
+//    FinalSig			CF  Err SAIDSig	 UnBinSig  UnBinErr 	FinalErr
+//  0.840688    410   -0.45   -nan   0  0.6432   0.765088  0.0274461   0.0358731
+//  6.9533e-310 410   -0.35   -nan   0  0.646    0.677658  0.0358692   4.13366e-161
+//  1.04504     410   -0.25   -nan   0  0.6444   0.616625  0.0382724   0.0620675
+//  1.01886     410   -0.15   -nan   0  0.6396   0.627763  0.0687066   0.109447
+//  1.39021     410   -0.05   -nan   0  0.6321   0.454678  0.0603447   0.13272
+
+
+      textfileUnBinFinalResults << ArrSigmaMineCorrectedSAIDUnBin[k] << "    "<< ArrSigmaErrUnbin[k] << "    " << VecAllChrisEg[k+i*20] <<"    "<< "10"<<"    " << VecAllChrisCosth[k+i*20]<<"    "<< "0.05"<<"    "<<endl;
+
+      textfileSAIDFinalResults << ArrSigmaSAID[k] << "    "<< "0.00001" << "    " << VecAllChrisEg[k+i*20] <<"    "<< "10"<<"    " << VecAllChrisCosth[k+i*20]<<"    "<< "0.05"<<"    "<<endl;
+
 
     }
-
-
-    //cout << " BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB    " << endl;
-
-    //   for(Int_t j=0;j<(   sizeof(ArrCosthBnGa)/sizeof(ArrCosthBnGa[0]) )  ;j++){
-    //cout <<" BANANANAANNANANAN " << ArrCosthBnGa[j] <<"   " << ArrSigmaBnGa[j]<< endl;
-    //}
-
 
     auto c3 = new TCanvas("c3","c3");
     TString PosTitle =Form("%f",ArrEg[0]) ;
@@ -603,10 +463,10 @@ void TestFuncArray() {
     TGraph* SigmaPlot=new TGraphErrors(20,ArrCosth,ArrSigma,ArrCosthErr,ArrSigmaErr);
     TGraph* SigmaPlotCuts=new TGraphErrors(20,ArrCosthCuts,ArrSigmaCuts,ArrCosthErrCuts,ArrSigmaErrCuts);
     TGraph* SigmaPlotUnbin=new TGraphErrors(20,ArrCosthUnbin,ArrSigmaUnbin,ArrCosthErrUnbin,ArrSigmaErrUnbin);
-    TGraph* SigmaPlotSimon=new TGraphErrors(20,ArrCosthSimon,ArrSigmaSimon,ArrCosthSimonErr,ArrSigmaSimonErr);
+/*    TGraph* SigmaPlotSimon=new TGraphErrors(20,ArrCosthSimon,ArrSigmaSimon,ArrCosthSimonErr,ArrSigmaSimonErr);
     TGraph* DivisionPlotSimon=new TGraph(20,ArrCosthSimon,ArrSigmaDiv);
     TGraph* SigmaPlotSimonV2=new TGraphErrors(20,ArrCosthSimonV2,ArrSigmaSimonV2,ArrCosthSimonErrV2,ArrSigmaSimonErrV2);
-    TGraph* DivisionPlotSimonV2=new TGraph(20,ArrCosthSimonV2,ArrSigmaDivV2);
+    TGraph* DivisionPlotSimonV2=new TGraph(20,ArrCosthSimonV2,ArrSigmaDivV2);*/
     TGraph* DivisionPlotSAID=new TGraph(20,ArrCosthSAID,ArrSigmaSAIDDiv);
     //    TGraph* SigmaPlotSAID=new TGraphErrors(20,ArrCosthSAID,ArrSigmaSAID,ArrCosthErr,ArrSigmaErr);
     TGraph* SigmaPlotSAID=new TGraphErrors(20,ArrCosth,ArrSigmaSAID,ArrCosthErr,ArrSigmaErr);
@@ -626,14 +486,14 @@ void TestFuncArray() {
     TGraph* SigmaPlotGA=new TGraphErrors(sizeof(ArrSigmaPrevDataGA)/sizeof(ArrSigmaPrevDataGA[0]),ArrCosthPrevDataGA,ArrSigmaPrevDataGA,ArrCosthErrPrevDataGA,ArrSigmaErrPrevDataGA);
 
     //SpecMom Binned cuts Analysis
-    TGraph* SigmaPlotSpec=new TGraphErrors(20,ArrCosthSpec,ArrSigmaSpec,ArrCosthErrSpec,ArrSigmaErrSpec);
+//    TGraph* SigmaPlotSpec=new TGraphErrors(20,ArrCosthSpec,ArrSigmaSpec,ArrCosthErrSpec,ArrSigmaErrSpec);
 
 
-    SigmaPlotSimon->SetMarkerStyle(21);  //filled square(red)
-    SigmaPlotSimon->SetMarkerColor(2);  //red
+//    SigmaPlotSimon->SetMarkerStyle(21);  //filled square(red)
+//    SigmaPlotSimon->SetMarkerColor(2);  //red
 
-    DivisionPlotSimon->SetMarkerStyle(23);//filled upside down triangle(blue)
-    DivisionPlotSimon->SetMarkerColor(4);//blue
+//    DivisionPlotSimon->SetMarkerStyle(23);//filled upside down triangle(blue)
+//    DivisionPlotSimon->SetMarkerColor(4);//blue
     DivisionPlotSAID->SetMarkerStyle(31);
     DivisionPlotSAID->SetMarkerColor(6);
     DivisionPlotMAID->SetMarkerStyle(32);
@@ -641,19 +501,19 @@ void TestFuncArray() {
 
     SigmaPlot->SetMarkerStyle(22);//Filled triangle(black(default)
 
-
+/*
     SigmaPlotSimonV2->SetMarkerStyle(21);  //filled square()
     SigmaPlotSimonV2->SetMarkerColor(3);  //green
     SigmaPlotSimonV2->SetFillStyle(0);
     SigmaPlotSimonV2->SetFillColor(0);
     SigmaPlotSimonV2->SetTitle("Simon WMean");
-
+*/
 
     SigmaPlotCuts->SetMarkerStyle(21);  //filled square()
     SigmaPlotCuts->SetMarkerColor(3);  //green
     SigmaPlotCuts->SetFillStyle(0);
     SigmaPlotCuts->SetFillColor(0);
-//    SigmaPlotCuts->SetTitle("Cuts Analysis Apr25");
+    //    SigmaPlotCuts->SetTitle("Cuts Analysis Apr25");
     SigmaPlotCuts->SetTitle("Cuts Analysis N10To10");
 
     SigmaPlotUnbin->SetMarkerStyle(21);  //filled square()
@@ -661,13 +521,13 @@ void TestFuncArray() {
     SigmaPlotUnbin->SetFillStyle(0);
     SigmaPlotUnbin->SetFillColor(0);
     SigmaPlotUnbin->SetTitle("Unbinned Analysis May 6th");
-
+/*
     DivisionPlotSimonV2->SetMarkerStyle(23);//filled upside down triangle(blue)
     DivisionPlotSimonV2->SetMarkerColor(6);//pink
     DivisionPlotSimonV2->SetFillStyle(0);//pink
     DivisionPlotSimonV2->SetFillColor(0);//pink
     DivisionPlotSimonV2->SetTitle("DivisionWMean");//pink
-
+*/
     SigmaPlotBnGa->SetMarkerStyle(23);//filled upside down triangle(blue)
     SigmaPlotBnGa->SetMarkerColor(7);//pink
     SigmaPlotBnGa->SetFillStyle(0);//pink
@@ -728,26 +588,26 @@ void TestFuncArray() {
 
 
     //SpecMom binned markers
-    SigmaPlotSpec->SetMarkerStyle(22);//Filled triangle(black(default)
+//    SigmaPlotSpec->SetMarkerStyle(22);//Filled triangle(black(default)
 
     //SpecMom binned marker colors
-    SigmaPlotSpec->SetMarkerColor(2);  //red
+//    SigmaPlotSpec->SetMarkerColor(2);  //red
 
     //SPec Mom for legend
-    SigmaPlotSpec->SetFillStyle(0);
-    SigmaPlotSpec->SetFillColor(0);
+//    SigmaPlotSpec->SetFillStyle(0);
+//    SigmaPlotSpec->SetFillColor(0);
 
     //SpecMom Titles
-    SigmaPlotSpec->SetTitle("SpecMom0-50Mev");
+//    SigmaPlotSpec->SetTitle("SpecMom0-50Mev");
 
 
 
     SigmaPlot->SetFillStyle(0);//pink
     SigmaPlot->SetFillColor(0);//pink
-    SigmaPlotSimon->SetFillStyle(0);//pink
-    SigmaPlotSimon->SetFillColor(0);//pink
-    DivisionPlotSimon->SetFillStyle(0);//pink
-    DivisionPlotSimon->SetFillColor(0);//pink
+//    SigmaPlotSimon->SetFillStyle(0);//pink
+//    SigmaPlotSimon->SetFillColor(0);//pink
+//    DivisionPlotSimon->SetFillStyle(0);//pink
+//    DivisionPlotSimon->SetFillColor(0);//pink
 
     DivisionPlotSAID->SetFillStyle(0);//pink
     DivisionPlotSAID->SetFillColor(0);//pink
@@ -755,19 +615,19 @@ void TestFuncArray() {
     DivisionPlotMAID->SetFillColor(0);
 
     SigmaPlot->SetTitle("CoplanFitsOrig");//pink
-    SigmaPlotSimon->SetTitle("Simon");//pink
-    DivisionPlotSimon->SetTitle("Division");//pink
+//    SigmaPlotSimon->SetTitle("Simon");//pink
+//    DivisionPlotSimon->SetTitle("Division");//pink
     DivisionPlotSAID->SetTitle("SAIDDivision");//pink
     DivisionPlotMAID->SetTitle("MAIDDivision");//pink
 
 
 
     TMultiGraph* mg = new TMultiGraph();
-    mg->Add(SigmaPlot); //black1
-//    mg->Add(SigmaPlotGA);//red2
+//    mg->Add(SigmaPlot); //black1
+    //    mg->Add(SigmaPlotGA);//red2
     //    mg->Add(SigmaPlotSimon);//red2
     //    mg->Add(SigmaPlotSimonV2);//green3
-    mg->Add(SigmaPlotCuts);//green3
+//    mg->Add(SigmaPlotCuts);//green3
     mg->Add(SigmaPlotUnbin);//purple9
     //    mg->Add(DivisionPlotSimon);//blue4
     // mg->Add(DivisionPlotSimonV2);//pink6
@@ -778,11 +638,11 @@ void TestFuncArray() {
     //mg->Add(SigmaPlotSpec);//red2
     // mg->Add(SigmaPlotSAID);//pink6
     //    mg->Add(SigmaPlotMAID);//pink6
-//    mg->Add(SigmaPlotCorrectedSAID);//blue4
-//    mg->Add(SigmaPlotCorrectedSAIDCuts);//red2
+    //    mg->Add(SigmaPlotCorrectedSAID);//blue4
+    //    mg->Add(SigmaPlotCorrectedSAIDCuts);//red2
     mg->Add(SigmaPlotCorrectedSAIDUnBin);//black1
     //    mg->Add(SigmaPlotCorrectedMAID);//cyan7
-    mg->Add(SigmaPlotBnGa);//cyan7
+//    mg->Add(SigmaPlotBnGa);//cyan7
     mg->Add(SigmaPlotSAIDMB);//pink6
 
     TString hTitle ="Sigma"+PosTitle; // +VecChrisType[i*20] +(TString) i ;
@@ -810,10 +670,10 @@ void TestFuncArray() {
 
     mg->Write();
     leg->Write();//Sort the writing of the legend later
-    DivisionPlotSimon->Write();
-    DivisionPlotSimonV2->Write();
-    DivisionPlotSAID->Write();
-    DivisionPlotMAID->Write();
+//    DivisionPlotSimon->Write();
+//    DivisionPlotSimonV2->Write();
+//    DivisionPlotSAID->Write();
+//    DivisionPlotMAID->Write();
     c3->Write();
 
   }

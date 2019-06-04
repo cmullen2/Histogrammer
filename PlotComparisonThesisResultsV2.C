@@ -3,7 +3,7 @@
 
 void PlotComparisonThesisResultsV2() {
 		
-  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/CheckFits/OnePlotResultsPPi0.root","recreate");
+  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/CheckFits/FitFailedCorrectedOnePlotResultsPPi0WithProtonCorrectedFittedUnbinVTheoryOnlyN2To2V3.root","recreate");
  
   TCanvas *Canvas1 = new TCanvas("Canvas_1_n2", "Canvas_1_n2",0,0,1600,2000);
   Canvas1->SetCanvasSize(1600,2000);
@@ -23,6 +23,16 @@ void PlotComparisonThesisResultsV2() {
   vector<Double_t> VecAllChrisSigmaErr;
   vector<Double_t> VecAllChrisEgErr;
   vector<Double_t> VecAllChrisCosthErr;
+
+//SAID with more bins
+  vector<Double_t> VecAllChrisSigmaSAIDMB;
+  vector<Double_t> VecAllChrisEgSAIDMB;
+  vector<Double_t> VecAllChrisCosthSAIDMB;
+  vector<TString> VecAllChrisTypeSAIDMB;
+  vector<Double_t> VecAllChrisSigmaErrSAIDMB;
+  vector<Double_t> VecAllChrisEgErrSAIDMB;
+  vector<Double_t> VecAllChrisCosthErrSAIDMB;
+
 
 // Unbinned fit results 
   vector<Double_t> VecAllChrisSigmaUnBin;
@@ -230,6 +240,15 @@ void PlotComparisonThesisResultsV2() {
   Double_t AllChrisEgErr;
   Double_t AllChrisCosthErr;
 
+//SAID More bins
+  Double_t AllChrisSigmaSAIDMB;
+  Double_t AllChrisEgSAIDMB;
+  Double_t AllChrisCosthSAIDMB;
+  TString AllChrisTypeSAIDMB;
+  Double_t AllChrisSigmaErrSAIDMB;
+  Double_t AllChrisEgErrSAIDMB;
+  Double_t AllChrisCosthErrSAIDMB;
+
 	//My UnBinned Results
   Double_t AllChrisSigmaUnBin;
   Double_t AllChrisEgUnBin;
@@ -436,9 +455,34 @@ void PlotComparisonThesisResultsV2() {
     }
   }
 
+
+
+  std::ifstream inputFileSAIDMB("ProtonTheoryCurves/SAIDMoreBinsProtonResults.txt");
+  std::string lineSAIDMB;
+  if (inputFileSAIDMB.is_open()){
+    while(getline(inputFileSAIDMB, lineSAIDMB) ){
+      stringstream(lineSAIDMB)>>AllChrisSigmaSAIDMB >>AllChrisSigmaErrSAIDMB>>AllChrisEgSAIDMB>>AllChrisEgErrSAIDMB >> AllChrisCosthSAIDMB>>AllChrisCosthErrSAIDMB>> AllChrisTypeSAIDMB;
+      VecAllChrisSigmaSAIDMB.push_back(AllChrisSigmaSAIDMB);
+      VecAllChrisEgSAIDMB.push_back(AllChrisEgSAIDMB);
+      VecAllChrisCosthSAIDMB.push_back(AllChrisCosthSAIDMB);
+      VecAllChrisTypeSAIDMB.push_back(AllChrisTypeSAIDMB);
+      VecAllChrisSigmaErrSAIDMB.push_back(AllChrisSigmaErrSAIDMB);
+      VecAllChrisEgErrSAIDMB.push_back(AllChrisEgErrSAIDMB);
+      VecAllChrisCosthErrSAIDMB.push_back(AllChrisCosthErrSAIDMB);
+    }
+  }
+
+
+
+
+
   //read in my unbinned results from text file
 //  std::ifstream inputFileUnBin("Data/CutResultsUnBinnedProtonSigma.txt");
-  std::ifstream inputFileUnBin("Data/Results410To710UnBinnedProtonSigmaMay17th.txt");
+//  std::ifstream inputFileUnBin("Data/Results410To710UnBinnedProtonSigmaMay17th.txt");
+//  std::ifstream inputFileUnBin("Data/ProtonCorrectedUnBinResults410To710UnBinnedProtonSigmaMay22nd.txt");
+//  std::ifstream inputFileUnBin("Data/ProtonCorrectedByFittingUnBinResults410To710UnBinnedProtonSigmaMay22nd.txt");
+//  std::ifstream inputFileUnBin("AdjustedFitFailedProtonCorrectedByFittingUnBinResults410To710UnBinnedProtonSigmaMay22nd.txt");
+  std::ifstream inputFileUnBin("ProtonSigmaResultsMay29th2019.txt");
   std::string lineUnBin;
   if (inputFileUnBin.is_open()){
     while(getline(inputFileUnBin, lineUnBin) ){
@@ -781,6 +825,15 @@ Double_t ArrSigmaErr[20];
 Double_t ArrCosthErr[20];
 Double_t ArrEgErr[20];
 
+//SAIDMBs
+Double_t ArrSigmaSAIDMB[41];
+Double_t ArrCosthSAIDMB[41];
+Double_t ArrEgSAIDMB[41];
+Double_t ArrSigmaErrSAIDMB[41];
+Double_t ArrCosthErrSAIDMB[41];
+Double_t ArrEgErrSAIDMB[41];
+
+
 	//My UnBinned Results
 Double_t ArrSigmaUnBin[20];
 Double_t ArrCosthUnBin[20];
@@ -948,7 +1001,6 @@ Double_t ArrSigmaSimonErr[20];
 Double_t ArrSigmaDivErr[20];  //Need to think about computing this! Or set to zero for now.
 Double_t ArrCosthSimonErr[20];
 Double_t ArrEgSimonErr[20];
-
 
 
 
@@ -1144,6 +1196,25 @@ for(Int_t i=0;i<16;i++){//Number of eg bins*Number of folders(rand,sig,cut1) 41*
 
 }
 
+
+
+for(Int_t j=0;j<41;j++){
+	//SAIDMBs
+	ArrSigmaSAIDMB[j] = VecAllChrisSigmaSAIDMB[j+i*41];
+	ArrCosthSAIDMB[j] = VecAllChrisCosthSAIDMB[j+i*41];
+	ArrEgSAIDMB[j] = VecAllChrisEgSAIDMB[j+i*41];
+	ArrSigmaErrSAIDMB[j] = VecAllChrisSigmaErrSAIDMB[j+i*41];
+	ArrCosthErrSAIDMB[j] = VecAllChrisCosthErrSAIDMB[j+i*41];
+	ArrEgErrSAIDMB[j] = VecAllChrisEgErrSAIDMB[j+i*41];
+
+}
+
+
+
+
+
+
+
     Canvas1->cd(i+1);
 //auto c3 = new TCanvas("c3","c3");
 
@@ -1157,6 +1228,7 @@ TString PosName = Form("%f",ArrEg[0]) ;
 //	TGraph* DivisionPlotSimon=new TGraph(20,ArrCosthSimon,ArrSigmaDiv);
 
 	TGraph* SigmaPlot=new TGraphErrors(20,ArrCosth,ArrSigma,ArrCosthErr,ArrSigmaErr);
+	TGraph* SigmaPlotSAIDMB=new TGraphErrors(40,ArrCosthSAIDMB,ArrSigmaSAIDMB,ArrCosthErrSAIDMB,ArrSigmaErrSAIDMB);
 	TGraph* SigmaPlotUnBin=new TGraphErrors(20,ArrCosthUnBin,ArrSigmaUnBin,ArrCosthErrUnBin,ArrSigmaErrUnBin);
 	TGraph* SigmaPlotSimon=new TGraphErrors(20,ArrCosthSimon,ArrSigmaSimon,ArrCosthSimonErr,ArrSigmaSimonErr);
 	TGraph* DivisionPlotSimon=new TGraph(20,ArrCosthSimon,ArrSigmaDiv);
@@ -1191,6 +1263,7 @@ DivisionPlotSimon->SetMarkerStyle(23);//filled upside down triangle(blue)
 DivisionPlotSimon->SetMarkerColor(4);//blue
 
 SigmaPlot->SetMarkerStyle(22);//Filled triangle(black(default)
+SigmaPlotSAIDMB->SetMarkerStyle(22);//Filled triangle(black(default)
 SigmaPlotUnBin->SetMarkerStyle(29);//Filled triangle(black(default)
 SigmaPlotLess->SetMarkerStyle(29);//filled star(yellow)
 SigmaPlotGreater->SetMarkerStyle(31);//line star (like two crosses at 90deg to each other)(blue)
@@ -1256,6 +1329,7 @@ SigmaPlotSpec8->SetTitle("SpecMom350-400Mev");
 
 //1=black 2=red 3 = green 4=blue 5 =yellow 6 = pink 7=cyan
 //used black red cyan pink new
+SigmaPlotSAIDMB->SetMarkerColor(2);//(red)
 SigmaPlotUnBin->SetMarkerColor(4);//(blue)
 SigmaPlotLess->SetMarkerColor(5);//(yellow)
 SigmaPlotGreater->SetMarkerColor(4);//(blue)
@@ -1269,6 +1343,8 @@ SigmaPlotCutsNon->SetMarkerColor(7);// light blue
 SigmaPlotInv->SetMarkerColor(6);//pink
 
 
+SigmaPlotSAIDMB->SetFillStyle(0);
+SigmaPlotSAIDMB->SetFillColor(0);
 SigmaPlotUnBin->SetFillStyle(0);
 SigmaPlotUnBin->SetFillColor(0);
 SigmaPlotLess->SetFillStyle(0);
@@ -1300,7 +1376,9 @@ DivisionPlotSimon->SetFillColor(0);//pink
 
 
 //SigmaPlotUnBin->SetTitle("UnBinnedFit");
-SigmaPlotUnBin->SetTitle("UnBinnedFitMay17th");
+SigmaPlotSAIDMB->SetTitle("SAIDMB");
+//SigmaPlotUnBin->SetTitle("UnBinnedFitMay17th");
+SigmaPlotUnBin->SetTitle("UnBinnedFitCorrectedByFittingMay22nd");
 SigmaPlotLess->SetTitle("Less");
 SigmaPlotGreater->SetTitle("Greater");
 SigmaPlotTiming->SetTitle("Timing");//light blue
@@ -1321,15 +1399,16 @@ DivisionPlotSimon->SetTitle("Division");//pink
 
 
 TMultiGraph* mg = new TMultiGraph();
-mg->SetMaximum(1);
-mg->SetMinimum(0);
-mg->Add(SigmaPlot);
+mg->SetMaximum(2);
+mg->SetMinimum(-2);
+//mg->Add(SigmaPlot);
+mg->Add(SigmaPlotSAIDMB);
 mg->Add(SigmaPlotUnBin);
 //mg->Add(SigmaPlotLess);
 //mg->Add(SigmaPlotGreater);
 //mg->Add(SigmaPlotTiming);
 //mg->Add(SigmaPlotStrict);
-mg->Add(SigmaPlotStrictDar);
+//mg->Add(SigmaPlotStrictDar);
 //////mg->Add(SigmaPlotStrictBG);
 //////mg->Add(SigmaPlotNonStrictBG);
 //mg->Add(SigmaPlotCuts);

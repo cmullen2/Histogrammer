@@ -32,7 +32,8 @@ void PlotResults() {
 //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr112019/NPi0CoplanFitsOldVsNewApr.root","recreate");
 //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr112019/NPi0UnBinnedOldVersusNewApr.root","recreate");
 //  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr252019/NPi0SigmaCutsAnalysisVsUnBinnedVsCoplanFitsWithTheoryFixedSubRatio.root","recreate");
-  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr252019/NPi0SigmaCutsAnalysisVsCutsCorrectedVsUnBinnedVsCoplanFitsWithTheoryFixedSubRatio.root","recreate");
+//  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr252019/NPi0SigmaCutsAnalysisVsCutsCorrectedVsUnBinnedVsCoplanFitsWithTheoryFixedSubRatio.root","recreate");
+  TFile *outfile =new TFile("/w/work3/home/chris/LatestAnalysisRuns/Data/DataJul18/HistoSelector/Pi0Analysis/LatestNeutronApr252019/DelV3.root","recreate");
 
   Double_t NDataEgBins = 24 ; //Number of bins in data for looping
   Double_t TheoryThetaBinsDouble = 40;
@@ -239,7 +240,9 @@ void PlotResults() {
   GetSigmaFromFile( VecAllChrisSigmaApr, VecAllChrisSigmaErrApr, VecAllChrisEgApr, VecAllChrisEgErrApr, VecAllChrisCosthApr,  VecAllChrisCosthErrApr,  InFileApr );
 
 
-  TString InFileUnBinApr = "Data/MyResultsUnBinnedNeutronSigmaApr11.txt";
+//  TString InFileUnBinApr = "Data/MyResultsUnBinnedNeutronSigmaApr11.txt";
+//  TString InFileUnBinApr = "Data/MyResultsUnBinnedNeutronSigmaMay23.txt";
+  TString InFileUnBinApr = "Data/MyResultsUnBinnedNeutronSigmaMay29.txt";
   GetSigmaFromFile( VecAllChrisSigmaUnBinApr, VecAllChrisSigmaErrUnBinApr, VecAllChrisEgUnBinApr, VecAllChrisEgErrUnBinApr, VecAllChrisCosthUnBinApr,  VecAllChrisCosthErrUnBinApr,  InFileUnBinApr );
 
 
@@ -314,6 +317,9 @@ void PlotResults() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+    std::ofstream textfileUnBinFinalResults;
+    textfileUnBinFinalResults.open("UnBinMay29CorrectedbyFittingResults.txt",std::ios_base::app);
+
 
   for(Int_t i=0;i<NDataEgBins;i++){//Number of eg bins//Deprecated*Number of folders(rand,sig,cut1) 41*3
     for(Int_t j=0;j<20;j++){ //Number of Costh Bins
@@ -380,6 +386,10 @@ void PlotResults() {
       ArrCosthErrUnBinApr[j] = VecAllChrisCosthErrUnBinApr[j+i*20];
       ArrEgErrUnBinApr[j] = VecAllChrisEgErrUnBinApr[j+i*20];
 
+      ArrSigmaUnBinApr[j] = ArrSigmaUnBinApr[j]*0.8913; 
+
+
+textfileUnBinFinalResults << ArrSigmaUnBinApr[j] <<"    "<< ArrSigmaErrUnBinApr[j]<< "    "<<ArrEgUnBinApr[j] <<"    "<<ArrEgErrUnBinApr[j]<<"    "<<ArrCosthUnBinApr[j]<<"   "<<ArrCosthErrUnBinApr[j]<<endl; 
 
 
 
@@ -499,6 +509,16 @@ void PlotResults() {
     Double_t ArrCosthBnGa[NumBnGaPts];
     Double_t ArrCosthErrBnGa[NumBnGaPts];
 
+
+
+    std::ofstream textfileSAIDMBFinalResults;
+    textfileSAIDMBFinalResults.open("SAIDMoreBinsProtonResults.txt",std::ios_base::app);
+
+    std::ofstream textfileBnGaFinalResults;
+    textfileBnGaFinalResults.open("BnGaProtonResults.txt",std::ios_base::app);
+
+
+
     for(Int_t vv=0; vv<VecSigmaBnGa.size();vv++){
       ArrSigmaBnGa[vv] = VecSigmaBnGa[vv];
       ArrSigmaErrBnGa[vv] = VecSigmaErrBnGa[vv];
@@ -506,6 +526,7 @@ void PlotResults() {
       ArrEgErrBnGa[vv] = VecEgErrBnGa[vv];
       ArrCosthBnGa[vv] = VecCosthBnGa[vv];
       ArrCosthErrBnGa[vv] = VecCosthErrBnGa[vv];
+textfileBnGaFinalResults << ArrSigmaBnGa[vv] <<"    "<< ArrSigmaErrBnGa[vv]<< "    "<<ArrEgBnGa[vv] <<"    "<<ArrEgErrBnGa[vv]<<"    "<<ArrCosthBnGa[vv]<<"   "<<ArrCosthErrBnGa[vv]<<endl; 
     }
 
     //Fill arrays for said more bins
@@ -524,6 +545,7 @@ void PlotResults() {
       ArrEgErrSAIDMB[vv] = VecEgErrSAIDMB[vv];
       ArrCosthSAIDMB[vv] = VecCosthSAIDMB[vv];
       ArrCosthErrSAIDMB[vv] = VecCosthErrSAIDMB[vv];
+textfileSAIDMBFinalResults << ArrSigmaSAIDMB[vv] <<"    "<< ArrSigmaErrSAIDMB[vv]<< "    "<<ArrEgSAIDMB[vv] <<"    "<<ArrEgErrSAIDMB[vv]<<"    "<<ArrCosthSAIDMB[vv]<<"   "<<ArrCosthErrSAIDMB[vv]<<endl; 
     }
 
 
